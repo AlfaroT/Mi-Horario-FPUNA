@@ -182,6 +182,12 @@ function parseOccasionalDates(text) {
     // Buscar fechas entre comillas usando expresión regular: "02/08, 20/09, 15/11"
     const match = text.match(/"([^"]+)"/);
     if (!match) {
+        // Si no hay comillas, intentar buscar fechas directamente en el formato dd/mm
+        const directDates = text.match(/\b\d{1,2}\/\d{1,2}\b/g);
+        if (directDates && directDates.length > 0) {
+            console.log(`✅ Clases ocasionales encontradas (sin comillas): ${directDates.join(', ')}`);
+            return directDates;
+        }
         console.log('📅 Sin fechas ocasionales en:', text.substring(0, 50));
         return [];
     }
@@ -314,15 +320,6 @@ export function processSheetData(sheetName) {
                 const horarioOcasional = getCellValue(row, columnMap.occasionalColumns.horario);
                 const fechasStr = getCellValue(row, columnMap.occasionalColumns.fecha);
                 
-                // Log de debugging para la primera fila con datos
-                if (i === 0) {
-                    console.log(`  🔍 Ejemplo de extracción de clases ocasionales (primera fila):`);
-                    console.log(`     Asignatura: "${asignatura}"`);
-                    console.log(`     Aula: "${aulaOcasional}"`);
-                    console.log(`     Horario: "${horarioOcasional}"`);
-                    console.log(`     Fechas: "${fechasStr}"`);
-                }
-                
                 if (fechasStr && fechasStr.trim() !== '') {
                     // Limpiar comillas dobles
                     let cleanedFechas = fechasStr.replace(/"/g, '').trim();
@@ -340,13 +337,8 @@ export function processSheetData(sheetName) {
                             fechas: fechas
                         };
                         
-                        // Log para las primeras 3 clases ocasionales encontradas
-                        if (i < 3) {
-                            console.log(`  ✅ Clase ocasional encontrada: ${asignatura}`);
-                            console.log(`     Aula: ${aulaOcasional}`);
-                            console.log(`     Horario: ${horarioOcasional}`);
-                            console.log(`     Fechas extraídas: ${fechas.join(', ')}`);
-                        }
+                        // Log para TODAS las clases ocasionales encontradas
+                        console.log(`  📅 Clase ocasional encontrada: ${asignatura} → ${fechas.join(', ')}`);
                     }
                 }
             }
@@ -460,7 +452,7 @@ export function transformDataToSchedule() {
             
             // Crear un evento por cada fecha individual
             fechas.forEach(fechaStr => {
-                occasionalClasses.push({
+                const ocasionalData = {
                     instanceId,
                     asignatura,
                     semestre,
@@ -474,7 +466,13 @@ export function transformDataToSchedule() {
                     horaFin: timeRange ? timeRange.end : '',
                     aula: aula || '',
                     horarioCompleto: `${horario} ${aula}`.trim()
-                });
+                };
+                
+                console.log(`     📌 Clase ocasional: ${asignatura} - ${fechaStr}`);
+                console.log(`        instanceId: ${instanceId}`);
+                console.log(`        profesor: ${profesor}, sección: ${seccion}, turno: ${turno}`);
+                
+                occasionalClasses.push(ocasionalData);
             });
         }
         

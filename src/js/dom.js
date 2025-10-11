@@ -58,6 +58,17 @@ export const dom = {
     get gradeResult() { return getElement('gradeResult'); },
 
     // Tasks
+    get addTaskFab() { return getElement('addTaskFab'); },
+    get taskModal() { return getElement('taskModal'); },
+    get taskModalTitle() { return getElement('taskModalTitle'); },
+    get closeTaskModalBtn() { return getElement('closeTaskModalBtn'); },
+    get saveTaskBtn() { return getElement('saveTaskBtn'); },
+    get cancelTaskBtn() { return getElement('cancelTaskBtn'); },
+    get taskId() { return getElement('taskId'); },
+    get taskTitle() { return getElement('taskTitle'); },
+    get taskDescription() { return getElement('taskDescription'); },
+    get taskDate() { return getElement('taskDate'); },
+    get taskTime() { return getElement('taskTime'); },
     get taskForm() { return getElement('taskForm'); },
     get taskTitleInput() { return getElement('taskTitleInput'); },
     get taskDescriptionInput() { return getElement('taskDescriptionInput'); },
@@ -85,6 +96,7 @@ export const dom = {
     get toggleTasksBtn() { return getElement('toggleTasksBtn'); },
     get tasksToggleIcon() { return getElement('tasksToggleIcon'); },
     get tasksContainer() { return getElement('tasksContainer'); },
+    get userTasksContainer() { return getElement('userTasksContainer'); },
 
     // Greeting header
     get greetingHeader() { return getElement('greetingHeader'); },

@@ -591,6 +591,7 @@ function updateDashboardMetrics() {
     // Contar exámenes próximos
     const upcomingExams = getUpcomingExams();
     console.log('📝 Exámenes próximos encontrados:', upcomingExams.length);
+    console.log('📝 Detalle de exámenes:', upcomingExams.map(e => `${e.asignatura} - ${e.fecha}`));
     const examsCount = document.getElementById('examsCount');
     const examsBadge = document.getElementById('examsBadge');
     const examsSummary = document.getElementById('examsSummary');
@@ -631,6 +632,7 @@ function updateDashboardMetrics() {
     // Contar clases ocasionales
     const occasionalClasses = getUpcomingOccasionalClasses();
     console.log('🎓 Clases ocasionales encontradas:', occasionalClasses.length);
+    console.log('🎓 Detalle de clases:', occasionalClasses.map(c => `${c.asignatura} - ${c.fecha}`));
     const occasionalCount = document.getElementById('occasionalCount');
     const occasionalBadge = document.getElementById('occasionalBadge');
     const occasionalSummary = document.getElementById('occasionalSummary');
@@ -661,31 +663,68 @@ function getTodayClasses() {
 }
 
 function getUpcomingExams() {
-    if (!state.examenes || state.examenes.length === 0) return [];
+    if (!state.examenes || state.examenes.length === 0) {
+        console.log('⚠️ No hay exámenes en el estado');
+        return [];
+    }
 
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
+    console.log(`📊 Total de exámenes en estado: ${state.examenes.length}`);
 
-    return state.examenes.filter(examen => {
-        if (!examen.fecha) return false;
-        const examDate = new Date(examen.fecha);
-        examDate.setHours(0, 0, 0, 0);
-        return examDate >= today;
-    }).slice(0, 5); // Limitar a 5 exámenes próximos
+    // Usar el mismo método que en renderUpcomingExams
+    const upcomingExams = state.examenes
+        .map(examen => {
+            const fecha = formatDate(examen.fecha);
+            return {
+                ...examen,
+                fechaObj: fecha,
+                daysLeft: fecha ? getDaysDifference(fecha) : null
+            };
+        })
+        .filter(examen => {
+            const isValid = examen.fechaObj && examen.daysLeft !== null && examen.daysLeft >= -1;
+            if (!isValid) {
+                console.log(`❌ Examen filtrado: ${examen.asignatura} - fecha: ${examen.fecha}`);
+            }
+            return isValid;
+        })
+        .sort((a, b) => a.daysLeft - b.daysLeft);
+
+    console.log(`✅ Exámenes próximos válidos: ${upcomingExams.length}`);
+    return upcomingExams;
 }
 
 function getUpcomingOccasionalClasses() {
-    if (!state.occasionalClasses || state.occasionalClasses.length === 0) return [];
+    if (!state.occasionalClasses || state.occasionalClasses.length === 0) {
+        console.log('⚠️ No hay clases ocasionales en el estado');
+        return [];
+    }
 
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
+    console.log(`📊 Total de clases ocasionales en estado: ${state.occasionalClasses.length}`);
+    state.occasionalClasses.forEach(clase => {
+        console.log(`  - ${clase.asignatura}: fecha="${clase.fecha}"`);
+    });
 
-    return state.occasionalClasses.filter(clase => {
-        if (!clase.fecha) return false;
-        const claseDate = new Date(clase.fecha);
-        claseDate.setHours(0, 0, 0, 0);
-        return claseDate >= today;
-    }).slice(0, 5); // Limitar a 5 clases ocasionales próximas
+    // Usar el mismo método que en renderOccasionalClasses
+    const upcomingClasses = state.occasionalClasses
+        .map(clase => {
+            const fecha = formatDate(clase.fecha);
+            return {
+                ...clase,
+                fechaObj: fecha,
+                daysLeft: fecha ? getDaysDifference(fecha) : null
+            };
+        })
+        .filter(clase => {
+            const isValid = clase.fechaObj && clase.daysLeft !== null && clase.daysLeft >= -1;
+            if (!isValid) {
+                console.log(`❌ Clase filtrada: ${clase.asignatura} - fecha: ${clase.fecha}`);
+            }
+            return isValid;
+        })
+        .sort((a, b) => a.daysLeft - b.daysLeft);
+
+    console.log(`✅ Clases ocasionales próximas válidas: ${upcomingClasses.length}`);
+    return upcomingClasses;
 }
 
 // ============================================
@@ -705,71 +744,50 @@ export function initTheme() {
 
     // Aplicar tema
     applyTheme(savedTheme);
-
-    // Conectar el event listener al toggle del tema después de un pequeño delay
-    // para asegurar que el DOM esté completamente cargado
-    setTimeout(() => {
-        const themeToggle = document.getElementById('themeToggle');
-        if (themeToggle) {
-            themeToggle.addEventListener('change', toggleTheme);
-        }
-    }, 100);
+    
+    console.log('✅ Event listener del modo oscuro conectado');
 }
 
-function applyTheme(theme) {
+function applyTheme(theme, updateCheckbox = true) {
     const html = document.documentElement;
-
+    
     if (theme === 'dark') {
         html.classList.add('dark');
     } else {
         html.classList.remove('dark');
     }
-
-    // Actualizar el toggle si existe
-    const themeToggle = document.getElementById('themeToggle');
-    const themeToggleSlider = document.getElementById('themeToggleSlider');
-    const toggleKnob = themeToggleSlider?.querySelector('.toggle-knob');
-
-    if (themeToggle) {
-        themeToggle.checked = (theme === 'dark');
-    }
-
-    // Actualizar el slider visual
-    if (themeToggleSlider && toggleKnob) {
-        if (theme === 'dark') {
-            themeToggleSlider.classList.remove('bg-gray-300');
-            themeToggleSlider.classList.add('bg-gradient-to-r', 'from-purple-500', 'to-pink-600');
-            toggleKnob.classList.remove('left-0.5', 'border-gray-300');
-            toggleKnob.classList.add('left-6.5', 'border-white');
-        } else {
-            themeToggleSlider.classList.remove('bg-gradient-to-r', 'from-purple-500', 'to-pink-600');
-            themeToggleSlider.classList.add('bg-gray-300');
-            toggleKnob.classList.remove('left-6.5', 'border-white');
-            toggleKnob.classList.add('left-0.5', 'border-gray-300');
+    
+    // Actualizar el toggle SOLO en la inicialización, NO cuando el usuario hace click
+    if (updateCheckbox) {
+        const themeToggle = document.getElementById('themeToggle');
+        if (themeToggle) {
+            themeToggle.checked = (theme === 'dark');
         }
     }
-
-    // Forzar actualización de estilos aplicando cambios directos
-    forceStyleUpdate();
-}
-
-function forceStyleUpdate() {
-    // Forzar actualización de estilos cambiando temporalmente una propiedad
-    const body = document.body;
-    const currentDisplay = body.style.display;
-    body.style.display = 'none';
-    body.offsetHeight; // Trigger reflow
-    body.style.display = currentDisplay;
+    
+    // Actualizar meta theme-color
+    const metaThemeColor = document.querySelector('meta[name="theme-color"]');
+    if (metaThemeColor) {
+        metaThemeColor.setAttribute('content', theme === 'dark' ? '#1f2937' : '#2563eb');
+    }
+    
+    console.log(`🎨 Tema aplicado: ${theme}`);
 }
 
 export function toggleTheme() {
+    console.log('🎯 toggleTheme() LLAMADO');
+    console.trace('🔍 Stack trace de toggleTheme:');
     const html = document.documentElement;
     const isDark = html.classList.contains('dark');
+    console.log(`   Estado actual: ${isDark ? 'DARK' : 'LIGHT'}`);
     const newTheme = isDark ? 'light' : 'dark';
+    console.log(`   Nuevo tema: ${newTheme}`);
 
-    applyTheme(newTheme);
+    // NO actualizar el checkbox porque ya cambió por el click del usuario
+    applyTheme(newTheme, false);
     localStorage.setItem(THEME_KEY, newTheme);
 
+    console.log(`🔄 Tema cambiado a: ${newTheme}`);
     showToast(`Tema ${newTheme === 'dark' ? 'oscuro' : 'claro'} activado`, 'success');
 }
 
@@ -889,6 +907,14 @@ export function confirmReset() {
 // ============================================
 // NAVEGACIÓN POR TARJETAS MÉTRICAS
 // ============================================
+
+// Función para hacer scroll suave a una sección
+function scrollToSection(sectionId) {
+    const section = document.getElementById(sectionId);
+    if (section) {
+        section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+}
 
 // Inicializar clicks en tarjetas métricas
 export function initMetricCards() {

@@ -432,12 +432,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    document.addEventListener('change', (e) => {
-        if (e.target && e.target.id === 'themeToggle') {
-            toggleTheme();
-        }
-    });
-
     if (dom.closeSettingsBtn) {
         dom.closeSettingsBtn.addEventListener('click', () => {
             if (dom.settingsModal) {
@@ -536,6 +530,17 @@ document.addEventListener('DOMContentLoaded', function() {
                 closeGradeCalculator();
             }
         });
+    }
+
+    // Event listener para el toggle de tema - usar change en el checkbox
+    const themeToggle = document.getElementById('themeToggle');
+    if (themeToggle) {
+        themeToggle.addEventListener('change', function() {
+            console.log('🔔 Cambio en themeToggle detectado - checked:', this.checked);
+            toggleTheme();
+        });
+    } else {
+        console.warn('⚠️ No se encontró themeToggle en el DOM');
     }
 
     if (dom.addTaskFab) {

@@ -261,6 +261,10 @@ function onInstanceChange() {
 }
 
 export function applyFilters() {
+    console.log('\n🔍 Aplicando filtros...');
+    console.log(`   Instancias seleccionadas: ${state.selectedInstances.join(', ')}`);
+    console.log(`   Total de clases ocasionales antes de filtrar: ${state.fullOccasionalClasses.length}`);
+    
     // Filtrar clases basándose en las instancias seleccionadas
     state.clases = state.fullSchedule.filter(clase => 
         state.selectedInstances.includes(clase.instanceId)
@@ -272,9 +276,15 @@ export function applyFilters() {
     );
     
     // Filtrar clases ocasionales basándose en las instancias seleccionadas
-    state.occasionalClasses = state.fullOccasionalClasses.filter(clase => 
-        state.selectedInstances.includes(clase.instanceId)
-    );
+    state.occasionalClasses = state.fullOccasionalClasses.filter(clase => {
+        const isIncluded = state.selectedInstances.includes(clase.instanceId);
+        if (!isIncluded) {
+            console.log(`   ❌ Clase ocasional filtrada: ${clase.asignatura} (instanceId: ${clase.instanceId})`);
+        } else {
+            console.log(`   ✅ Clase ocasional incluida: ${clase.asignatura} (instanceId: ${clase.instanceId})`);
+        }
+        return isIncluded;
+    });
     
-    console.log(`Filtrado aplicado: ${state.clases.length} clases, ${state.examenes.length} exámenes, ${state.occasionalClasses.length} clases ocasionales`);
+    console.log(`✅ Filtrado aplicado: ${state.clases.length} clases, ${state.examenes.length} exámenes, ${state.occasionalClasses.length} clases ocasionales\n`);
 }

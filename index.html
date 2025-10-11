@@ -540,11 +540,9 @@
                                         <p class="text-xs text-gray-600 dark:text-gray-400">Cambia entre tema claro y oscuro</p>
                                     </div>
                                 </div>
-                                <label class="relative inline-flex items-center cursor-pointer theme-toggle-enhanced">
-                                    <input type="checkbox" id="themeToggle" class="sr-only">
-                                    <div id="themeToggleSlider" class="toggle-slider w-12 h-6 bg-gray-300 rounded-full transition-all duration-300 ease-in-out relative">
-                                        <div class="toggle-knob absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full shadow-md transition-all duration-300 ease-in-out border border-gray-300"></div>
-                                    </div>
+                                <label class="relative inline-flex items-center cursor-pointer">
+                                    <input type="checkbox" id="themeToggle" class="sr-only peer">
+                                    <div class="w-11 h-6 bg-gray-300 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-600 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
                                 </label>
                             </div>
                         </div>
