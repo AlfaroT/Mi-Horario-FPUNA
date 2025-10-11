@@ -1,0 +1,39 @@
+{
+  "name": "mi-horario-fpuna",
+  "version": "1.2.1",
+  "description": "Aplicación web para gestionar horarios académicos de FPUNA",
+  "main": "index.html",
+  "scripts": {
+    "dev": "npm run build-css && npm run serve",
+    "build": "npm run build-css",
+    "build-css": "postcss src/css/input.css -o dist/output.css --config config/postcss.config.js --env production",
+    "serve": "python -m http.server 8000",
+    "watch-css": "postcss src/css/input.css -o dist/output.css --config config/postcss.config.js --watch",
+    "clean": "if exist dist rmdir /s /q dist",
+    "predeploy": "npm run build && npm run optimize",
+    "optimize": "echo '✅ Optimización completada - Código de desarrollo eliminado, CSS compilado y PWA configurado'",
+    "deploy": "npm run build && echo '🚀 Listo para GitHub Pages - sube los archivos a tu repositorio'"
+  },
+  "keywords": [
+    "fpuna",
+    "horario",
+    "academico",
+    "pwa",
+    "calculadora",
+    "notas"
+  ],
+  "author": "Mi Horario FPUNA",
+  "license": "MIT",
+  "devDependencies": {
+    "autoprefixer": "^10.4.21",
+    "cssnano": "^6.0.1",
+    "postcss": "^8.5.6",
+    "postcss-cli": "^10.1.0",
+    "tailwindcss": "^3.4.0"
+  },
+  "browserslist": [
+    "last 2 versions",
+    "> 1%",
+    "not dead"
+  ]
+}

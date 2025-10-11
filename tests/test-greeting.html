@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prueba de Animación del Saludo</title>
+    <link rel="stylesheet" href="dist/output.css">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="bg-gradient-to-br from-blue-50 to-indigo-100 min-h-screen flex items-center justify-center">
+    <div class="text-center">
+        <h1 id="greetingHeader" class="text-3xl font-bold text-gray-800 mb-8">
+            <!-- El saludo se cargará dinámicamente -->
+        </h1>
+        <p class="text-gray-600">Nueva animación elegante del saludo</p>
+    </div>
+
+    <script>
+        // Simular la función de saludo
+        function updateGreeting() {
+            const greetingHeader = document.getElementById('greetingHeader');
+            const now = new Date();
+            const hour = now.getHours();
+            const userName = 'Mauricio Nicolas';
+
+            let greeting = '';
+            let emoji = '';
+            let greetingClass = '';
+
+            if (hour >= 6 && hour < 12) {
+                greeting = 'Buenos Días';
+                emoji = '🌅';
+                greetingClass = 'greeting-morning';
+            } else if (hour >= 12 && hour < 18) {
+                greeting = 'Buenas Tardes';
+                emoji = '☀️';
+                greetingClass = 'greeting-afternoon';
+            } else if (hour >= 18 && hour < 22) {
+                greeting = 'Buenas Noches';
+                emoji = '🌙';
+                greetingClass = 'greeting-evening';
+            } else {
+                greeting = 'Buenas Noches';
+                emoji = '🌃';
+                greetingClass = 'greeting-night';
+            }
+
+            // Limpiar clases anteriores
+            greetingHeader.className = 'text-3xl font-bold text-gray-800 mb-8';
+
+            // Aplicar nueva clase de saludo
+            greetingHeader.classList.add(greetingClass);
+            greetingHeader.classList.add('animate-greeting');
+
+            // Actualizar el texto con emoji animado y nombre
+            greetingHeader.innerHTML = `<span class="greeting-emoji">${emoji}</span>${greeting}, <span class="font-light animate-greeting-typewriter">${userName}</span>`;
+
+            // Agregar efecto de brillo después de la animación inicial
+            setTimeout(() => {
+                greetingHeader.classList.add('animate-greeting-glow');
+            }, 1500);
+        }
+
+        // Ejecutar cuando la página cargue
+        window.addEventListener('load', updateGreeting);
+    </script>
+</body>
+</html>
