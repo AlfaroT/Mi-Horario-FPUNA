@@ -94,23 +94,31 @@ export function getDaysDifference(targetDate) {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
     
-    // Parsear la fecha objetivo (puede venir en formato YYYY-MM-DD o DD/MM/YYYY)
+    // Si targetDate ya es un objeto Date, usarlo directamente
     let target;
-    if (targetDate.includes('/')) {
-        // Formato DD/MM/YYYY o DD/MM/YY
-        const parts = targetDate.split('/');
-        const day = parseInt(parts[0]);
-        const month = parseInt(parts[1]) - 1; // Meses empiezan en 0
-        let year = parseInt(parts[2]);
-        
-        // Si el año es de 2 dígitos, asumimos 20XX
-        if (year < 100) {
-            year += 2000;
+    if (targetDate instanceof Date) {
+        target = new Date(targetDate);
+    } else if (typeof targetDate === 'string') {
+        // Parsear la fecha objetivo (puede venir en formato YYYY-MM-DD o DD/MM/YYYY)
+        if (targetDate.includes('/')) {
+            // Formato DD/MM/YYYY o DD/MM/YY
+            const parts = targetDate.split('/');
+            const day = parseInt(parts[0]);
+            const month = parseInt(parts[1]) - 1; // Meses empiezan en 0
+            let year = parseInt(parts[2]);
+            
+            // Si el año es de 2 dígitos, asumimos 20XX
+            if (year < 100) {
+                year += 2000;
+            }
+            
+            target = new Date(year, month, day);
+        } else {
+            // Formato YYYY-MM-DD (del input HTML)
+            target = new Date(targetDate);
         }
-        
-        target = new Date(year, month, day);
     } else {
-        // Formato YYYY-MM-DD (del input HTML)
+        // Si no es Date ni string, intentar convertir
         target = new Date(targetDate);
     }
     
