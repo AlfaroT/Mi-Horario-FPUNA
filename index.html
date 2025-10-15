@@ -29,7 +29,7 @@
     <link rel="dns-prefetch" href="https://cdn.sheetjs.com">
 
     <style>
-        /* Pantalla de carga inicial - inline para cargar rápido */
+        /* Pantalla de carga moderna - inline para cargar rápido */
         #appLoader {
             position: fixed;
             inset: 0;
@@ -38,48 +38,152 @@
             align-items: center;
             justify-content: center;
             z-index: 9999;
-            transition: opacity 0.5s ease-out;
+            transition: opacity 0.5s ease-out, transform 0.5s ease-out;
         }
         #appLoader.loaded {
             opacity: 0;
+            transform: scale(1.1);
             pointer-events: none;
         }
         .loader-content {
             text-align: center;
             color: white;
+            animation: fadeInUp 0.6s ease-out;
         }
-        .spinner {
-            width: 50px;
-            height: 50px;
-            margin: 0 auto 20px;
-            border: 4px solid rgba(255,255,255,0.3);
-            border-top-color: white;
+        
+        /* Spinner moderno con anillos múltiples */
+        .spinner-container {
+            position: relative;
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 30px;
+        }
+        
+        .spinner-ring {
+            position: absolute;
+            width: 100%;
+            height: 100%;
             border-radius: 50%;
-            animation: spin 1s linear infinite;
+            border: 3px solid transparent;
+            animation: rotate 2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
         }
-        @keyframes spin {
-            to { transform: rotate(360deg); }
+        
+        .spinner-ring:nth-child(1) {
+            border-top-color: rgba(255, 255, 255, 0.9);
+            animation-delay: 0s;
         }
+        
+        .spinner-ring:nth-child(2) {
+            border-right-color: rgba(255, 255, 255, 0.7);
+            animation-delay: -0.3s;
+            width: 80%;
+            height: 80%;
+            top: 10%;
+            left: 10%;
+        }
+        
+        .spinner-ring:nth-child(3) {
+            border-bottom-color: rgba(255, 255, 255, 0.5);
+            animation-delay: -0.6s;
+            width: 60%;
+            height: 60%;
+            top: 20%;
+            left: 20%;
+        }
+        
+        /* Icono central */
+        .spinner-icon {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 32px;
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+        
+        @keyframes rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        @keyframes pulse {
+            0%, 100% { 
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(1);
+            }
+            50% { 
+                opacity: 0.6;
+                transform: translate(-50%, -50%) scale(1.1);
+            }
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
         .loader-text {
-            font-size: 18px;
-            font-weight: 600;
-            margin-bottom: 10px;
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            letter-spacing: 0.5px;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
         }
+        
         .loader-subtext {
-            font-size: 14px;
+            font-size: 15px;
             opacity: 0.9;
+            font-weight: 400;
+            animation: fadeIn 1s ease-out 0.3s both;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 0.9; }
+        }
+        
+        /* Puntos animados */
+        .loading-dots {
+            display: inline-block;
+        }
+        
+        .loading-dots span {
+            animation: dotPulse 1.4s ease-in-out infinite;
+            opacity: 0;
+        }
+        
+        .loading-dots span:nth-child(1) { animation-delay: 0s; }
+        .loading-dots span:nth-child(2) { animation-delay: 0.2s; }
+        .loading-dots span:nth-child(3) { animation-delay: 0.4s; }
+        
+        @keyframes dotPulse {
+            0%, 60%, 100% { opacity: 0; }
+            30% { opacity: 1; }
         }
     </style>
     
     </head>
 <body class="bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 min-h-screen">
     
-    <!-- Pantalla de carga inicial - Se muestra mientras cargan las librerías -->
+    <!-- Pantalla de carga moderna - Se muestra mientras cargan las librerías -->
     <div id="appLoader">
         <div class="loader-content">
-            <div class="spinner"></div>
+            <div class="spinner-container">
+                <div class="spinner-ring"></div>
+                <div class="spinner-ring"></div>
+                <div class="spinner-ring"></div>
+                <div class="spinner-icon">📚</div>
+            </div>
             <div class="loader-text">Mi Horario FPUNA</div>
-            <div class="loader-subtext">Cargando aplicación...</div>
+            <div class="loader-subtext">
+                Cargando aplicación<span class="loading-dots"><span>.</span><span>.</span><span>.</span></span>
+            </div>
         </div>
     </div>
     
