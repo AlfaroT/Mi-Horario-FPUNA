@@ -1,7 +1,7 @@
 // Service Worker para Mi Horario FPUNA
-// Versión: 1.0.2 - URL de date-fns corregida
+// Versión: 1.0.3 - URL de date-fns UMD para navegador
 
-const CACHE_NAME = 'mi-horario-fpuna-v1.0.2';
+const CACHE_NAME = 'mi-horario-fpuna-v1.0.3';
 const ASSETS_TO_CACHE = [
     './',
     './index.html',
@@ -19,7 +19,7 @@ const ASSETS_TO_CACHE = [
     // CDNs - se cachean después de la primera carga
     'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css',
     'https://cdn.sheetjs.com/xlsx-0.20.1/package/dist/xlsx.full.min.js',
-    'https://cdn.jsdelivr.net/npm/date-fns@2.30.0/index.min.js'
+    'https://cdn.jsdelivr.net/npm/date-fns@2.30.0/index.umd.min.js'
 ];
 
 // Instalación - Cachear recursos críticos
