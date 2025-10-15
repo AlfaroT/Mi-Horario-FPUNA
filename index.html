@@ -25,10 +25,8 @@
     <!-- Preconnect para CDNs - mejora velocidad de carga -->
     <link rel="preconnect" href="https://cdnjs.cloudflare.com">
     <link rel="preconnect" href="https://cdn.sheetjs.com">
-    <link rel="preconnect" href="https://cdn.jsdelivr.net">
     <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
     <link rel="dns-prefetch" href="https://cdn.sheetjs.com">
-    <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
 
     <style>
         /* Pantalla de carga inicial - inline para cargar rápido */
@@ -989,7 +987,7 @@
         const loadLibraries = Promise.race([
             Promise.all([
                 loadScript('https://cdn.sheetjs.com/xlsx-0.20.1/package/dist/xlsx.full.min.js', 'xlsx-lib'),
-                loadScript('https://cdn.jsdelivr.net/npm/date-fns@2.30.0/index.umd.min.js', 'datefns-lib')
+                loadScript('src/js/date-fns.min.js', 'datefns-lib')
             ]),
             new Promise((_, reject) => 
                 setTimeout(() => reject(new Error('Timeout: La conexión es muy lenta')), loadTimeout)
