@@ -95,24 +95,19 @@ function updateGreeting() {
     const userName = localStorage.getItem('userName') || 'Usuario';
 
     let greeting = '';
-    let emoji = '';
     let greetingClass = '';
 
     if (hour >= 6 && hour < 12) {
         greeting = 'Buenos Días';
-        emoji = '🌅';
         greetingClass = 'greeting-morning';
     } else if (hour >= 12 && hour < 18) {
         greeting = 'Buenas Tardes';
-        emoji = '☀️';
         greetingClass = 'greeting-afternoon';
     } else if (hour >= 18 && hour < 22) {
         greeting = 'Buenas Noches';
-        emoji = '🌙';
         greetingClass = 'greeting-evening';
     } else {
         greeting = 'Buenas Noches';
-        emoji = '🌃';
         greetingClass = 'greeting-night';
     }
 
@@ -121,10 +116,26 @@ function updateGreeting() {
 
     // Aplicar nueva clase de saludo
     dom.greetingHeader.classList.add(greetingClass);
-    dom.greetingHeader.classList.add('animate-greeting');
 
-    // Actualizar el texto con emoji animado y nombre
-    dom.greetingHeader.innerHTML = `<span class="greeting-emoji">${emoji}</span>${greeting}, <span class="font-light animate-greeting-typewriter">${userName}</span>`;
+    // Crear el texto completo
+    const fullText = `${greeting}, ${userName}`;
+    
+    // Limpiar contenido
+    dom.greetingHeader.innerHTML = '';
+    
+    // Efecto de escritura de máquina de escribir
+    let charIndex = 0;
+    const typingSpeed = 60; // ms por carácter (ni muy rápido ni muy lento)
+    
+    function typeWriter() {
+        if (charIndex < fullText.length) {
+            dom.greetingHeader.textContent += fullText.charAt(charIndex);
+            charIndex++;
+            setTimeout(typeWriter, typingSpeed);
+        }
+    }
+    
+    typeWriter();
 
     // Agregar efecto de brillo después de la animación inicial
     setTimeout(() => {

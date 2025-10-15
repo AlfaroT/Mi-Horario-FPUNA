@@ -95,7 +95,8 @@ export function getDaysDifference(targetDate) {
     const target = new Date(targetDate);
     target.setHours(0, 0, 0, 0);
     
-    const diff = Math.ceil((target - today) / (1000 * 60 * 60 * 24));
+    // Usar Math.round en lugar de Math.ceil para cálculo preciso
+    const diff = Math.round((target - today) / (1000 * 60 * 60 * 24));
     return diff;
 }
 
