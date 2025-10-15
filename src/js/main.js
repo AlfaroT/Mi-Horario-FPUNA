@@ -337,9 +337,8 @@ function init() {
 // EVENT HANDLERS
 // ============================================
 
-document.addEventListener('DOMContentLoaded', function() {
-    init();
-
+// Función para inicializar event listeners
+function initEventListeners() {
     dom.welcomeForm.addEventListener('submit', (e) => {
         e.preventDefault();
         const userName = dom.userNameInput.value.trim();
@@ -655,4 +654,21 @@ document.addEventListener('DOMContentLoaded', function() {
     setupSectionToggle(dom.toggleExamsBtn, dom.examsContainer, dom.examsToggleIcon);
     setupSectionToggle(dom.toggleOccasionalBtn, dom.occasionalContainer, dom.occasionalToggleIcon);
     setupSectionToggle(dom.toggleTasksBtn, dom.tasksContainer, dom.tasksToggleIcon);
-});
+}
+
+// ============================================
+// INICIALIZACIÓN
+// ============================================
+
+// Ejecutar inmediatamente cuando el módulo se carga
+// (DOMContentLoaded ya se disparó cuando main.js se carga dinámicamente)
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => {
+        init();
+        initEventListeners();
+    });
+} else {
+    // DOM ya está listo
+    init();
+    initEventListeners();
+}
