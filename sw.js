@@ -1,21 +1,21 @@
 // Service Worker para Mi Horario FPUNA
-// Versión: 1.0.0 - Optimizado para dispositivos de gama baja
+// Versión: 1.0.1 - Optimizado para GitHub Pages
 
-const CACHE_NAME = 'mi-horario-fpuna-v1.0.0';
+const CACHE_NAME = 'mi-horario-fpuna-v1.0.1';
 const ASSETS_TO_CACHE = [
-    '/',
-    '/index.html',
-    '/dist/output.css',
-    '/src/css/styles.css',
-    '/src/js/main.js',
-    '/src/js/ui.js',
-    '/src/js/state.js',
-    '/src/js/parser.js',
-    '/src/js/tasks.js',
-    '/src/js/dom.js',
-    '/src/js/filters.js',
-    '/src/js/utils.js',
-    '/public/manifest.json',
+    './',
+    './index.html',
+    './dist/output.css',
+    './src/css/styles.css',
+    './src/js/main.js',
+    './src/js/ui.js',
+    './src/js/state.js',
+    './src/js/parser.js',
+    './src/js/tasks.js',
+    './src/js/dom.js',
+    './src/js/filters.js',
+    './src/js/utils.js',
+    './public/manifest.json',
     // CDNs - se cachean después de la primera carga
     'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css',
     'https://cdn.sheetjs.com/xlsx-0.20.1/package/dist/xlsx.full.min.js',
