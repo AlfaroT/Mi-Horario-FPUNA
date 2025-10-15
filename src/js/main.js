@@ -322,6 +322,15 @@ function init() {
     console.log('\n═══════════════════════════════════════════════════════');
     console.log('  Mi Horario FPUNA v5.5 - REFACTORIZADO  ');
     console.log('═══════════════════════════════════════════════════════');
+    
+    // Ocultar loader cuando la app esté completamente lista
+    setTimeout(() => {
+        const loader = document.getElementById('appLoader');
+        if (loader) {
+            loader.classList.add('loaded');
+            setTimeout(() => loader.remove(), 500);
+        }
+    }, 100);
 }
 
 // ============================================

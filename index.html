@@ -1000,18 +1000,8 @@
             const mainScript = document.createElement('script');
             mainScript.type = 'module';
             mainScript.src = 'src/js/main.js';
+            mainScript.onload = () => console.log('✅ main.js cargado');
             document.body.appendChild(mainScript);
-            
-            // Ocultar loader después de que main.js cargue
-            mainScript.onload = () => {
-                setTimeout(() => {
-                    const loader = document.getElementById('appLoader');
-                    if (loader) {
-                        loader.classList.add('loaded');
-                        setTimeout(() => loader.remove(), 500);
-                    }
-                }, 300);
-            };
         }).catch(err => {
             console.error('❌ Error cargando librerías:', err);
             // Mostrar mensaje de error al usuario
