@@ -35,22 +35,50 @@ export function getCellValue(row, columnIndex) {
 
 export function formatDate(dateStr) {
     try {
+        if (!dateStr) return null;
+        
+        // Si ya es un objeto Date, devolverlo
+        if (dateStr instanceof Date) return dateStr;
+        
         // Intentar parsear el formato "Mar 02/09/25" o variantes
-        const parts = dateStr.split(' ');
+        const parts = dateStr.toString().split(' ');
         let datePart = parts.length > 1 ? parts[1] : parts[0];
         
-        // Intentar formato DD/MM/YY o DD/MM
+        // Intentar formato DD/MM/YY o DD/MM/YYYY
         const dateParts = datePart.split('/');
         if (dateParts.length >= 2) {
             const day = parseInt(dateParts[0]);
-            const month = parseInt(dateParts[1]) - 1;
-            const year = dateParts[2] ? (dateParts[2].length === 2 ? 2000 + parseInt(dateParts[2]) : parseInt(dateParts[2])) : new Date().getFullYear();
-            return new Date(year, month, day);
+            const month = parseInt(dateParts[1]) - 1; // Meses empiezan en 0
+            let year;
+            
+            if (dateParts[2]) {
+                // Si tiene año
+                if (dateParts[2].length === 2) {
+                    // Año de 2 dígitos (ej: 25 → 2025)
+                    year = 2000 + parseInt(dateParts[2]);
+                } else {
+                    // Año completo (ej: 2025)
+                    year = parseInt(dateParts[2]);
+                }
+            } else {
+                // Si no tiene año, usar el actual
+                year = new Date().getFullYear();
+            }
+            
+            const parsedDate = new Date(year, month, day);
+            console.log(`📅 formatDate: "${dateStr}" → ${parsedDate.toLocaleDateString()} (${day}/${month+1}/${year})`);
+            return parsedDate;
         }
         
-        return new Date(dateStr);
+        // Intentar parseo directo
+        const directParse = new Date(dateStr);
+        if (!isNaN(directParse.getTime())) {
+            return directParse;
+        }
+        
+        return null;
     } catch (e) {
-        console.error('Error parseando fecha:', dateStr, e);
+        console.error('❌ Error parseando fecha:', dateStr, e);
         return null;
     }
 }
