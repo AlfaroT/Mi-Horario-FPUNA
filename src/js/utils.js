@@ -127,7 +127,7 @@ export function getDaysDifference(targetDate) {
     if (targetDate instanceof Date) {
         target = new Date(targetDate);
     } else if (typeof targetDate === 'string') {
-        // Parsear la fecha objetivo (puede venir en formato YYYY-MM-DD o DD/MM/YYYY)
+        // Parsear la fecha objetivo
         if (targetDate.includes('/')) {
             // Formato DD/MM/YYYY o DD/MM/YY
             const parts = targetDate.split('/');
@@ -141,8 +141,17 @@ export function getDaysDifference(targetDate) {
             }
             
             target = new Date(year, month, day);
-        } else {
+        } else if (targetDate.includes('-')) {
             // Formato YYYY-MM-DD (del input HTML)
+            // IMPORTANTE: Parsear manualmente para evitar problemas de zona horaria
+            const parts = targetDate.split('-');
+            const year = parseInt(parts[0]);
+            const month = parseInt(parts[1]) - 1; // Meses empiezan en 0
+            const day = parseInt(parts[2]);
+            
+            target = new Date(year, month, day);
+        } else {
+            // Intentar parseo directo
             target = new Date(targetDate);
         }
     } else {
