@@ -983,10 +983,18 @@
         }
 
         // Cargar librerías en paralelo para máxima velocidad
-        Promise.all([
-            loadScript('https://cdn.sheetjs.com/xlsx-0.20.1/package/dist/xlsx.full.min.js', 'xlsx-lib'),
-            loadScript('https://cdnjs.cloudflare.com/ajax/libs/date-fns/2.29.3/date-fns.min.js', 'datefns-lib')
-        ]).then(() => {
+        const loadTimeout = 15000; // 15 segundos timeout
+        const loadLibraries = Promise.race([
+            Promise.all([
+                loadScript('https://cdn.sheetjs.com/xlsx-0.20.1/package/dist/xlsx.full.min.js', 'xlsx-lib'),
+                loadScript('https://cdnjs.cloudflare.com/ajax/libs/date-fns/2.29.3/date-fns.min.js', 'datefns-lib')
+            ]),
+            new Promise((_, reject) => 
+                setTimeout(() => reject(new Error('Timeout: La conexión es muy lenta')), loadTimeout)
+            )
+        ]);
+
+        loadLibraries.then(() => {
             console.log('✅ Librerías externas cargadas');
             // Cargar el script principal después de las dependencias
             const mainScript = document.createElement('script');
@@ -994,21 +1002,30 @@
             mainScript.src = 'src/js/main.js';
             document.body.appendChild(mainScript);
             
-            // Ocultar loader después de 500ms
-            setTimeout(() => {
-                const loader = document.getElementById('appLoader');
-                if (loader) {
-                    loader.classList.add('loaded');
-                    setTimeout(() => loader.remove(), 500);
-                }
-            }, 500);
+            // Ocultar loader después de que main.js cargue
+            mainScript.onload = () => {
+                setTimeout(() => {
+                    const loader = document.getElementById('appLoader');
+                    if (loader) {
+                        loader.classList.add('loaded');
+                        setTimeout(() => loader.remove(), 500);
+                    }
+                }, 300);
+            };
         }).catch(err => {
             console.error('❌ Error cargando librerías:', err);
             // Mostrar mensaje de error al usuario
             const loader = document.getElementById('appLoader');
             if (loader) {
                 loader.querySelector('.loader-text').textContent = 'Error de conexión';
-                loader.querySelector('.loader-subtext').textContent = 'Por favor, verifica tu conexión a internet';
+                loader.querySelector('.loader-subtext').innerHTML = 
+                    'Por favor, verifica tu conexión a internet<br><small>o intenta recargar la página</small>';
+                // Agregar botón de recargar
+                const retryBtn = document.createElement('button');
+                retryBtn.textContent = 'Reintentar';
+                retryBtn.style.cssText = 'margin-top:15px;padding:10px 20px;background:#fff;color:#667eea;border:none;border-radius:5px;cursor:pointer;font-weight:600;';
+                retryBtn.onclick = () => location.reload();
+                loader.querySelector('.loader-content').appendChild(retryBtn);
             }
         });
     </script>
