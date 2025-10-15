@@ -120,27 +120,30 @@ function updateGreeting() {
     // Crear el texto completo
     const fullText = `${greeting}, ${userName}`;
     
-    // Limpiar contenido
-    dom.greetingHeader.innerHTML = '';
-    
-    // Efecto de escritura de máquina de escribir
+    // Efecto de escritura de máquina de escribir en bucle infinito
     let charIndex = 0;
-    const typingSpeed = 60; // ms por carácter (ni muy rápido ni muy lento)
+    const typingSpeed = 60; // ms por carácter
+    const pauseBeforeRestart = 3000; // 3 segundos de pausa antes de reiniciar
     
     function typeWriter() {
         if (charIndex < fullText.length) {
+            // Agregar letra por letra
+            if (charIndex === 0) {
+                dom.greetingHeader.textContent = ''; // Limpiar solo al inicio
+            }
             dom.greetingHeader.textContent += fullText.charAt(charIndex);
             charIndex++;
             setTimeout(typeWriter, typingSpeed);
+        } else {
+            // Cuando termina de escribir, esperar y reiniciar
+            setTimeout(() => {
+                charIndex = 0;
+                typeWriter();
+            }, pauseBeforeRestart);
         }
     }
     
     typeWriter();
-
-    // Agregar efecto de brillo después de la animación inicial
-    setTimeout(() => {
-        dom.greetingHeader.classList.add('animate-greeting-glow');
-    }, 1500);
 }
 
 // ============================================

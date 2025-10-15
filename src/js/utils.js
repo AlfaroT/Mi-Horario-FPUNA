@@ -90,14 +90,40 @@ export function formatTimeDifference(minutes) {
 }
 
 export function getDaysDifference(targetDate) {
+    // Crear fecha de hoy sin horas
     const today = new Date();
     today.setHours(0, 0, 0, 0);
-    const target = new Date(targetDate);
+    
+    // Parsear la fecha objetivo (puede venir en formato YYYY-MM-DD o DD/MM/YYYY)
+    let target;
+    if (targetDate.includes('/')) {
+        // Formato DD/MM/YYYY o DD/MM/YY
+        const parts = targetDate.split('/');
+        const day = parseInt(parts[0]);
+        const month = parseInt(parts[1]) - 1; // Meses empiezan en 0
+        let year = parseInt(parts[2]);
+        
+        // Si el año es de 2 dígitos, asumimos 20XX
+        if (year < 100) {
+            year += 2000;
+        }
+        
+        target = new Date(year, month, day);
+    } else {
+        // Formato YYYY-MM-DD (del input HTML)
+        target = new Date(targetDate);
+    }
+    
     target.setHours(0, 0, 0, 0);
     
-    // Usar Math.round en lugar de Math.ceil para cálculo preciso
-    const diff = Math.round((target - today) / (1000 * 60 * 60 * 24));
-    return diff;
+    // Calcular diferencia en milisegundos y convertir a días
+    const diffTime = target.getTime() - today.getTime();
+    const diffDays = Math.round(diffTime / (1000 * 60 * 60 * 24));
+    
+    // Debug temporal (puedes quitar este console.log después)
+    console.log(`📅 Cálculo de días: Hoy=${today.toLocaleDateString()}, Objetivo=${target.toLocaleDateString()}, Diferencia=${diffDays} días`);
+    
+    return diffDays;
 }
 
 export function getDaysText(days) {
