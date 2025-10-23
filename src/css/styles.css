@@ -624,3 +624,193 @@ html {
 * {
     transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
 }
+
+/* Estilos específicos para el contador de tiempo - Solución definitiva al overflow */
+.time-counter-container {
+    display: flex;
+    align-items: center;
+    min-width: 0;
+    width: 100%;
+    overflow: hidden;
+}
+
+.time-counter-text {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-weight: 600;
+}
+
+.time-counter-icon {
+    flex-shrink: 0;
+    margin-right: 8px;
+}
+
+/* Asegurar que el contenedor padre también respete las limitaciones */
+.event-card-counter {
+    min-width: 0;
+    overflow: hidden;
+}
+
+/* Animaciones específicas para contadores de tiempo */
+@keyframes time-counter-pulse {
+    0%, 100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 0.8;
+        transform: scale(1.02);
+    }
+}
+
+@keyframes time-counter-green-subtle {
+    0%, 100% {
+        opacity: 1;
+        transform: scale(1);
+        text-shadow: 0 0 3px rgba(34, 197, 94, 0.2);
+    }
+    50% {
+        opacity: 0.9;
+        transform: scale(1.01);
+        text-shadow: 0 0 6px rgba(34, 197, 94, 0.3);
+    }
+}
+
+@keyframes time-counter-orange-subtle {
+    0%, 100% {
+        opacity: 1;
+        transform: scale(1);
+        text-shadow: 0 0 3px rgba(251, 146, 60, 0.2);
+    }
+    50% {
+        opacity: 0.9;
+        transform: scale(1.01);
+        text-shadow: 0 0 6px rgba(251, 146, 60, 0.3);
+    }
+}
+
+/* Clases de animación para contadores */
+.time-counter-text.animate-pulse {
+    animation: time-counter-pulse 2s ease-in-out infinite;
+}
+
+.time-counter-container.text-green-600 .time-counter-text.animate-pulse {
+    animation: time-counter-green-subtle 2.5s ease-in-out infinite;
+}
+
+.time-counter-container.text-orange-600 .time-counter-text.animate-pulse {
+    animation: time-counter-orange-subtle 2.5s ease-in-out infinite;
+}
+
+/* Animación mejorada para el nombre en el saludo - más fluida */
+@keyframes greeting-typewriter-smooth {
+    0% {
+        opacity: 0;
+        transform: translateX(-10px);
+    }
+    10% {
+        opacity: 0.3;
+        transform: translateX(-5px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.animate-greeting-typewriter {
+    animation: greeting-typewriter-smooth 0.6s ease-out both;
+}
+
+/* Animación suave para el reinicio del saludo - más sutil */
+@keyframes greeting-fade-reset {
+    0% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.7;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+.greeting-reset {
+    animation: greeting-fade-reset 0.8s ease-in-out;
+}
+
+/* Animación adicional para el icono del contador */
+@keyframes icon-bounce {
+    0%, 100% {
+        transform: scale(1) rotate(0deg);
+    }
+    25% {
+        transform: scale(1.1) rotate(-5deg);
+    }
+    75% {
+        transform: scale(1.1) rotate(5deg);
+    }
+}
+
+/* Animación sutil para el icono naranja */
+.time-counter-container.text-orange-600 .time-counter-icon.animate-pulse {
+    animation: icon-orange-subtle 2.5s ease-in-out infinite;
+}
+
+@keyframes icon-orange-subtle {
+    0%, 100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(1.05);
+        opacity: 0.8;
+    }
+}
+
+/* Animación especial para el icono verde - más sutil */
+.time-counter-container.text-green-600 .time-counter-icon.animate-pulse {
+    animation: icon-green-subtle 2.5s ease-in-out infinite;
+}
+
+@keyframes icon-green-subtle {
+    0%, 100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(1.05);
+        opacity: 0.8;
+    }
+}
+
+/* Estilos específicos para mensajes de la calculadora */
+.calculator-message-container {
+    width: 100%;
+    max-width: 100%;
+    overflow: hidden;
+    box-sizing: border-box;
+}
+
+.calculator-message-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+.calculator-message-text {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 100%;
+    flex: 1;
+    min-width: 0;
+    box-sizing: border-box;
+}

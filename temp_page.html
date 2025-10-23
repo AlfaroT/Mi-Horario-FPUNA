@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="theme-color" content="#2563eb">
-    <meta name="description" content="Mi Horario FPUNA - Gestiona tu horario de clases y ex√°menes">
+    <meta name="description" content="Mi Horario FPUNA - Gestiona tu horario de clases y ex«≠menes">
     <link rel="icon" href="public/favicon.ico" type="image/x-icon">
     
     <title>Mi Horario FPUNA</title>
@@ -29,7 +29,7 @@
     <link rel="dns-prefetch" href="https://cdn.sheetjs.com">
 
     <style>
-        /* Pantalla de carga moderna - inline para cargar r√°pido */
+        /* Pantalla de carga moderna - inline para cargar r«≠pido */
         #appLoader {
             position: fixed;
             inset: 0;
@@ -51,7 +51,7 @@
             animation: fadeInUp 0.6s ease-out;
         }
         
-        /* Spinner moderno con anillos m√∫ltiples */
+        /* Spinner moderno con anillos m«ßltiples */
         .spinner-container {
             position: relative;
             width: 120px;
@@ -171,18 +171,18 @@
     </head>
 <body class="bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 min-h-screen">
     
-    <!-- Pantalla de carga moderna - Se muestra mientras cargan las librer√≠as -->
+    <!-- Pantalla de carga moderna - Se muestra mientras cargan las librer«as -->
     <div id="appLoader">
         <div class="loader-content">
             <div class="spinner-container">
                 <div class="spinner-ring"></div>
                 <div class="spinner-ring"></div>
                 <div class="spinner-ring"></div>
-                <div class="spinner-icon">üìö</div>
+                <div class="spinner-icon">–???</div>
             </div>
             <div class="loader-text">Mi Horario FPUNA</div>
             <div class="loader-subtext">
-                Cargando aplicaci√≥n<span class="loading-dots"><span>.</span><span>.</span><span>.</span></span>
+                Cargando aplicaci«¸n<span class="loading-dots"><span>.</span><span>.</span><span>.</span></span>
             </div>
         </div>
     </div>
@@ -190,21 +190,21 @@
     <!-- Pantalla de Bienvenida -->
     <div id="welcomeScreen" class="hidden min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 via-white to-purple-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 p-4">
         <div class="w-full max-w-md">
-            <!-- Animaci√≥n de entrada -->
+            <!-- Animaci«¸n de entrada -->
             <div class="animate-fade-in">
-                <!-- Icono principal con animaci√≥n -->
+                <!-- Icono principal con animaci«¸n -->
                 <div class="text-center mb-8">
                     <div class="inline-block animate-bounce">
                         <i class="fas fa-calendar-check text-7xl text-blue-600 dark:text-blue-400 drop-shadow-lg"></i>
                     </div>
                 </div>
 
-                <!-- T√≠tulo con gradiente -->
+                <!-- T«tulo con gradiente -->
                 <h1 class="text-3xl md:text-4xl font-bold text-center mb-4 bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-400 dark:to-purple-400 bg-clip-text text-transparent">
-                    ¬°Bienvenido a Mi Horario FPUNA!
+                    ∂≠Bienvenido a Mi Horario FPUNA!
                 </h1>
 
-                <!-- Descripci√≥n animada -->
+                <!-- Descripci«¸n animada -->
                 <p class="text-gray-600 dark:text-gray-300 text-center mb-8 text-lg animate-pulse">
                     Vamos a configurar tu horario personalizado
                 </p>
@@ -214,7 +214,7 @@
                     <div class="text-center mb-6">
                         <i class="fas fa-user-circle text-4xl text-blue-500 mb-3"></i>
                         <h2 class="text-xl font-semibold text-gray-800 dark:text-gray-200">
-                            ¬øC√≥mo te llamas?
+                            ∂®C«¸mo te llamas?
                         </h2>
                         <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">
                             Solo necesitamos tu nombre para personalizar la experiencia
@@ -233,45 +233,45 @@
                                    required
                                    class="w-full px-4 py-3 border-2 border-gray-200 dark:border-gray-600 rounded-xl bg-gray-50 dark:bg-gray-700 focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 transition-all duration-200 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 text-center font-medium">
                             <p class="text-xs text-gray-400 dark:text-gray-500 mt-2 text-center">
-                                M√°ximo 30 caracteres
+                                M«≠ximo 30 caracteres
                             </p>
                         </div>
 
                         <button type="submit"
                                 class="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold py-4 px-6 rounded-xl transition-all duration-300 transform hover:scale-105 hover:shadow-lg focus:ring-4 focus:ring-blue-500/30">
                             <i class="fas fa-arrow-right mr-2"></i>
-                            ¬°Comenzar mi aventura!
+                            ∂≠Comenzar mi aventura!
                         </button>
                     </form>
                 </div>
 
-                <!-- Footer peque√±o -->
+                <!-- Footer peque«Òo -->
                 <div class="text-center mt-6">
                     <p class="text-xs text-gray-400 dark:text-gray-500">
-                        Tu horario personalizado te espera ‚ú®
+                        Tu horario personalizado te espera É?˘
                     </p>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Pantalla de Configuraci√≥n Inicial -->
+    <!-- Pantalla de Configuraci«¸n Inicial -->
     <div id="setupScreen" class="hidden min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
         <div class="container mx-auto px-4 py-8 max-w-4xl">
-            <!-- Header con animaci√≥n -->
+            <!-- Header con animaci«¸n -->
             <div class="text-center mb-12 animate-fade-in">
                 <div class="inline-block animate-bounce mb-4">
                     <i class="fas fa-calendar-alt text-7xl text-blue-600 dark:text-blue-400 drop-shadow-lg"></i>
                 </div>
                 <h1 class="text-3xl md:text-4xl font-bold mb-4 bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-400 dark:to-purple-400 bg-clip-text text-transparent">
-                    ¬°Vamos a crear tu horario!
+                    ∂≠Vamos a crear tu horario!
                 </h1>
                 <p class="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-                    Sigue estos sencillos pasos y tendr√°s tu horario personalizado en minutos
+                    Sigue estos sencillos pasos y tendr«≠s tu horario personalizado en minutos
                 </p>
             </div>
 
-            <!-- Contenedor principal con mejor dise√±o -->
+            <!-- Contenedor principal con mejor dise«Òo -->
             <div class="bg-white dark:bg-gray-800 rounded-3xl shadow-2xl p-8 md:p-12 border border-gray-100 dark:border-gray-700">
                 <div class="mb-8">
                     <div class="flex items-center justify-center mb-6">
@@ -279,7 +279,7 @@
                             <span class="bg-blue-600 text-white text-sm font-bold w-8 h-8 rounded-full flex items-center justify-center mr-3">1</span>
                             <h2 class="text-xl font-bold text-blue-700 dark:text-blue-300">
                                 <i class="fas fa-file-excel mr-2"></i>
-                                Obt√©n tu archivo de horarios
+                                Obt«∏n tu archivo de horarios
                             </h2>
                         </div>
                     </div>
@@ -291,7 +291,7 @@
 
                     <!-- Opciones para obtener el archivo -->
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-                        <!-- Opci√≥n 1: Descargar -->
+                        <!-- Opci«¸n 1: Descargar -->
                         <div class="group">
                             <a href="https://www.pol.una.py/academico/horarios-de-clases-y-examenes/"
                                target="_blank"
@@ -307,7 +307,7 @@
                             </a>
                         </div>
 
-                        <!-- Opci√≥n 2: Cargar archivo -->
+                        <!-- Opci«¸n 2: Cargar archivo -->
                         <div class="group">
                             <label for="fileInput"
                                    class="block p-6 bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900/20 dark:to-blue-800/20 border-2 border-blue-200 dark:border-blue-700 rounded-2xl hover:shadow-lg hover:scale-105 transition-all duration-300 cursor-pointer">
@@ -335,7 +335,7 @@
                         </div>
                     </div>
                     <p class="text-gray-600 dark:text-gray-400 mt-4 font-medium">Procesando tu archivo...</p>
-                    <p class="text-sm text-gray-500 dark:text-gray-500 mt-1">Esto tomar√° solo unos segundos</p>
+                    <p class="text-sm text-gray-500 dark:text-gray-500 mt-1">Esto tomar«≠ solo unos segundos</p>
                 </div>
 
                 <!-- Paso 2: Seleccionar Carrera -->
@@ -369,7 +369,7 @@
                         </div>
                     </div>
 
-                    <!-- Paso 3.1: Selecci√≥n de Semestres -->
+                    <!-- Paso 3.1: Selecci«¸n de Semestres -->
                     <div class="mb-8 p-6 bg-blue-50 dark:bg-blue-900/10 rounded-2xl border border-blue-200 dark:border-blue-800">
                         <h3 class="text-lg font-semibold mb-4 text-blue-700 dark:text-blue-300 flex items-center">
                             <i class="fas fa-layer-group mr-2"></i>
@@ -378,7 +378,7 @@
                         <div id="semestreCheckboxes" class="grid grid-cols-2 md:grid-cols-4 gap-3"></div>
                     </div>
 
-                    <!-- Paso 3.2: Selecci√≥n de Asignaturas -->
+                    <!-- Paso 3.2: Selecci«¸n de Asignaturas -->
                     <div id="asignaturasSection" class="mb-8 p-6 bg-green-50 dark:bg-green-900/10 rounded-2xl border border-green-200 dark:border-green-800 hidden">
                         <h3 class="text-lg font-semibold mb-4 text-green-700 dark:text-green-300 flex items-center">
                             <i class="fas fa-book mr-2"></i>
@@ -391,25 +391,25 @@
                         <div id="asignaturaCheckboxes" class="grid grid-cols-1 md:grid-cols-2 gap-3 max-h-96 overflow-y-auto"></div>
                     </div>
 
-                    <!-- Paso 3.3: Selecci√≥n de Instancias -->
+                    <!-- Paso 3.3: Selecci«¸n de Instancias -->
                     <div id="instanciasSection" class="mb-8 p-6 bg-purple-50 dark:bg-purple-900/10 rounded-2xl border border-purple-200 dark:border-purple-800 hidden">
                         <h3 class="text-lg font-semibold mb-4 text-purple-700 dark:text-purple-300 flex items-center">
                             <i class="fas fa-tasks mr-2"></i>
-                            Paso 3.3: Selecciona las clases espec√≠ficas
+                            Paso 3.3: Selecciona las clases espec«ficas
                         </h3>
                         <p class="text-sm text-gray-600 dark:text-gray-400 mb-4 flex items-center">
                             <i class="fas fa-lightbulb text-yellow-500 mr-2"></i>
-                            Algunas materias tienen m√∫ltiples secciones. Elige cu√°les cursar√°s
+                            Algunas materias tienen m«ßltiples secciones. Elige cu«≠les cursar«≠s
                         </p>
                         <div id="instanciaCheckboxes" class="space-y-3 max-h-96 overflow-y-auto"></div>
                     </div>
                 </div>
 
-                <!-- Bot√≥n Guardar -->
+                <!-- Bot«¸n Guardar -->
                 <div id="step4" class="hidden text-center">
                     <button id="saveConfigBtn" class="bg-gradient-to-r from-green-600 to-blue-600 hover:from-green-700 hover:to-blue-700 text-white font-bold py-4 px-8 rounded-2xl transition-all duration-300 transform hover:scale-105 hover:shadow-xl focus:ring-4 focus:ring-green-500/30 text-lg">
                         <i class="fas fa-magic mr-2"></i>
-                        ¬°Generar Mi Horario Perfecto!
+                        ∂≠Generar Mi Horario Perfecto!
                     </button>
                 </div>
             </div>
@@ -428,12 +428,12 @@
                             <i class="fas fa-user-graduate text-lg"></i>
                         </div>
                         <div>
-                            <h1 id="greetingHeader" class="text-base font-bold animate-fade-in">¬°Hola!</h1>
+                            <h1 id="greetingHeader" class="text-base font-bold animate-fade-in">∂≠Hola!</h1>
                             <p id="currentDate" class="text-xs text-blue-100 opacity-90"></p>
                         </div>
                     </div>
 
-                    <!-- Botones de Acci√≥n -->
+                    <!-- Botones de Acci«¸n -->
                     <div class="flex items-center space-x-2">
                         <button id="gradeCalculatorBtn" class="p-2 hover:bg-white/10 rounded-lg transition-all duration-200" title="Calculadora de Notas">
                             <i class="fas fa-calculator text-lg"></i>
@@ -446,9 +446,9 @@
             </div>
         </header>
 
-        <!-- Dashboard con M√©tricas -->
+        <!-- Dashboard con M«∏tricas -->
         <main class="pb-32">
-            <!-- M√©tricas R√°pidas -->
+            <!-- M«∏tricas R«≠pidas -->
             <section class="px-4 py-6 bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-gray-800 dark:to-gray-700">
                 <div class="container mx-auto max-w-4xl">
                     <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
@@ -456,7 +456,7 @@
                         <div class="bg-white dark:bg-gray-800 rounded-2xl p-4 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 cursor-pointer metric-card" data-target="todayClasses">
                             <div class="flex items-center justify-between">
                                 <div>
-                                    <p class="text-sm text-gray-600 dark:text-gray-400">üìö Clases Hoy</p>
+                                    <p class="text-sm text-gray-600 dark:text-gray-400">–??? Clases Hoy</p>
                                     <p class="text-2xl font-bold text-blue-600 dark:text-blue-400" id="todayCount">0</p>
                                 </div>
                                 <div class="w-12 h-12 bg-blue-100 dark:bg-blue-900/30 rounded-full flex items-center justify-center">
@@ -465,11 +465,11 @@
                             </div>
                         </div>
 
-                        <!-- Ex√°menes Pr√≥ximos -->
+                        <!-- Ex«≠menes Pr«¸ximos -->
                         <div class="bg-white dark:bg-gray-800 rounded-2xl p-4 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 cursor-pointer metric-card" data-target="exams">
                             <div class="flex items-center justify-between">
                                 <div>
-                                    <p class="text-sm text-gray-600 dark:text-gray-400">üìù Ex√°menes</p>
+                                    <p class="text-sm text-gray-600 dark:text-gray-400">–??? Ex«≠menes</p>
                                     <p class="text-2xl font-bold text-red-600 dark:text-red-400" id="examsCount">0</p>
                                 </div>
                                 <div class="w-12 h-12 bg-red-100 dark:bg-red-900/30 rounded-full flex items-center justify-center">
@@ -482,7 +482,7 @@
                         <div class="bg-white dark:bg-gray-800 rounded-2xl p-4 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 cursor-pointer metric-card" data-target="tasks">
                             <div class="flex items-center justify-between">
                                 <div>
-                                    <p class="text-sm text-gray-600 dark:text-gray-400">‚úÖ Tareas</p>
+                                    <p class="text-sm text-gray-600 dark:text-gray-400">É?? Tareas</p>
                                     <p class="text-2xl font-bold text-green-600 dark:text-green-400" id="tasksCount">0</p>
                                 </div>
                                 <div class="w-12 h-12 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center">
@@ -495,7 +495,7 @@
                         <div class="bg-white dark:bg-gray-800 rounded-2xl p-4 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 cursor-pointer metric-card" data-target="occasional">
                             <div class="flex items-center justify-between">
                                 <div>
-                                    <p class="text-sm text-gray-600 dark:text-gray-400">üéì Ocasionales</p>
+                                    <p class="text-sm text-gray-600 dark:text-gray-400">–??? Ocasionales</p>
                                     <p class="text-2xl font-bold text-purple-600 dark:text-purple-400" id="occasionalCount">0</p>
                                 </div>
                                 <div class="w-12 h-12 bg-purple-100 dark:bg-purple-900/30 rounded-full flex items-center justify-center">
@@ -507,7 +507,7 @@
                 </div>
             </section>
 
-            <!-- Accesos R√°pidos -->
+            <!-- Accesos R«≠pidos -->
             <section class="px-4 py-4">
                 <div class="container mx-auto max-w-4xl">
                     <div class="grid grid-cols-2 gap-2">
@@ -521,7 +521,7 @@
                                 </div>
                                 <div>
                                     <p class="font-semibold text-sm">EALU</p>
-                                    <p class="text-xs opacity-90">C√©dula Digital</p>
+                                    <p class="text-xs opacity-90">C«∏dula Digital</p>
                                 </div>
                             </div>
                         </a>
@@ -570,7 +570,7 @@
                         </div>
                     </div>
 
-                    <!-- Pr√≥ximos Ex√°menes -->
+                    <!-- Pr«¸ximos Ex«≠menes -->
                     <div id="exams" class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg overflow-hidden">
                         <button id="toggleExamsBtn" class="w-full text-left flex items-center justify-between p-5 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
                             <div class="flex items-center space-x-3">
@@ -578,8 +578,8 @@
                                     <i class="fas fa-clipboard-check text-red-600 dark:text-red-400"></i>
                                 </div>
                                 <div>
-                                    <h3 class="font-bold text-gray-900 dark:text-gray-100">Pr√≥ximos Ex√°menes</h3>
-                                    <p class="text-sm text-gray-600 dark:text-gray-400" id="examsSummary">Sin ex√°menes pr√≥ximos</p>
+                                    <h3 class="font-bold text-gray-900 dark:text-gray-100">Pr«¸ximos Ex«≠menes</h3>
+                                    <p class="text-sm text-gray-600 dark:text-gray-400" id="examsSummary">Sin ex«≠menes pr«¸ximos</p>
                                 </div>
                             </div>
                             <div class="flex items-center space-x-2">
@@ -713,7 +713,7 @@
                         <div class="bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 rounded-xl p-6 border border-blue-100 dark:border-blue-800 settings-card">
                             <h4 class="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center">
                                 <i class="fas fa-database text-blue-600 mr-2"></i>
-                                Gesti√≥n de Datos
+                                Gesti«¸n de Datos
                             </h4>
 
                             <div class="space-y-3">
@@ -746,12 +746,12 @@
                             </h4>
 
                             <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">
-                                Esta acci√≥n no se puede deshacer. Se perder√°n todos tus datos guardados.
+                                Esta acci«¸n no se puede deshacer. Se perder«≠n todos tus datos guardados.
                             </p>
 
                             <button id="resetBtn" class="w-full bg-gradient-to-r from-red-600 to-orange-600 hover:from-red-700 hover:to-orange-700 text-white font-semibold py-3 px-6 rounded-lg transition-all duration-200 transform hover:scale-105 shadow-lg hover:shadow-xl">
                                 <i class="fas fa-redo mr-2"></i>
-                                Reiniciar Aplicaci√≥n
+                                Reiniciar Aplicaci«¸n
                             </button>
                         </div>
 
@@ -759,12 +759,12 @@
                         <div class="bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 rounded-xl p-6 border border-green-100 dark:border-green-800 settings-card">
                             <h4 class="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center">
                                 <i class="fas fa-info-circle text-green-600 mr-2"></i>
-                                Informaci√≥n
+                                Informaci«¸n
                             </h4>
 
                             <div class="space-y-3">
                                 <div class="flex items-center justify-between">
-                                    <span class="text-sm text-gray-600 dark:text-gray-400">Versi√≥n</span>
+                                    <span class="text-sm text-gray-600 dark:text-gray-400">Versi«¸n</span>
                                     <span class="font-mono text-sm bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 px-2 py-1 rounded">v1.2.1</span>
                                 </div>
                                 <div class="flex items-center justify-between">
@@ -781,7 +781,7 @@
                                     </div>
                                     <div class="flex items-center text-xs text-green-700 dark:text-green-300">
                                         <i class="fas fa-check-circle mr-2"></i>
-                                        B√∫squeda robusta del encabezado
+                                        B«ßsqueda robusta del encabezado
                                     </div>
                                     <div class="flex items-center text-xs text-green-700 dark:text-green-300">
                                         <i class="fas fa-check-circle mr-2"></i>
@@ -796,14 +796,14 @@
                 <!-- Footer -->
                 <div class="text-center pt-6 border-t border-gray-200 dark:border-gray-700">
                     <p class="text-sm text-gray-500 dark:text-gray-400">
-                        Mi Horario FPUNA - Gestiona tu horario acad√©mico eficientemente
+                        Mi Horario FPUNA - Gestiona tu horario acad«∏mico eficientemente
                     </p>
                 </div>
             </div>
         </div>
     </div>
     
-    <!-- Modal de Confirmaci√≥n para Reiniciar -->
+    <!-- Modal de Confirmaci«¸n para Reiniciar -->
     <div id="confirmModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black bg-opacity-50 transition-opacity">
         <div class="modal-content bg-white dark:bg-gray-800 rounded-2xl shadow-2xl max-w-md w-full m-4">
             <div class="p-8">
@@ -813,15 +813,15 @@
                         <i class="fas fa-exclamation-triangle text-3xl text-white"></i>
                     </div>
 
-                    <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">¬øEst√°s completamente seguro?</h3>
+                    <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">∂®Est«≠s completamente seguro?</h3>
 
                     <div class="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-xl p-4 mb-6">
                         <p class="text-red-800 dark:text-red-200 font-medium mb-2">
                             <i class="fas fa-exclamation-triangle mr-2"></i>
-                            Esta acci√≥n no se puede deshacer
+                            Esta acci«¸n no se puede deshacer
                         </p>
                         <p class="text-sm text-red-700 dark:text-red-300">
-                            Se borrar√°n permanentemente todos tus datos guardados, incluyendo horarios, tareas y configuraciones personalizadas.
+                            Se borrar«≠n permanentemente todos tus datos guardados, incluyendo horarios, tareas y configuraciones personalizadas.
                         </p>
                     </div>
 
@@ -832,7 +832,7 @@
                         </button>
                         <button id="confirmResetBtn" class="flex-1 bg-gradient-to-r from-red-600 to-orange-600 hover:from-red-700 hover:to-orange-700 text-white font-semibold py-3 px-6 rounded-xl transition-all duration-200 transform hover:scale-105 shadow-lg hover:shadow-xl">
                             <i class="fas fa-redo mr-2"></i>
-                            S√≠, borrar todo
+                            S«, borrar todo
                         </button>
                     </div>
                 </div>
@@ -842,29 +842,29 @@
     
     <!-- Modal Calculadora de Notas -->
     <div id="gradeCalculatorModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black bg-opacity-50 transition-opacity">
-        <div class="modal-content bg-white dark:bg-gray-800 rounded-2xl shadow-2xl max-w-4xl w-full max-h-[95vh] overflow-y-auto m-2 sm:m-4">
-            <div class="p-4 sm:p-6 lg:p-10 xl:p-12">
+        <div class="modal-content bg-white dark:bg-gray-800 rounded-2xl shadow-2xl max-w-2xl w-full max-h-[95vh] overflow-y-auto m-4">
+            <div class="p-8">
                 <!-- Header -->
-                <div class="flex justify-between items-center mb-6 sm:mb-8">
-                    <div class="flex items-center space-x-2 sm:space-x-3 flex-1 min-w-0">
-                        <div class="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center flex-shrink-0">
-                            <i class="fas fa-calculator text-white text-lg sm:text-xl"></i>
+                <div class="flex justify-between items-center mb-8">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center">
+                            <i class="fas fa-calculator text-white text-xl"></i>
                         </div>
-                        <div class="min-w-0 flex-1">
-                            <h3 class="text-lg sm:text-xl lg:text-2xl font-bold text-gray-900 dark:text-white truncate">Calculadora de Notas</h3>
-                            <p class="text-xs sm:text-sm text-gray-600 dark:text-gray-400">Sistema FPUNA</p>
+                        <div>
+                            <h3 class="text-2xl font-bold text-gray-900 dark:text-white">Calculadora de Notas</h3>
+                            <p class="text-sm text-gray-600 dark:text-gray-400">Sistema FPUNA</p>
                         </div>
                     </div>
-                    <button id="closeGradeCalculatorBtn" class="w-10 h-10 rounded-xl bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 flex items-center justify-center transition-colors flex-shrink-0 ml-2">
+                    <button id="closeGradeCalculatorBtn" class="w-10 h-10 rounded-xl bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 flex items-center justify-center transition-colors">
                         <i class="fas fa-times text-gray-500 dark:text-gray-400"></i>
                     </button>
                 </div>
 
                 <!-- Calculator Form -->
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 lg:gap-10 xl:gap-12 mb-6 sm:mb-8 lg:mb-10">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
                     <!-- Left Column - Inputs -->
-                    <div class="space-y-4 sm:space-y-6">
-                        <div class="bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 rounded-xl p-4 sm:p-6 lg:p-8 border border-blue-100 dark:border-blue-800">
+                    <div class="space-y-6">
+                        <div class="bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 rounded-xl p-6 border border-blue-100 dark:border-blue-800">
                             <h4 class="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center">
                                 <i class="fas fa-chart-line text-blue-600 mr-2"></i>
                                 Evaluaciones
@@ -878,13 +878,13 @@
                                     </label>
                                     <div class="relative">
                                         <input type="number" id="ppInput" min="0" max="100" step="0.1"
-                                               class="w-full px-3 sm:px-4 py-2 sm:py-3 pl-12 sm:pl-14 text-sm sm:text-base border border-gray-300 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-700 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                                               class="w-full px-4 py-3 pl-12 border border-gray-300 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-700 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
                                                placeholder="Ej: 75.5">
                                         <div class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
-                                            <i class="fas fa-percentage text-sm sm:text-base"></i>
+                                            <i class="fas fa-percentage"></i>
                                         </div>
                                     </div>
-                                    <p class="text-xs text-gray-500 mt-1">Procesos, quices, trabajos pr√°cticos</p>
+                                    <p class="text-xs text-gray-500 mt-1">Procesos, quices, trabajos pr«≠cticos</p>
                                 </div>
 
                                 <div>
@@ -894,27 +894,27 @@
                                     </label>
                                     <div class="relative">
                                         <input type="number" id="efInput" min="0" max="100" step="0.1"
-                                               class="w-full px-3 sm:px-4 py-2 sm:py-3 pl-12 sm:pl-14 text-sm sm:text-base border border-gray-300 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-700 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                                               class="w-full px-4 py-3 pl-12 border border-gray-300 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-700 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
                                                placeholder="Ej: 82.0">
                                         <div class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
-                                            <i class="fas fa-file-alt text-sm sm:text-base"></i>
+                                            <i class="fas fa-file-alt"></i>
                                         </div>
                                     </div>
-                                    <p class="text-xs text-gray-500 mt-1">M√≠nimo 50 puntos para aprobar</p>
+                                    <p class="text-xs text-gray-500 mt-1">M«nimo 50 puntos para aprobar</p>
                                 </div>
                             </div>
                         </div>
 
                         <!-- Calculate Button -->
-                        <button id="calculateGradeBtn" class="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold py-3 sm:py-4 px-4 sm:px-6 rounded-xl transition-all duration-200 transform hover:scale-105 shadow-lg hover:shadow-xl text-sm sm:text-base">
+                        <button id="calculateGradeBtn" class="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold py-4 px-6 rounded-xl transition-all duration-200 transform hover:scale-105 shadow-lg hover:shadow-xl">
                             <i class="fas fa-calculator mr-2"></i>
                             Calcular Nota Final
                         </button>
                     </div>
 
                     <!-- Right Column - Result -->
-                    <div class="space-y-4 sm:space-y-6">
-                        <div class="bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 rounded-xl p-4 sm:p-6 lg:p-8 border border-green-100 dark:border-green-800">
+                    <div class="space-y-6">
+                        <div class="bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 rounded-xl p-6 border border-green-100 dark:border-green-800">
                             <h4 class="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center">
                                 <i class="fas fa-trophy text-green-600 mr-2"></i>
                                 Resultado
@@ -929,19 +929,19 @@
                         </div>
 
                         <!-- Quick Examples -->
-                        <div class="bg-gray-50 dark:bg-gray-700/50 rounded-xl p-3 sm:p-4">
-                            <h5 class="text-sm font-semibold text-gray-900 dark:text-white mb-3">Ejemplos R√°pidos</h5>
-                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                                <button class="quick-example-btn text-xs sm:text-sm px-2 sm:px-3 py-2 bg-white dark:bg-gray-600 rounded-lg hover:bg-blue-50 dark:hover:bg-blue-900/30 transition-colors" data-pp="75" data-ef="80">
+                        <div class="bg-gray-50 dark:bg-gray-700/50 rounded-xl p-4">
+                            <h5 class="text-sm font-semibold text-gray-900 dark:text-white mb-3">Ejemplos R«≠pidos</h5>
+                            <div class="grid grid-cols-2 gap-2">
+                                <button class="quick-example-btn text-xs px-3 py-2 bg-white dark:bg-gray-600 rounded-lg hover:bg-blue-50 dark:hover:bg-blue-900/30 transition-colors" data-pp="75" data-ef="80">
                                     PP: 75, EF: 80
                                 </button>
-                                <button class="quick-example-btn text-xs sm:text-sm px-2 sm:px-3 py-2 bg-white dark:bg-gray-600 rounded-lg hover:bg-blue-50 dark:hover:bg-blue-900/30 transition-colors" data-pp="85" data-ef="65">
+                                <button class="quick-example-btn text-xs px-3 py-2 bg-white dark:bg-gray-600 rounded-lg hover:bg-blue-50 dark:hover:bg-blue-900/30 transition-colors" data-pp="85" data-ef="65">
                                     PP: 85, EF: 65
                                 </button>
-                                <button class="quick-example-btn text-xs sm:text-sm px-2 sm:px-3 py-2 bg-white dark:bg-gray-600 rounded-lg hover:bg-green-50 dark:hover:bg-green-900/30 transition-colors" data-pp="90" data-ef="95">
+                                <button class="quick-example-btn text-xs px-3 py-2 bg-white dark:bg-gray-600 rounded-lg hover:bg-green-50 dark:hover:bg-green-900/30 transition-colors" data-pp="90" data-ef="95">
                                     PP: 90, EF: 95
                                 </button>
-                                <button class="quick-example-btn text-xs sm:text-sm px-2 sm:px-3 py-2 bg-white dark:bg-gray-600 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/30 transition-colors" data-pp="60" data-ef="45">
+                                <button class="quick-example-btn text-xs px-3 py-2 bg-white dark:bg-gray-600 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/30 transition-colors" data-pp="60" data-ef="45">
                                     PP: 60, EF: 45
                                 </button>
                             </div>
@@ -950,25 +950,25 @@
                 </div>
 
                 <!-- Formula Info -->
-                <div class="bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20 rounded-xl p-4 sm:p-6 lg:p-8 border border-blue-100 dark:border-blue-800">
-                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 lg:gap-8">
+                <div class="bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20 rounded-xl p-6 border border-blue-100 dark:border-blue-800">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
                             <h5 class="font-semibold text-gray-900 dark:text-white mb-2 flex items-center">
                                 <i class="fas fa-equation text-blue-600 mr-2"></i>
-                                F√≥rmula FPUNA
+                                F«¸rmula FPUNA
                             </h5>
-                            <p class="text-xs sm:text-sm text-gray-600 dark:text-gray-400">
-                                <strong class="text-sm sm:text-base">PF = (0.4 √ó PP) + (0.6 √ó EF)</strong><br>
-                                Donde PF es la Puntuaci√≥n Final
+                            <p class="text-sm text-gray-600 dark:text-gray-400">
+                                <strong>PF = (0.4 «? PP) + (0.6 «? EF)</strong><br>
+                                Donde PF es la Puntuaci«¸n Final
                             </p>
                         </div>
 
                         <div>
                             <h5 class="font-semibold text-gray-900 dark:text-white mb-2 flex items-center">
                                 <i class="fas fa-graduation-cap text-purple-600 mr-2"></i>
-                                Escala de Calificaci√≥n
+                                Escala de Calificaci«¸n
                             </h5>
-                            <div class="text-xs sm:text-sm text-gray-600 dark:text-gray-400 space-y-1">
+                            <div class="text-xs text-gray-600 dark:text-gray-400 space-y-1">
                                 <div>90-100: Excelente (5)</div>
                                 <div>80-89: Muy Bueno (4)</div>
                                 <div>70-79: Bueno (3)</div>
@@ -979,9 +979,9 @@
                     </div>
 
                     <div class="mt-4 p-3 bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg">
-                        <p class="text-xs sm:text-sm text-yellow-800 dark:text-yellow-200 flex items-start">
-                            <i class="fas fa-exclamation-triangle mr-2 mt-0.5 flex-shrink-0"></i>
-                            <span><strong>Importante:</strong> Se requiere m√≠nimo 50 puntos en el Examen Final para aprobar la materia.</span>
+                        <p class="text-xs text-yellow-800 dark:text-yellow-200 flex items-center">
+                            <i class="fas fa-exclamation-triangle mr-2"></i>
+                            <strong>Importante:</strong> Se requiere m«nimo 50 puntos en el Examen Final para aprobar la materia.
                         </p>
                     </div>
                 </div>
@@ -1008,17 +1008,17 @@
                 <div class="space-y-4">
                     <div>
                         <label class="block text-sm font-medium mb-2">
-                            T√≠tulo <span class="text-red-500">*</span>
+                            T«tulo <span class="text-red-500">*</span>
                         </label>
                         <input type="text" id="taskTitle" 
                                class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 focus:ring-2 focus:ring-green-500 focus:border-transparent"
-                               placeholder="Ej: Entregar proyecto de programaci√≥n"
+                               placeholder="Ej: Entregar proyecto de programaci«¸n"
                                required>
                     </div>
                     
                     <div>
                         <label class="block text-sm font-medium mb-2">
-                            Descripci√≥n
+                            Descripci«¸n
                         </label>
                         <textarea id="taskDescription" rows="3"
                                   class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 focus:ring-2 focus:ring-green-500 focus:border-transparent"
@@ -1058,22 +1058,22 @@
         </div>
     </div>
     
-    <!-- Carga optimizada de librer√≠as externas -->
+    <!-- Carga optimizada de librer«as externas -->
     <script>
         // Registrar Service Worker para funcionamiento offline y cacheo
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
                 navigator.serviceWorker.register('./sw.js')
-                    .then(reg => console.log('‚úÖ Service Worker registrado:', reg.scope))
-                    .catch(err => console.error('‚ùå Error registrando SW:', err));
+                    .then(reg => console.log('É?? Service Worker registrado:', reg.scope))
+                    .catch(err => console.error('É?? Error registrando SW:', err));
             });
         }
 
-        // Funci√≥n para cargar scripts de forma as√≠ncrona y controlada
+        // Funci«¸n para cargar scripts de forma as«ncrona y controlada
         function loadScript(src, id) {
             return new Promise((resolve, reject) => {
                 if (document.getElementById(id)) {
-                    resolve(); // Ya est√° cargado
+                    resolve(); // Ya est«≠ cargado
                     return;
                 }
                 const script = document.createElement('script');
@@ -1086,7 +1086,7 @@
             });
         }
 
-        // Cargar librer√≠as en paralelo para m√°xima velocidad
+        // Cargar librer«as en paralelo para m«≠xima velocidad
         const loadTimeout = 15000; // 15 segundos timeout
         const loadLibraries = Promise.race([
             Promise.all([
@@ -1094,27 +1094,27 @@
                 loadScript('src/js/date-fns.min.js', 'datefns-lib')
             ]),
             new Promise((_, reject) => 
-                setTimeout(() => reject(new Error('Timeout: La conexi√≥n es muy lenta')), loadTimeout)
+                setTimeout(() => reject(new Error('Timeout: La conexi«¸n es muy lenta')), loadTimeout)
             )
         ]);
 
         loadLibraries.then(() => {
-            console.log('‚úÖ Librer√≠as externas cargadas');
-            // Cargar el script principal despu√©s de las dependencias
+            console.log('É?? Librer«as externas cargadas');
+            // Cargar el script principal despu«∏s de las dependencias
             const mainScript = document.createElement('script');
             mainScript.type = 'module';
             mainScript.src = 'src/js/main.js';
-            mainScript.onload = () => console.log('‚úÖ main.js cargado');
+            mainScript.onload = () => console.log('É?? main.js cargado');
             document.body.appendChild(mainScript);
         }).catch(err => {
-            console.error('‚ùå Error cargando librer√≠as:', err);
+            console.error('É?? Error cargando librer«as:', err);
             // Mostrar mensaje de error al usuario
             const loader = document.getElementById('appLoader');
             if (loader) {
-                loader.querySelector('.loader-text').textContent = 'Error de conexi√≥n';
+                loader.querySelector('.loader-text').textContent = 'Error de conexi«¸n';
                 loader.querySelector('.loader-subtext').innerHTML = 
-                    'Por favor, verifica tu conexi√≥n a internet<br><small>o intenta recargar la p√°gina</small>';
-                // Agregar bot√≥n de recargar
+                    'Por favor, verifica tu conexi«¸n a internet<br><small>o intenta recargar la p«≠gina</small>';
+                // Agregar bot«¸n de recargar
                 const retryBtn = document.createElement('button');
                 retryBtn.textContent = 'Reintentar';
                 retryBtn.style.cssText = 'margin-top:15px;padding:10px 20px;background:#fff;color:#667eea;border:none;border-radius:5px;cursor:pointer;font-weight:600;';
@@ -1127,14 +1127,14 @@
     <!-- Footer -->
     <footer class="bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 py-4 mt-8 relative z-10">
         <div class="container mx-auto px-4">
-            <!-- Secci√≥n principal con informaci√≥n -->
+            <!-- Secci«¸n principal con informaci«¸n -->
             <div class="text-center mb-6">
                 <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2">Mi Horario FPUNA</h3>
                 <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">
-                    Gestiona tu horario acad√©mico de manera eficiente
+                    Gestiona tu horario acad«∏mico de manera eficiente
                 </p>
 
-                <!-- Tecnolog√≠as utilizadas -->
+                <!-- Tecnolog«as utilizadas -->
                 <div class="flex flex-wrap justify-center gap-3 mb-6">
                     <span class="px-3 py-1 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 text-xs font-medium rounded-full">
                         <i class="fab fa-js-square mr-1"></i>JavaScript ES6+
@@ -1150,25 +1150,25 @@
                     </span>
                 </div>
 
-                <!-- Bot√≥n para a√±adir tarea -->
+                <!-- Bot«¸n para a«Òadir tarea -->
                 <div class="mb-6 hidden">
                     <button id="addTaskFab" class="inline-flex items-center gap-3 px-6 py-3 bg-green-600 hover:bg-green-700 text-white text-sm font-medium rounded-lg transition-colors duration-200 shadow-lg">
                         <i class="fas fa-plus"></i>
-                        <span>A√±adir Nueva Tarea</span>
+                        <span>A«Òadir Nueva Tarea</span>
                     </button>
                 </div>
             </div>
 
-            <!-- Secci√≥n de enlaces y copyright -->
+            <!-- Secci«¸n de enlaces y copyright -->
             <div class="flex flex-col md:flex-row items-center justify-between gap-4 border-t border-gray-200 dark:border-gray-700 pt-6">
                 <!-- Copyright -->
                 <div class="text-sm text-gray-600 dark:text-gray-400 text-center md:text-left">
-                    ¬© 2025 Mauricio Nicolas Alfaro Torres
+                    ∂∏ 2025 Mauricio Nicolas Alfaro Torres
                 </div>
 
                 <!-- Enlaces GitHub -->
                 <div class="flex items-center gap-4">
-                    <!-- Bot√≥n al Repositorio -->
+                    <!-- Bot«¸n al Repositorio -->
                     <a href="https://github.com/AlfaroT/Mi-Horario-FPUNA"
                        target="_blank"
                        rel="noopener noreferrer"
@@ -1177,7 +1177,7 @@
                         <span>Repositorio</span>
                     </a>
 
-                    <!-- Bot√≥n al Perfil -->
+                    <!-- Bot«¸n al Perfil -->
                     <a href="https://github.com/AlfaroT"
                        target="_blank"
                        rel="noopener noreferrer"
@@ -1191,4 +1191,5 @@
     </footer>
 </body>
 </html>
+
 

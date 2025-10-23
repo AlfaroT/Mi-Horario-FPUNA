@@ -192,39 +192,39 @@ function performGradeCalculation() {
     const icon = result.nota >= 3 ? 'fas fa-check-circle' : 'fas fa-times-circle';
 
     resultDiv.innerHTML = `
-        <div class="animate-fade-in ${bgColor} border rounded-xl p-6 space-y-4">
+        <div class="animate-fade-in ${bgColor} border rounded-xl p-3 sm:p-4 lg:p-6 space-y-3 sm:space-y-4">
             <!-- Header del resultado -->
             <div class="text-center">
-                <div class="inline-flex items-center justify-center w-16 h-16 ${notaColor} bg-white dark:bg-gray-800 rounded-full mb-4 shadow-lg">
-                    <i class="${icon} text-2xl"></i>
+                <div class="inline-flex items-center justify-center w-12 h-12 sm:w-14 sm:h-14 lg:w-16 lg:h-16 ${notaColor} bg-white dark:bg-gray-800 rounded-full mb-3 sm:mb-4 shadow-lg">
+                    <i class="${icon} text-lg sm:text-xl lg:text-2xl"></i>
                 </div>
-                <h4 class="text-xl font-bold ${notaColor} mb-2">${result.calificacion}</h4>
-                <p class="text-sm text-gray-600 dark:text-gray-400">Nota final obtenida</p>
+                <h4 class="text-lg sm:text-xl font-bold ${notaColor} mb-2">${result.calificacion}</h4>
+                <p class="text-xs sm:text-sm text-gray-600 dark:text-gray-400">Nota final obtenida</p>
             </div>
 
             <!-- Métricas principales -->
-            <div class="grid grid-cols-3 gap-4">
-                <div class="text-center p-3 bg-white dark:bg-gray-800 rounded-lg shadow-sm">
-                    <div class="text-2xl font-bold ${notaColor}">${result.pf}</div>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-4">
+                <div class="text-center p-2 sm:p-3 bg-white dark:bg-gray-800 rounded-lg shadow-sm">
+                    <div class="text-xl sm:text-2xl font-bold ${notaColor}">${result.pf}</div>
                     <div class="text-xs text-gray-600 dark:text-gray-400 uppercase tracking-wide">Puntuación</div>
                 </div>
-                <div class="text-center p-3 bg-white dark:bg-gray-800 rounded-lg shadow-sm">
-                    <div class="text-2xl font-bold ${notaColor}">${result.nota}</div>
+                <div class="text-center p-2 sm:p-3 bg-white dark:bg-gray-800 rounded-lg shadow-sm">
+                    <div class="text-xl sm:text-2xl font-bold ${notaColor}">${result.nota}</div>
                     <div class="text-xs text-gray-600 dark:text-gray-400 uppercase tracking-wide">Nota</div>
                 </div>
-                <div class="text-center p-3 bg-white dark:bg-gray-800 rounded-lg shadow-sm">
-                    <div class="text-lg font-bold ${notaColor}">${result.calificacion}</div>
+                <div class="text-center p-2 sm:p-3 bg-white dark:bg-gray-800 rounded-lg shadow-sm">
+                    <div class="text-sm sm:text-lg font-bold ${notaColor}">${result.calificacion}</div>
                     <div class="text-xs text-gray-600 dark:text-gray-400 uppercase tracking-wide">Estado</div>
                 </div>
             </div>
 
             <!-- Detalles del cálculo -->
-            <div class="bg-white dark:bg-gray-800 rounded-lg p-4">
-                <h5 class="font-semibold text-gray-900 dark:text-white mb-3 flex items-center">
-                    <i class="fas fa-equation text-blue-600 mr-2"></i>
+            <div class="bg-white dark:bg-gray-800 rounded-lg p-3 sm:p-4">
+                <h5 class="font-semibold text-gray-900 dark:text-white mb-2 sm:mb-3 flex items-center text-sm sm:text-base">
+                    <i class="fas fa-equation text-blue-600 mr-2 text-sm sm:text-base"></i>
                     Detalle del cálculo
                 </h5>
-                <div class="space-y-2 text-sm">
+                <div class="space-y-1 sm:space-y-2 text-xs sm:text-sm">
                     <div class="flex justify-between">
                         <span class="text-gray-600 dark:text-gray-400">PP (40%):</span>
                         <span class="font-mono">${pp} × 0.4 = ${(pp * 0.4).toFixed(1)}</span>
@@ -242,14 +242,18 @@ function performGradeCalculation() {
             </div>
 
             ${result.reprobadoPorEF ? `
-                <div class="bg-red-100 dark:bg-red-900 border border-red-400 dark:border-red-600 text-red-700 dark:text-red-200 px-4 py-3 rounded-lg text-center font-semibold animate-pulse">
-                    <i class="fas fa-times-circle mr-2"></i>
-                    ${result.mensaje}
+                <div class="w-full max-w-full overflow-hidden bg-red-100 dark:bg-red-900 border border-red-400 dark:border-red-600 text-red-700 dark:text-red-200 px-3 sm:px-4 py-2 sm:py-3 rounded-lg text-center font-semibold animate-pulse">
+                    <div class="flex items-center justify-center w-full min-w-0">
+                        <i class="fas fa-times-circle mr-2 flex-shrink-0 text-sm sm:text-base"></i>
+                        <span class="truncate text-xs sm:text-sm">${result.mensaje}</span>
+                    </div>
                 </div>
             ` : result.nota >= 3 ? `
-                <div class="bg-green-100 dark:bg-green-900 border border-green-400 dark:border-green-600 text-green-700 dark:text-green-200 px-4 py-3 rounded-lg text-center font-semibold">
-                    <i class="fas fa-check-circle mr-2"></i>
-                    ¡Felicitaciones! Has aprobado la materia
+                <div class="w-full max-w-full overflow-hidden bg-green-100 dark:bg-green-900 border border-green-400 dark:border-green-600 text-green-700 dark:text-green-200 px-3 sm:px-4 py-2 sm:py-3 rounded-lg text-center font-semibold">
+                    <div class="flex items-center justify-center w-full min-w-0">
+                        <i class="fas fa-check-circle mr-2 flex-shrink-0 text-sm sm:text-base"></i>
+                        <span class="truncate text-xs sm:text-sm">¡Felicitaciones! Has aprobado la materia</span>
+                    </div>
                 </div>
             ` : ''}
         </div>

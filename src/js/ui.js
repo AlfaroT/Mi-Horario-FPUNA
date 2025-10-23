@@ -120,10 +120,14 @@ function updateGreeting() {
     // Crear el texto completo
     const fullText = `${greeting}, ${userName}`;
     
-    // Efecto de escritura de máquina de escribir en bucle infinito
+    // Efecto de escritura de máquina de escribir (solo una vez, sin bucle infinito)
     let charIndex = 0;
     const typingSpeed = 60; // ms por carácter
-    const pauseBeforeRestart = 3000; // 3 segundos de pausa antes de reiniciar
+    
+    // Limpiar cualquier timeout anterior para evitar múltiples ejecuciones
+    if (updateGreeting.timeoutId) {
+        clearTimeout(updateGreeting.timeoutId);
+    }
     
     function typeWriter() {
         if (charIndex < fullText.length) {
@@ -133,18 +137,16 @@ function updateGreeting() {
             }
             dom.greetingHeader.textContent += fullText.charAt(charIndex);
             charIndex++;
-            setTimeout(typeWriter, typingSpeed);
-        } else {
-            // Cuando termina de escribir, esperar y reiniciar
-            setTimeout(() => {
-                charIndex = 0;
-                typeWriter();
-            }, pauseBeforeRestart);
+            updateGreeting.timeoutId = setTimeout(typeWriter, typingSpeed);
         }
+        // Ya no reinicia el bucle, evitando la deformación del texto
     }
     
     typeWriter();
 }
+
+// Agregar propiedad estática para almacenar el timeout
+updateGreeting.timeoutId = null;
 
 // ============================================
 // RENDERIZADO DEL DASHBOARD
@@ -161,7 +163,7 @@ function createEventCard(event) {
                     <h3 class="font-bold text-lg text-gray-800 dark:text-white">${titulo}</h3>
                     ${subtitulo ? `<p class="text-sm text-gray-500 dark:text-gray-400 mt-1">${subtitulo}</p>` : ''}
                 </div>
-                <span class="ml-3 ${badgeColor} rounded-full px-3 py-1 text-xs font-semibold whitespace-nowrap">
+                <span class="ml-3 ${badgeColor} rounded-full px-3 py-1 text-xs font-semibold text-ellipsis overflow-hidden max-w-[120px] sm:max-w-[150px] inline-block">
                     ${badgeText}
                 </span>
             </div>
@@ -200,8 +202,8 @@ function createEventCard(event) {
             <!-- PIE: CONTADOR -->
             ${contador ? `
             <div class="mt-3 pt-3 border-t border-gray-200 dark:border-gray-700">
-                <div class="flex items-center ${contador.colorClass}">
-                    <i class="${contador.icon} fa-fw mr-2"></i>
+                <div class="flex items-center gap-2 ${contador.colorClass} w-full">
+                    <i class="${contador.icon} fa-fw flex-shrink-0"></i>
                     <span class="font-semibold ${contador.animate ? 'animate-pulse' : ''}">${contador.text}</span>
                 </div>
             </div>
