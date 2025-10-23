@@ -192,7 +192,7 @@ function performGradeCalculation() {
     const icon = result.nota >= 3 ? 'fas fa-check-circle' : 'fas fa-times-circle';
 
     resultDiv.innerHTML = `
-        <div class="animate-fade-in ${bgColor} border rounded-xl p-3 sm:p-4 lg:p-6 space-y-3 sm:space-y-4">
+        <div class="animate-fade-in ${bgColor} border rounded-xl p-3 sm:p-4 lg:p-6 space-y-3 sm:space-y-4 w-full max-w-full overflow-hidden">
             <!-- Header del resultado -->
             <div class="text-center">
                 <div class="inline-flex items-center justify-center w-12 h-12 sm:w-14 sm:h-14 lg:w-16 lg:h-16 ${notaColor} bg-white dark:bg-gray-800 rounded-full mb-3 sm:mb-4 shadow-lg">
@@ -203,7 +203,7 @@ function performGradeCalculation() {
             </div>
 
             <!-- Métricas principales -->
-            <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-4">
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-4 w-full">
                 <div class="text-center p-2 sm:p-3 bg-white dark:bg-gray-800 rounded-lg shadow-sm">
                     <div class="text-xl sm:text-2xl font-bold ${notaColor}">${result.pf}</div>
                     <div class="text-xs text-gray-600 dark:text-gray-400 uppercase tracking-wide">Puntuación</div>
@@ -219,32 +219,32 @@ function performGradeCalculation() {
             </div>
 
             <!-- Detalles del cálculo -->
-            <div class="bg-white dark:bg-gray-800 rounded-lg p-3 sm:p-4">
+            <div class="bg-white dark:bg-gray-800 rounded-lg p-3 sm:p-4 w-full max-w-full overflow-hidden">
                 <h5 class="font-semibold text-gray-900 dark:text-white mb-2 sm:mb-3 flex items-center text-sm sm:text-base">
-                    <i class="fas fa-equation text-blue-600 mr-2 text-sm sm:text-base"></i>
-                    Detalle del cálculo
+                    <i class="fas fa-equation text-blue-600 mr-2 text-sm sm:text-base flex-shrink-0"></i>
+                    <span class="truncate">Detalle del cálculo</span>
                 </h5>
                 <div class="space-y-1 sm:space-y-2 text-xs sm:text-sm">
-                    <div class="flex justify-between">
-                        <span class="text-gray-600 dark:text-gray-400">PP (40%):</span>
-                        <span class="font-mono">${pp} × 0.4 = ${(pp * 0.4).toFixed(1)}</span>
+                    <div class="flex justify-between gap-2">
+                        <span class="text-gray-600 dark:text-gray-400 flex-shrink-0">PP (40%):</span>
+                        <span class="font-mono truncate">${pp} × 0.4 = ${(pp * 0.4).toFixed(1)}</span>
                     </div>
-                    <div class="flex justify-between">
-                        <span class="text-gray-600 dark:text-gray-400">EF (60%):</span>
-                        <span class="font-mono">${ef} × 0.6 = ${(ef * 0.6).toFixed(1)}</span>
+                    <div class="flex justify-between gap-2">
+                        <span class="text-gray-600 dark:text-gray-400 flex-shrink-0">EF (60%):</span>
+                        <span class="font-mono truncate">${ef} × 0.6 = ${(ef * 0.6).toFixed(1)}</span>
                     </div>
                     <hr class="border-gray-200 dark:border-gray-700">
-                    <div class="flex justify-between font-semibold">
-                        <span class="text-gray-900 dark:text-white">Total:</span>
-                        <span class="font-mono ${notaColor}">${result.pf} puntos</span>
+                    <div class="flex justify-between gap-2 font-semibold">
+                        <span class="text-gray-900 dark:text-white flex-shrink-0">Total:</span>
+                        <span class="font-mono ${notaColor} truncate">${result.pf} puntos</span>
                     </div>
                 </div>
             </div>
 
             ${result.reprobadoPorEF ? `
-                <div class="w-full max-w-full overflow-hidden bg-red-100 dark:bg-red-900 border border-red-400 dark:border-red-600 text-red-700 dark:text-red-200 px-3 sm:px-4 py-2 sm:py-3 rounded-lg text-center font-semibold animate-pulse">
-                    <div class="flex items-center justify-center w-full min-w-0">
-                        <i class="fas fa-times-circle mr-2 flex-shrink-0 text-sm sm:text-base"></i>
+                <div class="w-full bg-red-100 dark:bg-red-900 border border-red-400 dark:border-red-600 text-red-700 dark:text-red-200 px-2 sm:px-3 py-2 rounded-lg text-center font-semibold animate-pulse overflow-hidden">
+                    <div class="flex items-center justify-center gap-2 min-w-0">
+                        <i class="fas fa-times-circle flex-shrink-0 text-xs sm:text-sm"></i>
                         <span class="truncate text-xs sm:text-sm">${result.mensaje}</span>
                     </div>
                 </div>
