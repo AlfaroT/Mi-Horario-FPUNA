@@ -120,9 +120,9 @@ function updateGreeting() {
     // Crear el texto completo
     const fullText = `${greeting}, ${userName}`;
     
-    // Efecto de escritura de máquina de escribir (solo una vez, sin bucle infinito)
+    // Efecto de escritura de máquina de escribir mejorado
     let charIndex = 0;
-    const typingSpeed = 60; // ms por carácter
+    const typingSpeed = 50; // ms por carácter (más rápido y fluido)
     
     // Limpiar cualquier timeout anterior para evitar múltiples ejecuciones
     if (updateGreeting.timeoutId) {
@@ -134,12 +134,22 @@ function updateGreeting() {
             // Agregar letra por letra
             if (charIndex === 0) {
                 dom.greetingHeader.textContent = ''; // Limpiar solo al inicio
+                dom.greetingHeader.style.opacity = '1'; // Asegurar visibilidad
             }
             dom.greetingHeader.textContent += fullText.charAt(charIndex);
             charIndex++;
             updateGreeting.timeoutId = setTimeout(typeWriter, typingSpeed);
+        } else {
+            // Reiniciar el efecto cada 20 segundos (más frecuente)
+            updateGreeting.timeoutId = setTimeout(() => {
+                charIndex = 0;
+                dom.greetingHeader.classList.add('greeting-reset');
+                setTimeout(() => {
+                    dom.greetingHeader.classList.remove('greeting-reset');
+                    typeWriter();
+                }, 800);
+            }, 20000); // Cambiado de 30000 a 20000 (20 segundos)
         }
-        // Ya no reinicia el bucle, evitando la deformación del texto
     }
     
     typeWriter();
@@ -201,10 +211,10 @@ function createEventCard(event) {
             
             <!-- PIE: CONTADOR -->
             ${contador ? `
-            <div class="mt-3 pt-3 border-t border-gray-200 dark:border-gray-700">
-                <div class="flex items-center gap-2 ${contador.colorClass} w-full">
-                    <i class="${contador.icon} fa-fw flex-shrink-0"></i>
-                    <span class="font-semibold ${contador.animate ? 'animate-pulse' : ''}">${contador.text}</span>
+            <div class="mt-3 pt-3 border-t border-gray-200 dark:border-gray-700 event-card-counter">
+                <div class="time-counter-container ${contador.colorClass}">
+                    <i class="${contador.icon} fa-fw time-counter-icon"></i>
+                    <span class="time-counter-text ${contador.animate && contador.animateClass ? contador.animateClass : ''}">${contador.text}</span>
                 </div>
             </div>
             ` : ''}
@@ -249,7 +259,8 @@ function renderTodayClasses() {
                     text: `Empieza en ${formatted}`,
                     icon: 'fa-solid fa-hourglass-start',
                     colorClass: 'text-green-600 dark:text-green-400',
-                    animate: false
+                    animate: true,
+                    animateClass: 'counter-animate-green'
                 };
                 borderColor = 'border-green-500';
             } else if (currentTime >= startTime && currentTime <= endTime) {
@@ -260,7 +271,8 @@ function renderTodayClasses() {
                     text: `En curso, termina en ${formatted}`,
                     icon: 'fa-solid fa-hourglass-half',
                     colorClass: 'text-orange-600 dark:text-orange-400',
-                    animate: true
+                    animate: true,
+                    animateClass: 'counter-animate-orange'
                 };
                 borderColor = 'border-orange-500';
             } else {
