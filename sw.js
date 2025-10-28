@@ -1,7 +1,7 @@
 // Service Worker para Mi Horario FPUNA
 // Versión: 1.1.0 - Corrección de rutas para PWA en GitHub Pages
 
-const CACHE_NAME = 'mi-horario-fpuna-v1.1.0';
+const CACHE_NAME = 'mi-horario-fpuna-v1.1.1'; // Incrementado para forzar actualización
 const ASSETS_TO_CACHE = [
     './',
     './index.html',

@@ -14,21 +14,28 @@ function getBaseUrl() {
     
     // Para GitHub Pages, extraer el nombre del repositorio del pathname
     const pathname = window.location.pathname;
-    
-    // Si el pathname comienza con el nombre del repositorio (formato /repo-name/)
-    const pathParts = pathname.split('/').filter(part => part.length > 0);
-    
-    if (pathParts.length >= 1) {
-        // El primer segmento después del dominio es el nombre del repositorio
-        const repoName = pathParts[0];
+    const hostname = window.location.hostname;
+
+    // Para GitHub Pages, la URL base debe ser el nombre del repositorio
+    // Ejemplo: https://alfarot.github.io/Mi-Horario-FPUNA/
+    if (hostname.includes('github.io')) {
+        // Extraer el nombre del repositorio del pathname
+        // Para GitHub Pages, la URL base debe ser el nombre del repositorio
+        // Ejemplo: https://alfarot.github.io/Mi-Horario-FPUNA/
+        // Aseguramos que siempre sea el primer segmento del pathname, ignorando cualquier /public/
+        const pathSegments = pathname.split('/').filter(segment => segment.length > 0);
         
-        // Verificar si parece ser un nombre de repositorio válido
-        if (repoName && repoName !== 'index.html' && !repoName.includes('.')) {
-            return `/${repoName}/`;
+        if (pathSegments.length > 0) {
+            // El nombre del repositorio es el primer segmento.
+            // Esto asegura que, incluso si la URL es /Mi-Horario-FPUNA/public/,
+            // el baseUrl sea /Mi-Horario-FPUNA/
+            return `/${pathSegments[0]}/`;
         }
+        // Si no hay segmentos, estamos en la raíz del dominio de usuario (ej. alfarot.github.io)
+        return '/';
     }
     
-    // Por defecto, usar ruta relativa
+    // Para desarrollo local o dominios personalizados, usar ruta relativa
     return './';
 }
 
