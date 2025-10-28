@@ -1,7 +1,7 @@
 // Service Worker para Mi Horario FPUNA
-// Versión: 1.1.0 - Corrección de rutas para PWA en GitHub Pages
+// Versión: 1.1.1 - Corrección de rutas para repositorio Mi-Horario-FPUNA
 
-const CACHE_NAME = 'mi-horario-fpuna-v1.1.0';
+const CACHE_NAME = 'mi-horario-fpuna-v1.1.1';
 const ASSETS_TO_CACHE = [
     './',
     './index.html',
@@ -63,6 +63,9 @@ self.addEventListener('fetch', (event) => {
     // Ignorar requests que no sean GET
     if (request.method !== 'GET') return;
     
+    // Detectar si estamos en GitHub Pages con el repositorio Mi-Horario-FPUNA
+    const isGitHubPages = request.url.includes('github.io') && request.url.includes('Mi-Horario-FPUNA');
+    
     // Manejo especial para navegación HTML (para GitHub Pages)
     const isNavigationRequest = request.mode === 'navigate' ||
                                (request.headers.get('accept').includes('text/html') &&
@@ -108,7 +111,10 @@ self.addEventListener('fetch', (event) => {
                     
                     // Si es una solicitud de navegación y falla, servir index.html
                     if (isNavigationRequest) {
-                        return caches.match('./index.html').then((cachedIndex) => {
+                        // Para GitHub Pages, intentar con la ruta correcta del repositorio
+                        const indexPath = isGitHubPages ? '/Mi-Horario-FPUNA/index.html' : './index.html';
+                        
+                        return caches.match(indexPath).then((cachedIndex) => {
                             if (cachedIndex) {
                                 return cachedIndex;
                             }

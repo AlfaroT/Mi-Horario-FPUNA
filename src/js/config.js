@@ -6,7 +6,7 @@
 // Función para detectar el base URL dinámicamente
 function getBaseUrl() {
     // Si estamos en el dominio principal (desarrollo local o dominio personalizado)
-    if (window.location.hostname === 'localhost' || 
+    if (window.location.hostname === 'localhost' ||
         window.location.hostname === '127.0.0.1' ||
         !window.location.hostname.includes('github.io')) {
         return './';
@@ -23,7 +23,11 @@ function getBaseUrl() {
         const repoName = pathParts[0];
         
         // Verificar si parece ser un nombre de repositorio válido
-        if (repoName && repoName !== 'index.html' && !repoName.includes('.')) {
+        // Incluye una verificación específica para "Mi-Horario-FPUNA"
+        if (repoName &&
+            repoName !== 'index.html' &&
+            !repoName.includes('.') &&
+            (repoName === 'Mi-Horario-FPUNA' || /^[a-zA-Z0-9_-]+$/.test(repoName))) {
             return `/${repoName}/`;
         }
     }
