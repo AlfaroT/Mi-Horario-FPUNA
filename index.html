@@ -7,6 +7,21 @@
     <meta name="description" content="Mi Horario FPUNA - Gestiona tu horario de clases y exámenes">
     <link rel="icon" href="public/favicon.ico" type="image/x-icon">
     
+    <!-- Base href dinámico para GitHub Pages -->
+    <script>
+        // Detectar y establecer base href dinámicamente
+        (function() {
+            const baseUrl = window.location.hostname === 'localhost' ||
+                           window.location.hostname === '127.0.0.1' ||
+                           !window.location.hostname.includes('github.io')
+                           ? './' : '/' + window.location.pathname.split('/')[1] + '/';
+            
+            const baseTag = document.createElement('base');
+            baseTag.href = baseUrl;
+            document.head.appendChild(baseTag);
+        })();
+    </script>
+    
     <title>Mi Horario FPUNA</title>
     
     <!-- Tailwind CSS (compilado localmente) -->
@@ -1060,12 +1075,37 @@
     
     <!-- Carga optimizada de librerías externas -->
     <script>
+        // Cargar configuración dinámica primero
+        function loadConfig() {
+            return new Promise((resolve, reject) => {
+                const script = document.createElement('script');
+                script.src = 'src/js/config.js';
+                script.onload = resolve;
+                script.onerror = reject;
+                document.head.appendChild(script);
+            });
+        }
+
         // Registrar Service Worker para funcionamiento offline y cacheo
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
-                navigator.serviceWorker.register('./sw.js')
-                    .then(reg => console.log('✅ Service Worker registrado:', reg.scope))
-                    .catch(err => console.error('❌ Error registrando SW:', err));
+                loadConfig().then(() => {
+                    // Usar la URL del service worker desde la configuración
+                    const swUrl = window.AppConfig ? window.AppConfig.serviceWorkerUrl() : './sw.js';
+                    
+                    navigator.serviceWorker.register(swUrl)
+                        .then(reg => {
+                            console.log('✅ Service Worker registrado:', reg.scope);
+                            console.log('🔧 Base URL detectado:', window.AppConfig ? window.AppConfig.baseUrl : './');
+                        })
+                        .catch(err => console.error('❌ Error registrando SW:', err));
+                }).catch(err => {
+                    console.error('❌ Error cargando configuración:', err);
+                    // Fallback: registrar con ruta relativa
+                    navigator.serviceWorker.register('./sw.js')
+                        .then(reg => console.log('✅ Service Worker registrado (fallback):', reg.scope))
+                        .catch(err => console.error('❌ Error registrando SW (fallback):', err));
+                });
             });
         }
 

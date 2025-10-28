@@ -1,12 +1,13 @@
 // Service Worker para Mi Horario FPUNA
-// Versión: 1.0.4 - Usando date-fns local
+// Versión: 1.1.0 - Corrección de rutas para PWA en GitHub Pages
 
-const CACHE_NAME = 'mi-horario-fpuna-v1.0.4';
+const CACHE_NAME = 'mi-horario-fpuna-v1.1.0';
 const ASSETS_TO_CACHE = [
     './',
     './index.html',
     './dist/output.css',
     './src/css/styles.css',
+    './src/js/config.js',
     './src/js/main.js',
     './src/js/ui.js',
     './src/js/state.js',
@@ -17,6 +18,7 @@ const ASSETS_TO_CACHE = [
     './src/js/utils.js',
     './src/js/date-fns.min.js',
     './public/manifest.json',
+    './public/favicon.ico',
     // CDNs - se cachean después de la primera carga
     'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css',
     'https://cdn.sheetjs.com/xlsx-0.20.1/package/dist/xlsx.full.min.js'
@@ -54,12 +56,17 @@ self.addEventListener('activate', (event) => {
     );
 });
 
-// Fetch - Estrategia Cache-First con Network Fallback
+// Fetch - Estrategia Cache-First con Network Fallback y manejo mejorado de rutas
 self.addEventListener('fetch', (event) => {
     const { request } = event;
     
     // Ignorar requests que no sean GET
     if (request.method !== 'GET') return;
+    
+    // Manejo especial para navegación HTML (para GitHub Pages)
+    const isNavigationRequest = request.mode === 'navigate' ||
+                               (request.headers.get('accept').includes('text/html') &&
+                                !request.url.includes('api.'));
     
     event.respondWith(
         caches.match(request)
@@ -87,16 +94,33 @@ self.addEventListener('fetch', (event) => {
                         return networkResponse;
                     }
 
-                    // Cachear la respuesta para uso futuro
-                    const responseToCache = networkResponse.clone();
-                    caches.open(CACHE_NAME).then((cache) => {
-                        cache.put(request, responseToCache);
-                    });
+                    // Cachear la respuesta para uso futuro (solo recursos locales)
+                    if (!request.url.startsWith('http')) {
+                        const responseToCache = networkResponse.clone();
+                        caches.open(CACHE_NAME).then((cache) => {
+                            cache.put(request, responseToCache);
+                        });
+                    }
 
                     return networkResponse;
                 }).catch((error) => {
                     console.error('[SW] Error en fetch:', request.url, error);
-                    // Si falla y es HTML, mostrar página offline básica
+                    
+                    // Si es una solicitud de navegación y falla, servir index.html
+                    if (isNavigationRequest) {
+                        return caches.match('./index.html').then((cachedIndex) => {
+                            if (cachedIndex) {
+                                return cachedIndex;
+                            }
+                            // Si ni siquiera index.html está en cache, mostrar página offline
+                            return new Response(
+                                '<html><body><h1>Sin conexión</h1><p>Por favor, verifica tu conexión a internet.</p></body></html>',
+                                { headers: { 'Content-Type': 'text/html' } }
+                            );
+                        });
+                    }
+                    
+                    // Para otros recursos HTML, mostrar página offline básica
                     if (request.headers.get('accept').includes('text/html')) {
                         return new Response(
                             '<html><body><h1>Sin conexión</h1><p>Por favor, verifica tu conexión a internet.</p></body></html>',
