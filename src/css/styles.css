@@ -1,0 +1,797 @@
+/* Estilos personalizados */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+* {
+    font-family: 'Inter', sans-serif;
+}
+
+.spinner {
+    border: 3px solid #f3f3f3;
+    border-top: 3px solid #2563eb;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* Toast notifications */
+.toast {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: white;
+    padding: 16px 24px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    z-index: 9999;
+    animation: slideIn 0.3s ease-out;
+}
+
+.toast.dark {
+    background: #1f2937; /* gray-800 */
+    color: #f9fafb; /* gray-50 */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideOut {
+    from {
+        transform: translateX(0);
+        opacity: 1;
+    }
+    to {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+}
+
+/* Animaciones */
+@keyframes fade-in {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in {
+    animation: fade-in 0.5s ease-out forwards;
+}
+
+/* Scrollbar personalizado */
+::-webkit-scrollbar {
+    width: 8px;
+}
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+.dark ::-webkit-scrollbar-track {
+    background: #2d3748; /* gray-800 */
+}
+::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+.dark ::-webkit-scrollbar-thumb {
+    background: #4a5568; /* gray-700 */
+}
+.dark ::-webkit-scrollbar-thumb:hover {
+    background: #718096; /* gray-600 */
+}
+
+/* Animaciones para el saludo dinámico */
+@keyframes greeting-fade-in {
+    0% {
+        opacity: 0;
+        transform: translateX(-20px) scale(0.98);
+        filter: blur(2px);
+    }
+    60% {
+        opacity: 0.8;
+        transform: translateX(2px) scale(1.01);
+        filter: blur(0px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateX(0) scale(1);
+        filter: blur(0px);
+    }
+}
+
+@keyframes greeting-glow {
+    0%, 100% {
+        text-shadow: 0 0 8px rgba(59, 130, 246, 0.2), 0 0 16px rgba(59, 130, 246, 0.1);
+        transform: translateY(0px);
+    }
+    50% {
+        text-shadow: 0 0 12px rgba(59, 130, 246, 0.3), 0 0 24px rgba(59, 130, 246, 0.2);
+        transform: translateY(-1px);
+    }
+}
+
+@keyframes greeting-bounce {
+    0% {
+        transform: translateY(0px) scale(1);
+        opacity: 0;
+    }
+    25% {
+        transform: translateY(-2px) scale(1.02);
+        opacity: 0.7;
+    }
+    50% {
+        transform: translateY(-4px) scale(1.04);
+        opacity: 1;
+    }
+    75% {
+        transform: translateY(-2px) scale(1.02);
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(0px) scale(1);
+        opacity: 1;
+    }
+}
+
+/* Nueva animación elegante para el nombre */
+@keyframes greeting-typewriter {
+    0% {
+        opacity: 0;
+        transform: translateX(10px);
+        filter: blur(1px);
+    }
+    50% {
+        opacity: 0.5;
+        transform: translateX(5px);
+        filter: blur(0px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateX(0px);
+        filter: blur(0px);
+    }
+}
+
+.animate-greeting {
+    animation: greeting-fade-in 1.2s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.animate-greeting-glow {
+    animation: greeting-glow 3s ease-in-out infinite;
+}
+
+.animate-greeting-bounce {
+    animation: greeting-bounce 1s ease-in-out;
+}
+
+/* Nueva animación elegante para el nombre */
+.animate-greeting-typewriter {
+    animation: greeting-typewriter 0.8s ease-out 0.3s both;
+}
+
+/* Animaciones para emojis saludando */
+@keyframes wave-hello {
+    0%, 100% {
+        transform: rotate(0deg) scale(1);
+    }
+    25% {
+        transform: rotate(-10deg) scale(1.1);
+    }
+    75% {
+        transform: rotate(10deg) scale(1.1);
+    }
+}
+
+@keyframes bounce-gentle {
+    0%, 100% {
+        transform: translateY(0px) scale(1) rotate(0deg);
+        filter: brightness(1);
+    }
+    25% {
+        transform: translateY(-3px) scale(1.05) rotate(1deg);
+        filter: brightness(1.1);
+    }
+    50% {
+        transform: translateY(-6px) scale(1.08) rotate(0deg);
+        filter: brightness(1.15);
+    }
+    75% {
+        transform: translateY(-3px) scale(1.05) rotate(-1deg);
+        filter: brightness(1.1);
+    }
+}
+
+@keyframes twinkle {
+    0%, 100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 0.8;
+        transform: scale(1.1);
+    }
+}
+
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-5px);
+    }
+}
+
+/* Estilos para emojis saludando */
+.greeting-emoji {
+    display: inline-block;
+    font-size: 1.5em;
+    margin-right: 8px;
+    animation-duration: 2s;
+    animation-iteration-count: infinite;
+    animation-timing-function: ease-in-out;
+}
+
+.greeting-morning .greeting-emoji {
+    animation-name: wave-hello;
+}
+
+.greeting-afternoon .greeting-emoji {
+    animation-name: bounce-gentle;
+}
+
+.greeting-evening .greeting-emoji {
+    animation-name: twinkle;
+}
+
+.greeting-night .greeting-emoji {
+    animation-name: float;
+}
+
+/* Estilos especiales para el saludo de la tarde - removido para evitar problemas de visualización */
+
+/* Animaciones adicionales para el dashboard móvil */
+@keyframes slideUp {
+    from {
+        transform: translateY(20px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes pulse-gentle {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+}
+
+.animate-slide-up {
+    animation: slideUp 0.5s ease-out forwards;
+}
+
+.animate-pulse-gentle {
+    animation: pulse-gentle 2s ease-in-out infinite;
+}
+
+/* Estilos para navegación inferior */
+.nav-tab {
+    color: #6b7280;
+}
+
+.nav-tab.active {
+    color: #2563eb;
+    background-color: rgba(37, 99, 235, 0.1);
+}
+
+.dark .nav-tab.active {
+    background-color: rgba(37, 99, 235, 0.2);
+}
+
+/* Estilos para badges */
+.badge-notification {
+    position: relative;
+}
+
+.badge-notification::after {
+    content: '';
+    position: absolute;
+    top: -2px;
+    right: -2px;
+    width: 8px;
+    height: 8px;
+    background: #ef4444;
+    border-radius: 50%;
+    border: 2px solid white;
+    animation: pulse-gentle 2s infinite;
+}
+
+/* Mejoras para cards en móvil */
+@media (max-width: 640px) {
+    .metric-card {
+        transform: scale(0.98);
+    }
+
+    .metric-card:hover {
+        transform: scale(1);
+    }
+}
+
+/* Animación para toggle buttons */
+.toggle-rotate {
+    transform: rotate(180deg);
+}
+
+/* Estilos para gradientes de fondo */
+.gradient-bg {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.gradient-bg-alt {
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+}
+
+/* Mejoras para tarjetas métricas clickeables */
+.metric-card {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.metric-card:active {
+    transform: scale(0.95);
+    transition-duration: 0.1s;
+}
+
+/* Animación de scroll suave */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Estilos para navegación inferior mejorada */
+.nav-tab {
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.nav-tab.active {
+    color: #2563eb;
+    background-color: rgba(37, 99, 235, 0.1);
+    transform: translateY(-2px);
+}
+
+.nav-tab.active::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 20px;
+    height: 2px;
+    background: #2563eb;
+    border-radius: 1px;
+}
+
+.dark .nav-tab.active {
+    background-color: rgba(37, 99, 235, 0.2);
+}
+
+/* Efectos de ripple para botones */
+@keyframes ripple {
+    0% {
+        transform: scale(0);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(4);
+        opacity: 0;
+    }
+}
+
+.metric-card::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.5);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+}
+
+.metric-card:active::before {
+    width: 300px;
+    height: 300px;
+}
+
+/* Animaciones para la calculadora */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.animate-fade-in {
+    animation: fadeIn 0.5s ease-out;
+}
+
+@keyframes bounceIn {
+    0% {
+        opacity: 0;
+        transform: scale(0.3);
+    }
+    50% {
+        opacity: 1;
+        transform: scale(1.05);
+    }
+    70% {
+        transform: scale(0.9);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.animate-bounce-in {
+    animation: bounceIn 0.6s ease-out;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.5;
+    }
+}
+
+.animate-pulse {
+    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* Estilos para inputs con iconos */
+.input-with-icon {
+    position: relative;
+}
+
+.input-with-icon input:focus + .input-icon {
+    color: #3b82f6;
+}
+
+.input-icon {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #9ca3af;
+    transition: color 0.2s;
+}
+
+/* Hover effects para botones de ejemplo */
+.quick-example-btn {
+    transition: all 0.2s ease;
+}
+
+.quick-example-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Estilos para el modal de ajustes */
+.settings-card {
+    transition: all 0.3s ease;
+}
+
+.settings-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+/* Animación para el toggle de tema mejorado */
+.theme-toggle-enhanced .toggle-slider {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.theme-toggle-enhanced .toggle-slider:before {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Efectos para botones de acción */
+.action-btn {
+    position: relative;
+    overflow: hidden;
+}
+
+.action-btn:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s;
+}
+
+.action-btn:hover:before {
+    left: 100%;
+}
+
+/* OVERRIDES PARA MODO OSCURO - Forzar aplicación con !important */
+.dark .bg-gray-50 {
+    background-color: #111827 !important;
+}
+
+.dark .text-gray-900 {
+    color: #f9fafb !important;
+}
+
+.dark .bg-white {
+    background-color: #1f2937 !important;
+}
+
+.dark .border-gray-100 {
+    border-color: #374151 !important;
+}
+
+.dark .bg-gray-800 {
+    background-color: #1f2937 !important;
+}
+
+.dark .border-gray-700 {
+    border-color: #374151 !important;
+}
+
+.dark .text-gray-100 {
+    color: #f9fafb !important;
+}
+
+.dark .bg-gray-700 {
+    background-color: #374151 !important;
+}
+
+.dark .border-gray-600 {
+    border-color: #4b5563 !important;
+}
+
+.dark .text-gray-300 {
+    color: #d1d5db !important;
+}
+
+.dark .placeholder-gray-500 {
+    color: #6b7280 !important;
+}
+
+.dark .bg-gray-900 {
+    background-color: #111827 !important;
+}
+
+/* Overrides adicionales para elementos específicos */
+.dark body {
+    background-color: #111827 !important;
+    color: #f9fafb !important;
+}
+
+.dark .bg-gradient-to-br {
+    background: linear-gradient(to bottom right, #111827, #1f2937, #111827) !important;
+}
+
+.dark .from-blue-50 {
+    --tw-gradient-from: #111827 !important;
+}
+
+.dark .via-white {
+    --tw-gradient-via: #1f2937 !important;
+}
+
+.dark .to-purple-50 {
+    --tw-gradient-to: #111827 !important;
+}
+
+/* Transiciones suaves para modo oscuro */
+* {
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+/* Estilos específicos para el contador de tiempo - Solución definitiva al overflow */
+.time-counter-container {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 0;
+    width: 100%;
+    overflow: hidden;
+}
+
+.time-counter-text {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-weight: 600;
+    display: block;
+}
+
+.time-counter-icon {
+    flex-shrink: 0;
+}
+
+/* Asegurar que el contenedor padre también respete las limitaciones */
+.event-card-counter {
+    min-width: 0;
+    max-width: 100%;
+    overflow: hidden;
+}
+
+/* Animaciones específicas para contadores de tiempo */
+/* Animación minimalista para contador naranja (clase en curso) */
+@keyframes counter-pulse-orange {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.85;
+    }
+}
+
+/* Animación minimalista para contador verde (próxima clase) */
+@keyframes counter-glow-green {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.9;
+    }
+}
+
+/* Clases para aplicar las animaciones */
+.counter-animate-orange {
+    animation: counter-pulse-orange 3s ease-in-out infinite;
+}
+
+.counter-animate-green {
+    animation: counter-glow-green 4s ease-in-out infinite;
+}
+
+/* Animación mejorada para el nombre en el saludo - más fluida */
+@keyframes greeting-typewriter-smooth {
+    0% {
+        opacity: 0;
+        transform: translateX(-10px);
+    }
+    10% {
+        opacity: 0.3;
+        transform: translateX(-5px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.animate-greeting-typewriter {
+    animation: greeting-typewriter-smooth 0.6s ease-out both;
+}
+
+/* Animación suave para el reinicio del saludo - más sutil */
+@keyframes greeting-fade-reset {
+    0% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.7;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+.greeting-reset {
+    animation: greeting-fade-reset 0.8s ease-in-out;
+}
+
+/* Animación adicional para el icono del contador */
+@keyframes icon-bounce {
+    0%, 100% {
+        transform: scale(1) rotate(0deg);
+    }
+    25% {
+        transform: scale(1.1) rotate(-5deg);
+    }
+    75% {
+        transform: scale(1.1) rotate(5deg);
+    }
+}
+
+/* Animación sutil para el icono naranja */
+.time-counter-container.text-orange-600 .time-counter-icon.animate-pulse {
+    animation: icon-orange-subtle 2.5s ease-in-out infinite;
+}
+
+@keyframes icon-orange-subtle {
+    0%, 100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(1.05);
+        opacity: 0.8;
+    }
+}
+
+/* Animación especial para el icono verde - más sutil */
+.time-counter-container.text-green-600 .time-counter-icon.animate-pulse {
+    animation: icon-green-subtle 2.5s ease-in-out infinite;
+}
+
+@keyframes icon-green-subtle {
+    0%, 100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(1.05);
+        opacity: 0.8;
+    }
+}
+
+/* Estilos específicos para mensajes de la calculadora */
+.calculator-message-container {
+    width: 100%;
+    max-width: 100%;
+    overflow: hidden;
+    box-sizing: border-box;
+}
+
+.calculator-message-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+.calculator-message-text {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 100%;
+    flex: 1;
+    min-width: 0;
+    box-sizing: border-box;
+}

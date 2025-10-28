@@ -1,0 +1,1234 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#2563eb">
+    <meta name="description" content="Mi Horario FPUNA - Gestiona tu horario de clases y exámenes">
+    <link rel="icon" href="public/favicon.ico" type="image/x-icon">
+    
+    <!-- Base href dinámico para GitHub Pages -->
+    <script>
+        // Detectar y establecer base href dinámicamente
+        (function() {
+            const baseUrl = window.location.hostname === 'localhost' ||
+                           window.location.hostname === '127.0.0.1' ||
+                           !window.location.hostname.includes('github.io')
+                           ? './' : '/' + window.location.pathname.split('/')[1] + '/';
+            
+            const baseTag = document.createElement('base');
+            baseTag.href = baseUrl;
+            document.head.appendChild(baseTag);
+        })();
+    </script>
+    
+    <title>Mi Horario FPUNA</title>
+    
+    <!-- Tailwind CSS (compilado localmente) -->
+    <link rel="stylesheet" href="dist/output.css">
+    
+    <!-- Font Awesome - Carga diferida para mejorar velocidad inicial -->
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"></noscript>
+    
+    <!-- Estilos personalizados -->
+    <link rel="stylesheet" href="src/css/styles.css">
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="public/manifest.json">
+
+    <!-- Preconnect para CDNs - mejora velocidad de carga -->
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    <link rel="preconnect" href="https://cdn.sheetjs.com">
+    <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
+    <link rel="dns-prefetch" href="https://cdn.sheetjs.com">
+
+    <style>
+        /* Pantalla de carga moderna - inline para cargar rápido */
+        #appLoader {
+            position: fixed;
+            inset: 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+        }
+        #appLoader.loaded {
+            opacity: 0;
+            transform: scale(1.1);
+            pointer-events: none;
+        }
+        .loader-content {
+            text-align: center;
+            color: white;
+            animation: fadeInUp 0.6s ease-out;
+        }
+        
+        /* Spinner moderno con anillos múltiples */
+        .spinner-container {
+            position: relative;
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 30px;
+        }
+        
+        .spinner-ring {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            border: 3px solid transparent;
+            animation: rotate 2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+        }
+        
+        .spinner-ring:nth-child(1) {
+            border-top-color: rgba(255, 255, 255, 0.9);
+            animation-delay: 0s;
+        }
+        
+        .spinner-ring:nth-child(2) {
+            border-right-color: rgba(255, 255, 255, 0.7);
+            animation-delay: -0.3s;
+            width: 80%;
+            height: 80%;
+            top: 10%;
+            left: 10%;
+        }
+        
+        .spinner-ring:nth-child(3) {
+            border-bottom-color: rgba(255, 255, 255, 0.5);
+            animation-delay: -0.6s;
+            width: 60%;
+            height: 60%;
+            top: 20%;
+            left: 20%;
+        }
+        
+        /* Icono central */
+        .spinner-icon {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 32px;
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+        
+        @keyframes rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        @keyframes pulse {
+            0%, 100% { 
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(1);
+            }
+            50% { 
+                opacity: 0.6;
+                transform: translate(-50%, -50%) scale(1.1);
+            }
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .loader-text {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            letter-spacing: 0.5px;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+        
+        .loader-subtext {
+            font-size: 15px;
+            opacity: 0.9;
+            font-weight: 400;
+            animation: fadeIn 1s ease-out 0.3s both;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 0.9; }
+        }
+        
+        /* Puntos animados */
+        .loading-dots {
+            display: inline-block;
+        }
+        
+        .loading-dots span {
+            animation: dotPulse 1.4s ease-in-out infinite;
+            opacity: 0;
+        }
+        
+        .loading-dots span:nth-child(1) { animation-delay: 0s; }
+        .loading-dots span:nth-child(2) { animation-delay: 0.2s; }
+        .loading-dots span:nth-child(3) { animation-delay: 0.4s; }
+        
+        @keyframes dotPulse {
+            0%, 60%, 100% { opacity: 0; }
+            30% { opacity: 1; }
+        }
+    </style>
+    
+    </head>
+<body class="bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 min-h-screen">
+    
+    <!-- Pantalla de carga moderna - Se muestra mientras cargan las librerías -->
+    <div id="appLoader">
+        <div class="loader-content">
+            <div class="spinner-container">
+                <div class="spinner-ring"></div>
+                <div class="spinner-ring"></div>
+                <div class="spinner-ring"></div>
+                <div class="spinner-icon">📚</div>
+            </div>
+            <div class="loader-text">Mi Horario FPUNA</div>
+            <div class="loader-subtext">
+                Cargando aplicación<span class="loading-dots"><span>.</span><span>.</span><span>.</span></span>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Pantalla de Bienvenida -->
+    <div id="welcomeScreen" class="hidden min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 via-white to-purple-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 p-4">
+        <div class="w-full max-w-md">
+            <!-- Animación de entrada -->
+            <div class="animate-fade-in">
+                <!-- Icono principal con animación -->
+                <div class="text-center mb-8">
+                    <div class="inline-block animate-bounce">
+                        <i class="fas fa-calendar-check text-7xl text-blue-600 dark:text-blue-400 drop-shadow-lg"></i>
+                    </div>
+                </div>
+
+                <!-- Título con gradiente -->
+                <h1 class="text-3xl md:text-4xl font-bold text-center mb-4 bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-400 dark:to-purple-400 bg-clip-text text-transparent">
+                    ¡Bienvenido a Mi Horario FPUNA!
+                </h1>
+
+                <!-- Descripción animada -->
+                <p class="text-gray-600 dark:text-gray-300 text-center mb-8 text-lg animate-pulse">
+                    Vamos a configurar tu horario personalizado
+                </p>
+
+                <!-- Formulario mejorado -->
+                <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8 border border-gray-100 dark:border-gray-700">
+                    <div class="text-center mb-6">
+                        <i class="fas fa-user-circle text-4xl text-blue-500 mb-3"></i>
+                        <h2 class="text-xl font-semibold text-gray-800 dark:text-gray-200">
+                            ¿Cómo te llamas?
+                        </h2>
+                        <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">
+                            Solo necesitamos tu nombre para personalizar la experiencia
+                        </p>
+                    </div>
+
+                    <form id="welcomeForm" class="space-y-6">
+                        <div>
+                            <label for="userNameInput" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 text-left">
+                                <i class="fas fa-signature mr-2 text-blue-500"></i>Tu nombre
+                            </label>
+                            <input type="text"
+                                   id="userNameInput"
+                                   placeholder="Ingresa tu nombre"
+                                   maxlength="30"
+                                   required
+                                   class="w-full px-4 py-3 border-2 border-gray-200 dark:border-gray-600 rounded-xl bg-gray-50 dark:bg-gray-700 focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 transition-all duration-200 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 text-center font-medium">
+                            <p class="text-xs text-gray-400 dark:text-gray-500 mt-2 text-center">
+                                Máximo 30 caracteres
+                            </p>
+                        </div>
+
+                        <button type="submit"
+                                class="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold py-4 px-6 rounded-xl transition-all duration-300 transform hover:scale-105 hover:shadow-lg focus:ring-4 focus:ring-blue-500/30">
+                            <i class="fas fa-arrow-right mr-2"></i>
+                            ¡Comenzar mi aventura!
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Footer pequeño -->
+                <div class="text-center mt-6">
+                    <p class="text-xs text-gray-400 dark:text-gray-500">
+                        Tu horario personalizado te espera ✨
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pantalla de Configuración Inicial -->
+    <div id="setupScreen" class="hidden min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
+        <div class="container mx-auto px-4 py-8 max-w-4xl">
+            <!-- Header con animación -->
+            <div class="text-center mb-12 animate-fade-in">
+                <div class="inline-block animate-bounce mb-4">
+                    <i class="fas fa-calendar-alt text-7xl text-blue-600 dark:text-blue-400 drop-shadow-lg"></i>
+                </div>
+                <h1 class="text-3xl md:text-4xl font-bold mb-4 bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-400 dark:to-purple-400 bg-clip-text text-transparent">
+                    ¡Vamos a crear tu horario!
+                </h1>
+                <p class="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+                    Sigue estos sencillos pasos y tendrás tu horario personalizado en minutos
+                </p>
+            </div>
+
+            <!-- Contenedor principal con mejor diseño -->
+            <div class="bg-white dark:bg-gray-800 rounded-3xl shadow-2xl p-8 md:p-12 border border-gray-100 dark:border-gray-700">
+                <div class="mb-8">
+                    <div class="flex items-center justify-center mb-6">
+                        <div class="flex items-center bg-blue-100 dark:bg-blue-900/30 px-4 py-2 rounded-full">
+                            <span class="bg-blue-600 text-white text-sm font-bold w-8 h-8 rounded-full flex items-center justify-center mr-3">1</span>
+                            <h2 class="text-xl font-bold text-blue-700 dark:text-blue-300">
+                                <i class="fas fa-file-excel mr-2"></i>
+                                Obtén tu archivo de horarios
+                            </h2>
+                        </div>
+                    </div>
+
+                    <p class="text-center text-gray-600 dark:text-gray-400 mb-8 text-lg">
+                        <i class="fas fa-info-circle text-blue-500 mr-2"></i>
+                        Necesitas el archivo oficial de horarios de la FPUNA en formato Excel (.xlsx)
+                    </p>
+
+                    <!-- Opciones para obtener el archivo -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                        <!-- Opción 1: Descargar -->
+                        <div class="group">
+                            <a href="https://www.pol.una.py/academico/horarios-de-clases-y-examenes/"
+                               target="_blank"
+                               rel="noopener noreferrer"
+                               class="block p-6 bg-gradient-to-br from-green-50 to-green-100 dark:from-green-900/20 dark:to-green-800/20 border-2 border-green-200 dark:border-green-700 rounded-2xl hover:shadow-lg hover:scale-105 transition-all duration-300">
+                                <div class="text-center">
+                                    <i class="fas fa-download text-5xl text-green-600 dark:text-green-400 mb-4 group-hover:animate-bounce"></i>
+                                    <h3 class="font-bold text-xl text-green-700 dark:text-green-300 mb-2">Descargar Horario</h3>
+                                    <p class="text-sm text-green-600 dark:text-green-400">
+                                        Ve al sitio oficial de la FPUNA
+                                    </p>
+                                </div>
+                            </a>
+                        </div>
+
+                        <!-- Opción 2: Cargar archivo -->
+                        <div class="group">
+                            <label for="fileInput"
+                                   class="block p-6 bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900/20 dark:to-blue-800/20 border-2 border-blue-200 dark:border-blue-700 rounded-2xl hover:shadow-lg hover:scale-105 transition-all duration-300 cursor-pointer">
+                                <div class="text-center">
+                                    <i class="fas fa-file-excel text-5xl text-blue-600 dark:text-blue-400 mb-4 group-hover:animate-bounce"></i>
+                                    <h3 class="font-bold text-xl text-blue-700 dark:text-blue-300 mb-2">Ya tengo el archivo</h3>
+                                    <p class="text-sm text-blue-600 dark:text-blue-400">
+                                        Seleccionar archivo .xlsx
+                                    </p>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <input type="file" id="fileInput" accept=".xlsx" class="hidden">
+                    <div id="fileError" class="text-red-600 text-sm mt-4 text-center hidden animate-pulse bg-red-50 dark:bg-red-900/20 p-3 rounded-lg"></div>
+                </div>
+
+                <!-- Spinner de carga mejorado -->
+                <div id="loadingSpinner" class="hidden flex flex-col items-center justify-center py-12">
+                    <div class="relative">
+                        <div class="spinner"></div>
+                        <div class="absolute inset-0 flex items-center justify-center">
+                            <i class="fas fa-file-excel text-2xl text-blue-600 dark:text-blue-400 animate-pulse"></i>
+                        </div>
+                    </div>
+                    <p class="text-gray-600 dark:text-gray-400 mt-4 font-medium">Procesando tu archivo...</p>
+                    <p class="text-sm text-gray-500 dark:text-gray-500 mt-1">Esto tomará solo unos segundos</p>
+                </div>
+
+                <!-- Paso 2: Seleccionar Carrera -->
+                <div id="step2" class="mb-8 hidden">
+                    <div class="flex items-center justify-center mb-6">
+                        <div class="flex items-center bg-green-100 dark:bg-green-900/30 px-4 py-2 rounded-full">
+                            <span class="bg-green-600 text-white text-sm font-bold w-8 h-8 rounded-full flex items-center justify-center mr-3">2</span>
+                            <h2 class="text-xl font-bold text-green-700 dark:text-green-300">
+                                <i class="fas fa-graduation-cap mr-2"></i>
+                                Selecciona tu carrera
+                            </h2>
+                        </div>
+                    </div>
+
+                    <div class="max-w-md mx-auto">
+                        <select id="carreraSelect" class="w-full px-4 py-3 border-2 border-gray-200 dark:border-gray-600 rounded-xl bg-gray-50 dark:bg-gray-700 focus:ring-4 focus:ring-green-500/20 focus:border-green-500 transition-all duration-200 text-gray-900 dark:text-gray-100">
+                            <option value="">-- Selecciona una carrera --</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Paso 3: Filtros con Cascada -->
+                <div id="step3" class="mb-8 hidden">
+                    <div class="flex items-center justify-center mb-6">
+                        <div class="flex items-center bg-purple-100 dark:bg-purple-900/30 px-4 py-2 rounded-full">
+                            <span class="bg-purple-600 text-white text-sm font-bold w-8 h-8 rounded-full flex items-center justify-center mr-3">3</span>
+                            <h2 class="text-xl font-bold text-purple-700 dark:text-purple-300">
+                                <i class="fas fa-filter mr-2"></i>
+                                Configura tu horario
+                            </h2>
+                        </div>
+                    </div>
+
+                    <!-- Paso 3.1: Selección de Semestres -->
+                    <div class="mb-8 p-6 bg-blue-50 dark:bg-blue-900/10 rounded-2xl border border-blue-200 dark:border-blue-800">
+                        <h3 class="text-lg font-semibold mb-4 text-blue-700 dark:text-blue-300 flex items-center">
+                            <i class="fas fa-layer-group mr-2"></i>
+                            Paso 3.1: Selecciona tus semestres
+                        </h3>
+                        <div id="semestreCheckboxes" class="grid grid-cols-2 md:grid-cols-4 gap-3"></div>
+                    </div>
+
+                    <!-- Paso 3.2: Selección de Asignaturas -->
+                    <div id="asignaturasSection" class="mb-8 p-6 bg-green-50 dark:bg-green-900/10 rounded-2xl border border-green-200 dark:border-green-800 hidden">
+                        <h3 class="text-lg font-semibold mb-4 text-green-700 dark:text-green-300 flex items-center">
+                            <i class="fas fa-book mr-2"></i>
+                            Paso 3.2: Elige tus materias
+                        </h3>
+                        <p class="text-sm text-gray-600 dark:text-gray-400 mb-4 flex items-center">
+                            <i class="fas fa-info-circle text-blue-500 mr-2"></i>
+                            Mostrando materias de los semestres seleccionados
+                        </p>
+                        <div id="asignaturaCheckboxes" class="grid grid-cols-1 md:grid-cols-2 gap-3 max-h-96 overflow-y-auto"></div>
+                    </div>
+
+                    <!-- Paso 3.3: Selección de Instancias -->
+                    <div id="instanciasSection" class="mb-8 p-6 bg-purple-50 dark:bg-purple-900/10 rounded-2xl border border-purple-200 dark:border-purple-800 hidden">
+                        <h3 class="text-lg font-semibold mb-4 text-purple-700 dark:text-purple-300 flex items-center">
+                            <i class="fas fa-tasks mr-2"></i>
+                            Paso 3.3: Selecciona las clases específicas
+                        </h3>
+                        <p class="text-sm text-gray-600 dark:text-gray-400 mb-4 flex items-center">
+                            <i class="fas fa-lightbulb text-yellow-500 mr-2"></i>
+                            Algunas materias tienen múltiples secciones. Elige cuáles cursarás
+                        </p>
+                        <div id="instanciaCheckboxes" class="space-y-3 max-h-96 overflow-y-auto"></div>
+                    </div>
+                </div>
+
+                <!-- Botón Guardar -->
+                <div id="step4" class="hidden text-center">
+                    <button id="saveConfigBtn" class="bg-gradient-to-r from-green-600 to-blue-600 hover:from-green-700 hover:to-blue-700 text-white font-bold py-4 px-8 rounded-2xl transition-all duration-300 transform hover:scale-105 hover:shadow-xl focus:ring-4 focus:ring-green-500/30 text-lg">
+                        <i class="fas fa-magic mr-2"></i>
+                        ¡Generar Mi Horario Perfecto!
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Vista Principal (Dashboard) -->
+    <div id="dashboardScreen" class="hidden min-h-screen bg-gray-50 dark:bg-gray-900">
+        <!-- Header Moderno -->
+        <header class="bg-gradient-to-r from-blue-600 via-blue-700 to-indigo-700 dark:from-blue-800 dark:via-blue-900 dark:to-indigo-900 text-white shadow-xl sticky top-0 z-40">
+            <div class="container mx-auto px-4 py-2 max-w-4xl">
+                <div class="flex justify-between items-center">
+                    <!-- Avatar y Saludo -->
+                    <div class="flex items-center space-x-3">
+                        <div class="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm">
+                            <i class="fas fa-user-graduate text-lg"></i>
+                        </div>
+                        <div>
+                            <h1 id="greetingHeader" class="text-base font-bold animate-fade-in">¡Hola!</h1>
+                            <p id="currentDate" class="text-xs text-blue-100 opacity-90"></p>
+                        </div>
+                    </div>
+
+                    <!-- Botones de Acción -->
+                    <div class="flex items-center space-x-2">
+                        <button id="gradeCalculatorBtn" class="p-2 hover:bg-white/10 rounded-lg transition-all duration-200" title="Calculadora de Notas">
+                            <i class="fas fa-calculator text-lg"></i>
+                        </button>
+                        <button id="settingsBtn" class="p-2 hover:bg-white/10 rounded-lg transition-all duration-200" title="Ajustes">
+                            <i class="fas fa-cog text-lg"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Dashboard con Métricas -->
+        <main class="pb-32">
+            <!-- Métricas Rápidas -->
+            <section class="px-4 py-6 bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-gray-800 dark:to-gray-700">
+                <div class="container mx-auto max-w-4xl">
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                        <!-- Clases Hoy -->
+                        <div class="bg-white dark:bg-gray-800 rounded-2xl p-4 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 cursor-pointer metric-card" data-target="todayClasses">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <p class="text-sm text-gray-600 dark:text-gray-400">📚 Clases Hoy</p>
+                                    <p class="text-2xl font-bold text-blue-600 dark:text-blue-400" id="todayCount">0</p>
+                                </div>
+                                <div class="w-12 h-12 bg-blue-100 dark:bg-blue-900/30 rounded-full flex items-center justify-center">
+                                    <i class="fas fa-calendar-day text-blue-600 dark:text-blue-400"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Exámenes Próximos -->
+                        <div class="bg-white dark:bg-gray-800 rounded-2xl p-4 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 cursor-pointer metric-card" data-target="exams">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <p class="text-sm text-gray-600 dark:text-gray-400">📝 Exámenes</p>
+                                    <p class="text-2xl font-bold text-red-600 dark:text-red-400" id="examsCount">0</p>
+                                </div>
+                                <div class="w-12 h-12 bg-red-100 dark:bg-red-900/30 rounded-full flex items-center justify-center">
+                                    <i class="fas fa-clipboard-check text-red-600 dark:text-red-400"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Tareas Pendientes -->
+                        <div class="bg-white dark:bg-gray-800 rounded-2xl p-4 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 cursor-pointer metric-card" data-target="tasks">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <p class="text-sm text-gray-600 dark:text-gray-400">✅ Tareas</p>
+                                    <p class="text-2xl font-bold text-green-600 dark:text-green-400" id="tasksCount">0</p>
+                                </div>
+                                <div class="w-12 h-12 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center">
+                                    <i class="fas fa-tasks text-green-600 dark:text-green-400"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Clases Ocasionales -->
+                        <div class="bg-white dark:bg-gray-800 rounded-2xl p-4 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 cursor-pointer metric-card" data-target="occasional">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <p class="text-sm text-gray-600 dark:text-gray-400">🎓 Ocasionales</p>
+                                    <p class="text-2xl font-bold text-purple-600 dark:text-purple-400" id="occasionalCount">0</p>
+                                </div>
+                                <div class="w-12 h-12 bg-purple-100 dark:bg-purple-900/30 rounded-full flex items-center justify-center">
+                                    <i class="fas fa-calendar-plus text-purple-600 dark:text-purple-400"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Accesos Rápidos -->
+            <section class="px-4 py-4">
+                <div class="container mx-auto max-w-4xl">
+                    <div class="grid grid-cols-2 gap-2">
+                        <!-- EALU -->
+                        <a href="https://www.cnc.una.py/ealu/#/pages/login?returnUrl=%2Fperfil%2Fcedula-universitaria"
+                           target="_blank" rel="noopener noreferrer"
+                           class="bg-gradient-to-br from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white rounded-2xl p-4 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 group">
+                            <div class="flex items-center space-x-3">
+                                <div class="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center group-hover:rotate-12 transition-transform">
+                                    <i class="fas fa-graduation-cap"></i>
+                                </div>
+                                <div>
+                                    <p class="font-semibold text-sm">EALU</p>
+                                    <p class="text-xs opacity-90">Cédula Digital</p>
+                                </div>
+                            </div>
+                        </a>
+
+                        <!-- EDUCA -->
+                        <a href="https://grado.pol.una.py/login/index.php"
+                           target="_blank" rel="noopener noreferrer"
+                           class="bg-gradient-to-br from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white rounded-2xl p-4 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 group">
+                            <div class="flex items-center space-x-3">
+                                <div class="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center group-hover:rotate-12 transition-transform">
+                                    <i class="fas fa-book-open"></i>
+                                </div>
+                                <div>
+                                    <p class="font-semibold text-sm">EDUCA</p>
+                                    <p class="text-xs opacity-90">Plataforma</p>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Contenido Principal -->
+            <section class="px-4 pb-6">
+                <div class="container mx-auto max-w-4xl space-y-4">
+
+                    <!-- Clases de Hoy -->
+                    <div id="todayClasses" class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg overflow-hidden">
+                        <button id="toggleTodayClassesBtn" class="w-full text-left flex items-center justify-between p-5 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
+                            <div class="flex items-center space-x-3">
+                                <div class="w-10 h-10 bg-blue-100 dark:bg-blue-900/30 rounded-xl flex items-center justify-center">
+                                    <i class="fas fa-calendar-day text-blue-600 dark:text-blue-400"></i>
+                                </div>
+                                <div>
+                                    <h3 class="font-bold text-gray-900 dark:text-gray-100">Clases de Hoy</h3>
+                                    <p class="text-sm text-gray-600 dark:text-gray-400" id="todaySummary">Sin clases programadas</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <span class="bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 text-xs px-2 py-1 rounded-full font-medium" id="todayBadge">0</span>
+                                <i id="todayClassesToggleIcon" class="fas fa-chevron-down text-gray-400 transition-transform duration-300"></i>
+                            </div>
+                        </button>
+                        <div id="todayClassesContainer" class="hidden border-t border-gray-100 dark:border-gray-700">
+                            <div id="todayClasses" class="p-5"></div>
+                        </div>
+                    </div>
+
+                    <!-- Próximos Exámenes -->
+                    <div id="exams" class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg overflow-hidden">
+                        <button id="toggleExamsBtn" class="w-full text-left flex items-center justify-between p-5 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
+                            <div class="flex items-center space-x-3">
+                                <div class="w-10 h-10 bg-red-100 dark:bg-red-900/30 rounded-xl flex items-center justify-center">
+                                    <i class="fas fa-clipboard-check text-red-600 dark:text-red-400"></i>
+                                </div>
+                                <div>
+                                    <h3 class="font-bold text-gray-900 dark:text-gray-100">Próximos Exámenes</h3>
+                                    <p class="text-sm text-gray-600 dark:text-gray-400" id="examsSummary">Sin exámenes próximos</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <span class="bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300 text-xs px-2 py-1 rounded-full font-medium" id="examsBadge">0</span>
+                                <i id="examsToggleIcon" class="fas fa-chevron-down text-gray-400 transition-transform duration-300"></i>
+                            </div>
+                        </button>
+                        <div id="examsContainer" class="hidden border-t border-gray-100 dark:border-gray-700">
+                            <div id="upcomingExams" class="p-5"></div>
+                        </div>
+                    </div>
+
+                    <!-- Clases Ocasionales -->
+                    <div id="occasional" class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg overflow-hidden">
+                        <button id="toggleOccasionalBtn" class="w-full text-left flex items-center justify-between p-5 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
+                            <div class="flex items-center space-x-3">
+                                <div class="w-10 h-10 bg-purple-100 dark:bg-purple-900/30 rounded-xl flex items-center justify-center">
+                                    <i class="fas fa-calendar-plus text-purple-600 dark:text-purple-400"></i>
+                                </div>
+                                <div>
+                                    <h3 class="font-bold text-gray-900 dark:text-gray-100">Clases Ocasionales</h3>
+                                    <p class="text-sm text-gray-600 dark:text-gray-400" id="occasionalSummary">Sin clases ocasionales</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <span class="bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 text-xs px-2 py-1 rounded-full font-medium" id="occasionalBadge">0</span>
+                                <i id="occasionalToggleIcon" class="fas fa-chevron-down text-gray-400 transition-transform duration-300"></i>
+                            </div>
+                        </button>
+                        <div id="occasionalContainer" class="hidden border-t border-gray-100 dark:border-gray-700">
+                            <div id="occasionalClasses" class="p-5"></div>
+                        </div>
+                    </div>
+
+                    <!-- Mis Tareas -->
+                    <div id="tasks" class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg overflow-hidden">
+                        <div class="flex items-center justify-between p-5 border-b border-gray-100 dark:border-gray-700">
+                            <button id="toggleTasksBtn" class="flex-1 text-left flex items-center space-x-3">
+                                <div class="w-10 h-10 bg-green-100 dark:bg-green-900/30 rounded-xl flex items-center justify-center">
+                                    <i class="fas fa-clipboard-list text-green-600 dark:text-green-400"></i>
+                                </div>
+                                <div>
+                                    <h3 class="font-bold text-gray-900 dark:text-gray-100">Mis Tareas</h3>
+                                    <p class="text-sm text-gray-600 dark:text-gray-400" id="tasksSummary">Sin tareas pendientes</p>
+                                </div>
+                            </button>
+                            <div class="flex items-center space-x-2">
+                                <span class="bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 text-xs px-2 py-1 rounded-full font-medium" id="tasksBadge">0</span>
+                                <button id="addTaskFab" class="w-8 h-8 bg-green-600 hover:bg-green-700 text-white rounded-lg flex items-center justify-center transition-colors">
+                                    <i class="fas fa-plus text-sm"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div id="tasksContainer" class="border-t border-gray-100 dark:border-gray-700">
+                            <div id="userTasksContainer" class="p-5"></div>
+                        </div>
+                    </div>
+
+                    <!-- Historial -->
+                    <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg overflow-hidden">
+                        <button id="toggleHistoryBtn" class="w-full text-left flex items-center justify-between p-5 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
+                            <div class="flex items-center space-x-3">
+                                <div class="w-10 h-10 bg-gray-100 dark:bg-gray-700 rounded-xl flex items-center justify-center">
+                                    <i class="fas fa-history text-gray-600 dark:text-gray-400"></i>
+                                </div>
+                                <div>
+                                    <h3 class="font-bold text-gray-900 dark:text-gray-100">Historial</h3>
+                                    <p class="text-sm text-gray-600 dark:text-gray-400">Tareas completadas</p>
+                                </div>
+                            </div>
+                            <i id="historyToggleIcon" class="fas fa-chevron-down text-gray-400 transition-transform duration-300"></i>
+                        </button>
+                        <div id="taskHistoryContainer" class="hidden border-t border-gray-100 dark:border-gray-700">
+                            <div class="p-5"></div>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+        </main>
+    
+    <!-- Modal de Ajustes -->
+    <div id="settingsModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black bg-opacity-50 transition-opacity">
+        <div class="modal-content bg-white dark:bg-gray-800 rounded-2xl shadow-2xl max-w-2xl w-full max-h-[95vh] overflow-y-auto m-4">
+            <div class="p-8">
+                <!-- Header -->
+                <div class="flex justify-between items-center mb-8">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-12 h-12 bg-gradient-to-br from-purple-500 to-pink-600 rounded-xl flex items-center justify-center">
+                            <i class="fas fa-cog text-white text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-2xl font-bold text-gray-900 dark:text-white">Ajustes</h3>
+                            <p class="text-sm text-gray-600 dark:text-gray-400">Personaliza tu experiencia</p>
+                        </div>
+                    </div>
+                    <button id="closeSettingsBtn" class="w-10 h-10 rounded-xl bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 flex items-center justify-center transition-colors">
+                        <i class="fas fa-times text-gray-500 dark:text-gray-400"></i>
+                    </button>
+                </div>
+
+                <!-- Settings Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+                    <!-- Left Column - Appearance & Data -->
+                    <div class="space-y-6">
+                        <!-- Theme Toggle -->
+                        <div class="bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20 rounded-xl p-6 border border-purple-100 dark:border-purple-800 settings-card">
+                            <h4 class="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center">
+                                <i class="fas fa-palette text-purple-600 mr-2"></i>
+                                Apariencia
+                            </h4>
+
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center space-x-3">
+                                    <div class="w-10 h-10 bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-600 dark:to-gray-700 rounded-lg flex items-center justify-center">
+                                        <i class="fas fa-moon text-gray-600 dark:text-gray-300"></i>
+                                    </div>
+                                    <div>
+                                        <p class="font-medium text-gray-900 dark:text-white">Modo Oscuro</p>
+                                        <p class="text-xs text-gray-600 dark:text-gray-400">Cambia entre tema claro y oscuro</p>
+                                    </div>
+                                </div>
+                                <label class="relative inline-flex items-center cursor-pointer">
+                                    <input type="checkbox" id="themeToggle" class="sr-only peer">
+                                    <div class="w-11 h-6 bg-gray-300 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-600 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Data Management -->
+                        <div class="bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 rounded-xl p-6 border border-blue-100 dark:border-blue-800 settings-card">
+                            <h4 class="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center">
+                                <i class="fas fa-database text-blue-600 mr-2"></i>
+                                Gestión de Datos
+                            </h4>
+
+                            <div class="space-y-3">
+                                <button id="modifyFiltersBtn" class="w-full bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 text-gray-900 dark:text-white font-medium py-3 px-4 rounded-lg transition-all duration-200 flex items-center justify-center border border-gray-200 dark:border-gray-600 action-btn">
+                                    <i class="fas fa-edit mr-2 text-blue-600"></i>
+                                    Modificar Filtros
+                                </button>
+
+                                <button id="exportBtn" class="w-full bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 text-gray-900 dark:text-white font-medium py-3 px-4 rounded-lg transition-all duration-200 flex items-center justify-center border border-gray-200 dark:border-gray-600 action-btn">
+                                    <i class="fas fa-download mr-2 text-green-600"></i>
+                                    Exportar Datos
+                                </button>
+
+                                <label for="importInput" class="w-full bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 text-gray-900 dark:text-white font-medium py-3 px-4 rounded-lg transition-all duration-200 flex items-center justify-center border border-gray-200 dark:border-gray-600 cursor-pointer action-btn">
+                                    <i class="fas fa-upload mr-2 text-purple-600"></i>
+                                    Importar Datos
+                                </label>
+                                <input type="file" id="importInput" accept=".json" class="hidden">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right Column - Actions & Info -->
+                    <div class="space-y-6">
+                        <!-- Danger Zone -->
+                        <div class="bg-gradient-to-br from-red-50 to-orange-50 dark:from-red-900/20 dark:to-orange-900/20 rounded-xl p-6 border border-red-100 dark:border-red-800 settings-card">
+                            <h4 class="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center">
+                                <i class="fas fa-exclamation-triangle text-red-600 mr-2"></i>
+                                Zona de Peligro
+                            </h4>
+
+                            <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">
+                                Esta acción no se puede deshacer. Se perderán todos tus datos guardados.
+                            </p>
+
+                            <button id="resetBtn" class="w-full bg-gradient-to-r from-red-600 to-orange-600 hover:from-red-700 hover:to-orange-700 text-white font-semibold py-3 px-6 rounded-lg transition-all duration-200 transform hover:scale-105 shadow-lg hover:shadow-xl">
+                                <i class="fas fa-redo mr-2"></i>
+                                Reiniciar Aplicación
+                            </button>
+                        </div>
+
+                        <!-- App Info -->
+                        <div class="bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 rounded-xl p-6 border border-green-100 dark:border-green-800 settings-card">
+                            <h4 class="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center">
+                                <i class="fas fa-info-circle text-green-600 mr-2"></i>
+                                Información
+                            </h4>
+
+                            <div class="space-y-3">
+                                <div class="flex items-center justify-between">
+                                    <span class="text-sm text-gray-600 dark:text-gray-400">Versión</span>
+                                    <span class="font-mono text-sm bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 px-2 py-1 rounded">v1.2.1</span>
+                                </div>
+                                <div class="flex items-center justify-between">
+                                    <span class="text-sm text-gray-600 dark:text-gray-400">Tipo</span>
+                                    <span class="text-sm bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-2 py-1 rounded">PWA</span>
+                                </div>
+                            </div>
+
+                            <div class="mt-4 pt-4 border-t border-green-200 dark:border-green-700">
+                                <div class="space-y-2">
+                                    <div class="flex items-center text-xs text-green-700 dark:text-green-300">
+                                        <i class="fas fa-check-circle mr-2"></i>
+                                        Parser de clases ocasionales corregido
+                                    </div>
+                                    <div class="flex items-center text-xs text-green-700 dark:text-green-300">
+                                        <i class="fas fa-check-circle mr-2"></i>
+                                        Búsqueda robusta del encabezado
+                                    </div>
+                                    <div class="flex items-center text-xs text-green-700 dark:text-green-300">
+                                        <i class="fas fa-check-circle mr-2"></i>
+                                        Debugging mejorado
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Footer -->
+                <div class="text-center pt-6 border-t border-gray-200 dark:border-gray-700">
+                    <p class="text-sm text-gray-500 dark:text-gray-400">
+                        Mi Horario FPUNA - Gestiona tu horario académico eficientemente
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Modal de Confirmación para Reiniciar -->
+    <div id="confirmModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black bg-opacity-50 transition-opacity">
+        <div class="modal-content bg-white dark:bg-gray-800 rounded-2xl shadow-2xl max-w-md w-full m-4">
+            <div class="p-8">
+                <div class="text-center">
+                    <!-- Warning Icon -->
+                    <div class="w-20 h-20 bg-gradient-to-br from-red-500 to-orange-600 rounded-full flex items-center justify-center mx-auto mb-6 animate-bounce-in">
+                        <i class="fas fa-exclamation-triangle text-3xl text-white"></i>
+                    </div>
+
+                    <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">¿Estás completamente seguro?</h3>
+
+                    <div class="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-xl p-4 mb-6">
+                        <p class="text-red-800 dark:text-red-200 font-medium mb-2">
+                            <i class="fas fa-exclamation-triangle mr-2"></i>
+                            Esta acción no se puede deshacer
+                        </p>
+                        <p class="text-sm text-red-700 dark:text-red-300">
+                            Se borrarán permanentemente todos tus datos guardados, incluyendo horarios, tareas y configuraciones personalizadas.
+                        </p>
+                    </div>
+
+                    <div class="flex gap-4">
+                        <button id="cancelResetBtn" class="flex-1 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-900 dark:text-white font-semibold py-3 px-6 rounded-xl transition-all duration-200">
+                            <i class="fas fa-times mr-2"></i>
+                            Cancelar
+                        </button>
+                        <button id="confirmResetBtn" class="flex-1 bg-gradient-to-r from-red-600 to-orange-600 hover:from-red-700 hover:to-orange-700 text-white font-semibold py-3 px-6 rounded-xl transition-all duration-200 transform hover:scale-105 shadow-lg hover:shadow-xl">
+                            <i class="fas fa-redo mr-2"></i>
+                            Sí, borrar todo
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Modal Calculadora de Notas -->
+    <div id="gradeCalculatorModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black bg-opacity-50 transition-opacity p-2 sm:p-4">
+        <div class="modal-content bg-white dark:bg-gray-800 rounded-2xl shadow-2xl max-w-4xl w-full max-h-[90vh] sm:max-h-[95vh] overflow-y-auto">
+            <div class="p-4 sm:p-6 lg:p-8">
+                <!-- Header -->
+                <div class="flex justify-between items-center mb-4 sm:mb-6 gap-2">
+                    <div class="flex items-center gap-2 sm:gap-3 flex-1 min-w-0">
+                        <div class="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center flex-shrink-0">
+                            <i class="fas fa-calculator text-white text-base sm:text-lg"></i>
+                        </div>
+                        <div class="min-w-0 flex-1">
+                            <h3 class="text-base sm:text-xl lg:text-2xl font-bold text-gray-900 dark:text-white truncate">Calculadora de Notas</h3>
+                            <p class="text-xs sm:text-sm text-gray-600 dark:text-gray-400">Sistema FPUNA</p>
+                        </div>
+                    </div>
+                    <button id="closeGradeCalculatorBtn" class="w-10 h-10 rounded-xl bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 flex items-center justify-center transition-colors flex-shrink-0">
+                        <i class="fas fa-times text-gray-500 dark:text-gray-400"></i>
+                    </button>
+                </div>
+
+                <!-- Calculator Form -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 mb-4 sm:mb-6">
+                    <!-- Left Column - Inputs -->
+                    <div class="space-y-4">
+                        <div class="bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 rounded-xl p-4 sm:p-6 border border-blue-100 dark:border-blue-800">
+                            <h4 class="text-base sm:text-lg font-semibold text-gray-900 dark:text-white mb-3 sm:mb-4 flex items-center">
+                                <i class="fas fa-chart-line text-blue-600 mr-2 text-sm sm:text-base"></i>
+                                Evaluaciones
+                            </h4>
+
+                            <div class="space-y-3 sm:space-y-4">
+                                <div>
+                                    <label class="block text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5 sm:mb-2">
+                                        Promedio Ponderado (PP)
+                                        <span class="text-xs text-gray-500 ml-1">40%</span>
+                                    </label>
+                                    <div class="relative">
+                                        <input type="number" id="ppInput" min="0" max="100" step="0.1"
+                                               class="w-full px-3 sm:px-4 py-2.5 sm:py-3 pl-10 sm:pl-12 text-sm sm:text-base border border-gray-300 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-700 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                                               placeholder="Ej: 75.5">
+                                        <div class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
+                                            <i class="fas fa-percentage text-xs sm:text-sm"></i>
+                                        </div>
+                                    </div>
+                                    <p class="text-xs text-gray-500 mt-1">Procesos, quices, trabajos prácticos</p>
+                                </div>
+
+                                <div>
+                                    <label class="block text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5 sm:mb-2">
+                                        Examen Final (EF)
+                                        <span class="text-xs text-gray-500 ml-1">60%</span>
+                                    </label>
+                                    <div class="relative">
+                                        <input type="number" id="efInput" min="0" max="100" step="0.1"
+                                               class="w-full px-3 sm:px-4 py-2.5 sm:py-3 pl-10 sm:pl-12 text-sm sm:text-base border border-gray-300 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-700 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                                               placeholder="Ej: 82.0">
+                                        <div class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
+                                            <i class="fas fa-file-alt text-xs sm:text-sm"></i>
+                                        </div>
+                                    </div>
+                                    <p class="text-xs text-gray-500 mt-1">Mínimo 50 puntos para aprobar</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Calculate Button -->
+                        <button id="calculateGradeBtn" class="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold py-3 sm:py-4 px-4 rounded-xl transition-all duration-200 shadow-lg hover:shadow-xl text-sm sm:text-base">
+                            <i class="fas fa-calculator mr-2"></i>
+                            Calcular Nota Final
+                        </button>
+                    </div>
+
+                    <!-- Right Column - Result -->
+                    <div class="space-y-4 min-w-0">
+                        <div class="bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 rounded-xl p-4 sm:p-6 border border-green-100 dark:border-green-800 overflow-hidden">
+                            <h4 class="text-base sm:text-lg font-semibold text-gray-900 dark:text-white mb-3 sm:mb-4 flex items-center">
+                                <i class="fas fa-trophy text-green-600 mr-2 text-sm sm:text-base"></i>
+                                Resultado
+                            </h4>
+
+                            <div id="gradeResult" class="min-h-[120px] sm:min-h-32 flex items-center justify-center w-full max-w-full overflow-hidden">
+                                <div class="text-center text-gray-500 dark:text-gray-400">
+                                    <i class="fas fa-calculator text-3xl sm:text-4xl mb-2 opacity-50"></i>
+                                    <p class="text-xs sm:text-sm">Ingresa los valores y calcula</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Quick Examples -->
+                        <div class="bg-gray-50 dark:bg-gray-700/50 rounded-xl p-3 sm:p-4">
+                            <h5 class="text-xs sm:text-sm font-semibold text-gray-900 dark:text-white mb-2 sm:mb-3">Ejemplos Rápidos</h5>
+                            <div class="grid grid-cols-2 gap-2">
+                                <button class="quick-example-btn text-xs px-2 py-2 bg-white dark:bg-gray-600 rounded-lg hover:bg-blue-50 dark:hover:bg-blue-900/30 transition-colors truncate" data-pp="75" data-ef="80">
+                                    PP: 75, EF: 80
+                                </button>
+                                <button class="quick-example-btn text-xs px-2 py-2 bg-white dark:bg-gray-600 rounded-lg hover:bg-blue-50 dark:hover:bg-blue-900/30 transition-colors truncate" data-pp="85" data-ef="65">
+                                    PP: 85, EF: 65
+                                </button>
+                                <button class="quick-example-btn text-xs px-2 py-2 bg-white dark:bg-gray-600 rounded-lg hover:bg-green-50 dark:hover:bg-green-900/30 transition-colors truncate" data-pp="90" data-ef="95">
+                                    PP: 90, EF: 95
+                                </button>
+                                <button class="quick-example-btn text-xs px-2 py-2 bg-white dark:bg-gray-600 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/30 transition-colors truncate" data-pp="60" data-ef="45">
+                                    PP: 60, EF: 45
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Formula Info -->
+                <div class="bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20 rounded-xl p-4 sm:p-6 border border-blue-100 dark:border-blue-800">
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
+                        <div>
+                            <h5 class="text-sm sm:text-base font-semibold text-gray-900 dark:text-white mb-2 flex items-center">
+                                <i class="fas fa-equation text-blue-600 mr-2 text-xs sm:text-sm"></i>
+                                Fórmula FPUNA
+                            </h5>
+                            <p class="text-xs sm:text-sm text-gray-600 dark:text-gray-400">
+                                <strong class="text-sm sm:text-base">PF = (0.4 × PP) + (0.6 × EF)</strong><br>
+                                Donde PF es la Puntuación Final
+                            </p>
+                        </div>
+
+                        <div>
+                            <h5 class="text-sm sm:text-base font-semibold text-gray-900 dark:text-white mb-2 flex items-center">
+                                <i class="fas fa-graduation-cap text-purple-600 mr-2 text-xs sm:text-sm"></i>
+                                Escala de Calificación
+                            </h5>
+                            <div class="text-xs sm:text-sm text-gray-600 dark:text-gray-400 space-y-0.5 sm:space-y-1">
+                                <div>90-100: Excelente (5)</div>
+                                <div>80-89: Muy Bueno (4)</div>
+                                <div>70-79: Bueno (3)</div>
+                                <div>60-69: Regular (2)</div>
+                                <div>0-59: Reprobado (1)</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-3 sm:mt-4 p-2.5 sm:p-3 bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg">
+                        <p class="text-xs sm:text-sm text-yellow-800 dark:text-yellow-200 flex items-start gap-2">
+                            <i class="fas fa-exclamation-triangle mt-0.5 flex-shrink-0 text-xs"></i>
+                            <span><strong>Importante:</strong> Se requiere mínimo 50 puntos en el Examen Final para aprobar la materia.</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Modal Gestor de Tareas -->
+    <div id="taskModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black bg-opacity-50 transition-opacity">
+        <div class="modal-content bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-lg w-full max-h-[90vh] overflow-y-auto m-4">
+            <div class="p-6">
+                <div class="flex justify-between items-center mb-6">
+                    <h3 id="taskModalTitle" class="text-xl font-bold flex items-center">
+                        <i class="fas fa-tasks text-green-600 mr-2"></i>
+                        Nueva Tarea
+                    </h3>
+                    <button id="closeTaskModalBtn" class="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200">
+                        <i class="fas fa-times text-2xl"></i>
+                    </button>
+                </div>
+                
+                <input type="hidden" id="taskId">
+                
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium mb-2">
+                            Título <span class="text-red-500">*</span>
+                        </label>
+                        <input type="text" id="taskTitle" 
+                               class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                               placeholder="Ej: Entregar proyecto de programación"
+                               required>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium mb-2">
+                            Descripción
+                        </label>
+                        <textarea id="taskDescription" rows="3"
+                                  class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                                  placeholder="Detalles adicionales..."></textarea>
+                    </div>
+                    
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium mb-2">
+                                Fecha de Vencimiento <span class="text-red-500">*</span>
+                            </label>
+                            <input type="date" id="taskDate" 
+                                   class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                                   required>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium mb-2">
+                                Hora
+                            </label>
+                            <input type="time" id="taskTime" 
+                                   class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 focus:ring-2 focus:ring-green-500 focus:border-transparent">
+                        </div>
+                    </div>
+                    
+                    <div class="flex gap-3 pt-4">
+                        <button id="saveTaskBtn" class="flex-1 btn-primary">
+                            <i class="fas fa-save mr-2"></i>
+                            Guardar
+                        </button>
+                        <button id="cancelTaskBtn" class="flex-1 btn-secondary">
+                            Cancelar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Carga optimizada de librerías externas -->
+    <script>
+        // Cargar configuración dinámica primero
+        function loadConfig() {
+            return new Promise((resolve, reject) => {
+                const script = document.createElement('script');
+                script.src = 'src/js/config.js';
+                script.onload = resolve;
+                script.onerror = reject;
+                document.head.appendChild(script);
+            });
+        }
+
+        // Registrar Service Worker para funcionamiento offline y cacheo
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                loadConfig().then(() => {
+                    // Usar la URL del service worker desde la configuración
+                    const swUrl = window.AppConfig ? window.AppConfig.serviceWorkerUrl() : './sw.js';
+                    
+                    navigator.serviceWorker.register(swUrl)
+                        .then(reg => {
+                            console.log('✅ Service Worker registrado:', reg.scope);
+                            console.log('🔧 Base URL detectado:', window.AppConfig ? window.AppConfig.baseUrl : './');
+                        })
+                        .catch(err => console.error('❌ Error registrando SW:', err));
+                }).catch(err => {
+                    console.error('❌ Error cargando configuración:', err);
+                    // Fallback: registrar con ruta relativa
+                    navigator.serviceWorker.register('./sw.js')
+                        .then(reg => console.log('✅ Service Worker registrado (fallback):', reg.scope))
+                        .catch(err => console.error('❌ Error registrando SW (fallback):', err));
+                });
+            });
+        }
+
+        // Función para cargar scripts de forma asíncrona y controlada
+        function loadScript(src, id) {
+            return new Promise((resolve, reject) => {
+                if (document.getElementById(id)) {
+                    resolve(); // Ya está cargado
+                    return;
+                }
+                const script = document.createElement('script');
+                script.id = id;
+                script.src = src;
+                script.async = true;
+                script.onload = resolve;
+                script.onerror = reject;
+                document.head.appendChild(script);
+            });
+        }
+
+        // Cargar librerías en paralelo para máxima velocidad
+        const loadTimeout = 15000; // 15 segundos timeout
+        const loadLibraries = Promise.race([
+            Promise.all([
+                loadScript('https://cdn.sheetjs.com/xlsx-0.20.1/package/dist/xlsx.full.min.js', 'xlsx-lib'),
+                loadScript('src/js/date-fns.min.js', 'datefns-lib')
+            ]),
+            new Promise((_, reject) => 
+                setTimeout(() => reject(new Error('Timeout: La conexión es muy lenta')), loadTimeout)
+            )
+        ]);
+
+        loadLibraries.then(() => {
+            console.log('✅ Librerías externas cargadas');
+            // Cargar el script principal después de las dependencias
+            const mainScript = document.createElement('script');
+            mainScript.type = 'module';
+            mainScript.src = 'src/js/main.js';
+            mainScript.onload = () => console.log('✅ main.js cargado');
+            document.body.appendChild(mainScript);
+        }).catch(err => {
+            console.error('❌ Error cargando librerías:', err);
+            // Mostrar mensaje de error al usuario
+            const loader = document.getElementById('appLoader');
+            if (loader) {
+                loader.querySelector('.loader-text').textContent = 'Error de conexión';
+                loader.querySelector('.loader-subtext').innerHTML = 
+                    'Por favor, verifica tu conexión a internet<br><small>o intenta recargar la página</small>';
+                // Agregar botón de recargar
+                const retryBtn = document.createElement('button');
+                retryBtn.textContent = 'Reintentar';
+                retryBtn.style.cssText = 'margin-top:15px;padding:10px 20px;background:#fff;color:#667eea;border:none;border-radius:5px;cursor:pointer;font-weight:600;';
+                retryBtn.onclick = () => location.reload();
+                loader.querySelector('.loader-content').appendChild(retryBtn);
+            }
+        });
+    </script>
+    
+    <!-- Footer -->
+    <footer class="bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 py-4 mt-8 relative z-10">
+        <div class="container mx-auto px-4">
+            <!-- Sección principal con información -->
+            <div class="text-center mb-6">
+                <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2">Mi Horario FPUNA</h3>
+                <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">
+                    Gestiona tu horario académico de manera eficiente
+                </p>
+
+                <!-- Tecnologías utilizadas -->
+                <div class="flex flex-wrap justify-center gap-3 mb-6">
+                    <span class="px-3 py-1 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 text-xs font-medium rounded-full">
+                        <i class="fab fa-js-square mr-1"></i>JavaScript ES6+
+                    </span>
+                    <span class="px-3 py-1 bg-cyan-100 dark:bg-cyan-900 text-cyan-800 dark:text-cyan-200 text-xs font-medium rounded-full">
+                        <i class="fab fa-css3-alt mr-1"></i>Tailwind CSS
+                    </span>
+                    <span class="px-3 py-1 bg-yellow-100 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-200 text-xs font-medium rounded-full">
+                        <i class="fas fa-file-excel mr-1"></i>SheetJS
+                    </span>
+                    <span class="px-3 py-1 bg-purple-100 dark:bg-purple-900 text-purple-800 dark:text-purple-200 text-xs font-medium rounded-full">
+                        <i class="fas fa-calendar-alt mr-1"></i>date-fns
+                    </span>
+                </div>
+
+                <!-- Botón para añadir tarea -->
+                <div class="mb-6 hidden">
+                    <button id="addTaskFab" class="inline-flex items-center gap-3 px-6 py-3 bg-green-600 hover:bg-green-700 text-white text-sm font-medium rounded-lg transition-colors duration-200 shadow-lg">
+                        <i class="fas fa-plus"></i>
+                        <span>Añadir Nueva Tarea</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Sección de enlaces y copyright -->
+            <div class="flex flex-col md:flex-row items-center justify-between gap-4 border-t border-gray-200 dark:border-gray-700 pt-6">
+                <!-- Copyright -->
+                <div class="text-sm text-gray-600 dark:text-gray-400 text-center md:text-left">
+                    © 2025 Mauricio Nicolas Alfaro Torres
+                </div>
+
+                <!-- Enlaces GitHub -->
+                <div class="flex items-center gap-4">
+                    <!-- Botón al Repositorio -->
+                    <a href="https://github.com/AlfaroT/Mi-Horario-FPUNA"
+                       target="_blank"
+                       rel="noopener noreferrer"
+                       class="inline-flex items-center gap-2 px-4 py-2 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 text-sm font-medium rounded-lg transition-colors duration-200">
+                        <i class="fab fa-github text-lg"></i>
+                        <span>Repositorio</span>
+                    </a>
+
+                    <!-- Botón al Perfil -->
+                    <a href="https://github.com/AlfaroT"
+                       target="_blank"
+                       rel="noopener noreferrer"
+                       class="inline-flex items-center gap-2 px-4 py-2 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 text-sm font-medium rounded-lg transition-colors duration-200">
+                        <i class="fas fa-user text-lg"></i>
+                        <span>Perfil GitHub</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
+

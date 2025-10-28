@@ -1,0 +1,49 @@
+{
+  "name": "Mi Horario FPUNA",
+  "short_name": "Horario FPUNA",
+  "description": "Aplicación web para gestionar horarios académicos de FPUNA",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#2563eb",
+  "orientation": "portrait-primary",
+  "scope": "./",
+  "lang": "es",
+  "categories": ["education", "productivity"],
+  "icons": [
+    {
+      "src": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgd2lkdGg9IjI0IiBoZWlnaHQ9IjI0Ij4KICA8Y2lyY2xlIGN4PSIxMiIgY3k9IjEyIiByPSIxMiIgZmlsbD0iIzI1NjNlYiIvPgogIDxwYXRoIGQ9Ik04IDZoOHYySDhWNnp6bTAgNGg4djJIOHYtMnp6bTAgNGg1djJIOHYtMnoiIGZpbGw9IndoaXRlIi8+Cjwvc3ZnPg==",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MTIgNTEyIiB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiI+CjxyZWN0IHdpZHRoPSI1MTIiIGhlaWdodD0iNTEyIiBmaWxsPSIjMjU2M2ViIi8+Cjx0ZXh0IHg9IjI1NiIgeT0iMjgwIiBmb250LXNpemU9IjI0MCIgZmlsbD0id2hpdGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIuMzVlbSI+📅PC90ZXh0Pgo8L3N2Zz4=",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Dashboard",
+      "short_name": "Dashboard",
+      "description": "Ver el dashboard principal",
+      "url": "./",
+      "icons": [{
+        "src": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgd2lkdGg9IjI0IiBoZWlnaHQ9IjI0Ij4KICA8Y2lyY2xlIGN4PSIxMiIgY3k9IjEyIiByPSIxMiIgZmlsbD0iIzI1NjNlYiIvPgogIDxwYXRoIGQ9Ik04IDZoOHYySDhWNnp6bTAgNGg4djJIOHYtMnp6bTAgNGg1djJIOHYtMnoiIGZpbGw9IndoaXRlIi8+Cjwvc3ZnPg==",
+        "sizes": "192x192"
+      }]
+    },
+    {
+      "name": "Calculadora",
+      "short_name": "Calculadora",
+      "description": "Usar la calculadora de notas",
+      "url": "./#calculator",
+      "icons": [{
+        "src": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgd2lkdGg9IjI0IiBoZWlnaHQ9IjI0Ij4KICA8Y2lyY2xlIGN4PSIxMiIgY3k9IjEyIiByPSIxMiIgZmlsbD0iIzI1NjNlYiIvPgogIDxwYXRoIGQ9Ik04IDZoOHYySDhWNnp6bTAgNGg4djJIOBYtMnp6bTAgNGg1djJIOBYtMnoiIGZpbGw9IndoaXRlIi8+Cjwvc3ZnPg==",
+        "sizes": "192x192"
+      }]
+    }
+  ]
+}
