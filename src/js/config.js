@@ -39,7 +39,7 @@ const AppConfig = {
     
     // URLs para la PWA
     manifestUrl: function() {
-        return this.baseUrl + 'public/manifest.json';
+        return this.baseUrl + 'manifest.json';
     },
     
     serviceWorkerUrl: function() {

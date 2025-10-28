@@ -17,7 +17,7 @@ const ASSETS_TO_CACHE = [
     './src/js/filters.js',
     './src/js/utils.js',
     './src/js/date-fns.min.js',
-    './public/manifest.json',
+    './manifest.json',
     './public/favicon.ico',
     // CDNs - se cachean después de la primera carga
     'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css',
