@@ -1,24 +1,26 @@
 // Service Worker para Mi Horario FPUNA
-// Versión: 1.1.0 - Corrección de rutas para PWA en GitHub Pages
+// Versión: 1.2.0 - Corrección completa de rutas para GitHub Pages PWA
 
-const CACHE_NAME = 'mi-horario-fpuna-v1.1.1'; // Incrementado para forzar actualización
+const CACHE_NAME = 'mi-horario-fpuna-v1.2.0'; // Incrementado para forzar actualización
+const BASE_PATH = '/Mi-Horario-FPUNA/'; // Path base para GitHub Pages
+
 const ASSETS_TO_CACHE = [
-    './',
-    './index.html',
-    './dist/output.css',
-    './src/css/styles.css',
-    './src/js/config.js',
-    './src/js/main.js',
-    './src/js/ui.js',
-    './src/js/state.js',
-    './src/js/parser.js',
-    './src/js/tasks.js',
-    './src/js/dom.js',
-    './src/js/filters.js',
-    './src/js/utils.js',
-    './src/js/date-fns.min.js',
-    './manifest.json',
-    './public/favicon.ico',
+    BASE_PATH,
+    BASE_PATH + 'index.html',
+    BASE_PATH + 'dist/output.css',
+    BASE_PATH + 'src/css/styles.css',
+    BASE_PATH + 'src/js/config.js',
+    BASE_PATH + 'src/js/main.js',
+    BASE_PATH + 'src/js/ui.js',
+    BASE_PATH + 'src/js/state.js',
+    BASE_PATH + 'src/js/parser.js',
+    BASE_PATH + 'src/js/tasks.js',
+    BASE_PATH + 'src/js/dom.js',
+    BASE_PATH + 'src/js/filters.js',
+    BASE_PATH + 'src/js/utils.js',
+    BASE_PATH + 'src/js/date-fns.min.js',
+    BASE_PATH + 'manifest.json',
+    BASE_PATH + 'public/favicon.ico',
     // CDNs - se cachean después de la primera carga
     'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css',
     'https://cdn.sheetjs.com/xlsx-0.20.1/package/dist/xlsx.full.min.js'
@@ -108,7 +110,7 @@ self.addEventListener('fetch', (event) => {
                     
                     // Si es una solicitud de navegación y falla, servir index.html
                     if (isNavigationRequest) {
-                        return caches.match('./index.html').then((cachedIndex) => {
+                        return caches.match(BASE_PATH + 'index.html').then((cachedIndex) => {
                             if (cachedIndex) {
                                 return cachedIndex;
                             }

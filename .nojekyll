@@ -1,0 +1,3 @@
+# Archivo vacío para indicar a GitHub Pages que no procese archivos con Jekyll
+# Esto asegura que archivos como _next, _nuxt, etc. sean servidos correctamente
+# y que no se ignoren archivos que empiecen con underscore
