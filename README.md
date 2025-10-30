@@ -752,6 +752,46 @@ Si te ayudó a organizar tu semestre, dale una ⭐ al repositorio!4. Push a la r
 
 **¡Éxitos en tus estudios!** 📚✨
 
+## 🧪 Verificación y Testing
+
+### Prueba de Humo Automatizada
+
+Después de cada despliegue, puedes verificar que todo esté funcionando correctamente ejecutando:
+
+```bash
+npm run test-smoke
+```
+
+Esta prueba verifica automáticamente:
+- ✅ Página principal responde correctamente (status 200)
+- ✅ Manifest PWA es accesible
+- ✅ Service Worker está disponible
+- ✅ Archivos CSS y JS principales cargan correctamente
+
+**Resultado esperado:**
+```
+📊 Resultados:
+✅ Pasaron: 5
+❌ Fallaron: 0
+📈 Tasa de éxito: 100.0%
+
+🎉 ¡Todas las pruebas pasaron! La aplicación está desplegada correctamente.
+```
+
+### Verificar Despliegue Manual
+
+1. **Accede a la URL de producción:**
+   👉 [https://alfarot.github.io/Mi-Horario-FPUNA/](https://alfarot.github.io/Mi-Horario-FPUNA/)
+
+2. **Verifica la PWA:**
+   - Abre las herramientas de desarrollo (F12)
+   - Ve a la pestaña "Application" → "Service Workers"
+   - Confirma que el Service Worker esté registrado y activo
+
+3. **Prueba la instalación:**
+   - En móvil: busca el botón "Agregar a pantalla de inicio" o "Instalar app"
+   - En PC: busca el botón de instalación en la barra de direcciones
+
 ## 📄 Licencia
 
 Este proyecto está bajo la Licencia MIT. Ver el archivo `LICENSE` para más detalles.
