@@ -12,7 +12,8 @@
     "clean": "if exist dist rmdir /s /q dist",
     "predeploy": "npm run build && npm run optimize",
     "optimize": "echo '✅ Optimización completada - Código de desarrollo eliminado, CSS compilado y PWA configurado'",
-    "deploy": "npm run build && echo '🚀 Listo para GitHub Pages - sube los archivos a tu repositorio'"
+    "deploy": "npm run build && echo '🚀 Listo para GitHub Pages - sube los archivos a tu repositorio'",
+    "test-smoke": "node test-smoke.js"
   },
   "keywords": [
     "fpuna",
