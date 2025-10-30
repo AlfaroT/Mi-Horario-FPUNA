@@ -2,26 +2,45 @@
   "name": "Mi Horario FPUNA",
   "short_name": "Horario FPUNA",
   "description": "Aplicación web para gestionar horarios académicos de FPUNA",
-  "start_url": "./",
+  "start_url": "/Mi-Horario-FPUNA/",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#2563eb",
   "orientation": "portrait-primary",
-  "scope": "./",
+  "scope": "/Mi-Horario-FPUNA/",
   "lang": "es",
   "categories": ["education", "productivity"],
+  "version": "1.2.2",
   "icons": [
     {
-      "src": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgd2lkdGg9IjI0IiBoZWlnaHQ9IjI0Ij4KICA8Y2lyY2xlIGN4PSIxMiIgY3k9IjEyIiByPSIxMiIgZmlsbD0iIzI1NjNlYiIvPgogIDxwYXRoIGQ9Ik04IDZoOHYySDhWNnp6bTAgNGg4djJIOHYtMnp6bTAgNGg1djJIOHYtMnoiIGZpbGw9IndoaXRlIi8+Cjwvc3ZnPg==",
+      "src": "/Mi-Horario-FPUNA/public/icons/icon-192x192.png?v=1.2.2",
       "sizes": "192x192",
-      "type": "image/svg+xml",
+      "type": "image/png",
       "purpose": "any maskable"
     },
     {
-      "src": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MTIgNTEyIiB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiI+CjxyZWN0IHdpZHRoPSI1MTIiIGhlaWdodD0iNTEyIiBmaWxsPSIjMjU2M2ViIi8+Cjx0ZXh0IHg9IjI1NiIgeT0iMjgwIiBmb250LXNpemU9IjI0MCIgZmlsbD0id2hpdGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIuMzVlbSI+📅PC90ZXh0Pgo8L3N2Zz4=",
+      "src": "/Mi-Horario-FPUNA/public/icons/icon-512x512.png?v=1.2.2",
       "sizes": "512x512",
-      "type": "image/svg+xml",
+      "type": "image/png",
       "purpose": "any maskable"
+    },
+    {
+      "src": "/Mi-Horario-FPUNA/public/icons/icon-96x96.png?v=1.2.2",
+      "sizes": "96x96",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/Mi-Horario-FPUNA/public/icons/icon-128x128.png?v=1.2.2",
+      "sizes": "128x128",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/Mi-Horario-FPUNA/public/icons/icon-384x384.png?v=1.2.2",
+      "sizes": "384x384",
+      "type": "image/png",
+      "purpose": "any"
     }
   ],
   "shortcuts": [
@@ -29,20 +48,20 @@
       "name": "Dashboard",
       "short_name": "Dashboard",
       "description": "Ver el dashboard principal",
-      "url": "./",
+      "url": "/Mi-Horario-FPUNA/",
       "icons": [{
-        "src": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgd2lkdGg9IjI0IiBoZWlnaHQ9IjI0Ij4KICA8Y2lyY2xlIGN4PSIxMiIgY3k9IjEyIiByPSIxMiIgZmlsbD0iIzI1NjNlYiIvPgogIDxwYXRoIGQ9Ik04IDZoOHYySDhWNnp6bTAgNGg4djJIOHYtMnp6bTAgNGg1djJIOHYtMnoiIGZpbGw9IndoaXRlIi8+Cjwvc3ZnPg==",
-        "sizes": "192x192"
+        "src": "/Mi-Horario-FPUNA/public/icons/icon-96x96.png?v=1.2.2",
+        "sizes": "96x96"
       }]
     },
     {
       "name": "Calculadora",
       "short_name": "Calculadora",
       "description": "Usar la calculadora de notas",
-      "url": "./#calculator",
+      "url": "/Mi-Horario-FPUNA/#calculator",
       "icons": [{
-        "src": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgd2lkdGg9IjI0IiBoZWlnaHQ9IjI0Ij4KICA8Y2lyY2xlIGN4PSIxMiIgY3k9IjEyIiByPSIxMiIgZmlsbD0iIzI1NjNlYiIvPgogIDxwYXRoIGQ9Ik04IDZoOHYySDhWNnp6bTAgNGg4djJIOBYtMnp6bTAgNGg1djJIOBYtMnoiIGZpbGw9IndoaXRlIi8+Cjwvc3ZnPg==",
-        "sizes": "192x192"
+        "src": "/Mi-Horario-FPUNA/public/icons/icon-96x96.png?v=1.2.2",
+        "sizes": "96x96"
       }]
     }
   ]
