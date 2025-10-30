@@ -14,6 +14,7 @@
     "optimize": "echo '✅ Optimización completada - Código de desarrollo eliminado, CSS compilado y PWA configurado'",
     "deploy": "npm run build && echo '🚀 Listo para GitHub Pages - sube los archivos a tu repositorio'",
     "test-smoke": "node test-smoke.js",
+    "test-manifest": "node test-manifest.js",
     "generate-icons": "node generate-icons.js"
   },
   "keywords": [
