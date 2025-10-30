@@ -10,36 +10,37 @@
   "scope": "/Mi-Horario-FPUNA/",
   "lang": "es",
   "categories": ["education", "productivity"],
+  "version": "1.2.2",
   "icons": [
     {
-      "src": "/Mi-Horario-FPUNA/public/icons/icon-96x96.png",
-      "sizes": "96x96",
-      "type": "image/png",
-      "purpose": "any"
-    },
-    {
-      "src": "/Mi-Horario-FPUNA/public/icons/icon-128x128.png",
-      "sizes": "128x128",
-      "type": "image/png",
-      "purpose": "any"
-    },
-    {
-      "src": "/Mi-Horario-FPUNA/public/icons/icon-192x192.png",
+      "src": "/Mi-Horario-FPUNA/public/icons/icon-192x192.png?v=1.2.2",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any maskable"
     },
     {
-      "src": "/Mi-Horario-FPUNA/public/icons/icon-384x384.png",
-      "sizes": "384x384",
+      "src": "/Mi-Horario-FPUNA/public/icons/icon-512x512.png?v=1.2.2",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/Mi-Horario-FPUNA/public/icons/icon-96x96.png?v=1.2.2",
+      "sizes": "96x96",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "/Mi-Horario-FPUNA/public/icons/icon-512x512.png",
-      "sizes": "512x512",
+      "src": "/Mi-Horario-FPUNA/public/icons/icon-128x128.png?v=1.2.2",
+      "sizes": "128x128",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "any"
+    },
+    {
+      "src": "/Mi-Horario-FPUNA/public/icons/icon-384x384.png?v=1.2.2",
+      "sizes": "384x384",
+      "type": "image/png",
+      "purpose": "any"
     }
   ],
   "shortcuts": [
@@ -49,7 +50,7 @@
       "description": "Ver el dashboard principal",
       "url": "/Mi-Horario-FPUNA/",
       "icons": [{
-        "src": "/Mi-Horario-FPUNA/public/icons/icon-96x96.png",
+        "src": "/Mi-Horario-FPUNA/public/icons/icon-96x96.png?v=1.2.2",
         "sizes": "96x96"
       }]
     },
@@ -59,7 +60,7 @@
       "description": "Usar la calculadora de notas",
       "url": "/Mi-Horario-FPUNA/#calculator",
       "icons": [{
-        "src": "/Mi-Horario-FPUNA/public/icons/icon-96x96.png",
+        "src": "/Mi-Horario-FPUNA/public/icons/icon-96x96.png?v=1.2.2",
         "sizes": "96x96"
       }]
     }

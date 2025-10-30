@@ -1,102 +1,246 @@
-<div align="center"># 📚 Mi Horario FPUNA# Mi Horario FPUNA
-
-
+<div align="center">
 
 # 📚 Mi Horario FPUNA
 
-
-
-**Aplicación Web Progresiva (PWA) para gestionar tu horario académico**> **Aplicación web progresiva (PWA) para gestionar tu horario académico en la Facultad Politécnica - Universidad Nacional de Asunción**Aplicación web moderna para gestionar horarios académicos de la Facultad Politécnica UNA.
-
-
+**Aplicación Web Progresiva (PWA) para gestionar tu horario académico**
 
 *Facultad Politécnica - Universidad Nacional de Asunción*
 
-
-
-[![Live Demo](https://img.shields.io/badge/🌐_Demo_Live-Abrir_App-2563eb?style=for-the-badge)](https://alfarot.github.io/Mi-Horario-FPUNA/)[![Live Demo](https://img.shields.io/badge/demo-live-success?style=for-the-badge)](https://alfarot.github.io/Mi-Horario-FPUNA/)## 🚀 Características
-
+[![Live Demo](https://img.shields.io/badge/🌐_Demo_Live-Abrir_App-2563eb?style=for-the-badge)](https://alfarot.github.io/Mi-Horario-FPUNA/)
 [![PWA Ready](https://img.shields.io/badge/📱_PWA-Instalable-10b981?style=for-the-badge)](https://alfarot.github.io/Mi-Horario-FPUNA/)
+[![License MIT](https://img.shields.io/badge/📄_Licencia-MIT-gray?style=for-the-badge)](LICENSE)
 
-[![License MIT](https://img.shields.io/badge/📄_Licencia-MIT-gray?style=for-the-badge)](LICENSE)[![License](https://img.shields.io/badge/license-MIT-blue?style=for-the-badge)](LICENSE)
+[🚀 Características](#-características) • [📱 Instalación](#-instalación) • [🧪 Testing](#-testing) • [🛠️ Desarrollo](#️-desarrollo)
 
-
-
-[🚀 Características](#-características) • [📱 Instalación](#-instalación) • [📖 Uso](#-cómo-usar) • [🛠️ Tecnologías](#️-tecnologías)[![PWA](https://img.shields.io/badge/PWA-enabled-purple?style=for-the-badge)](https://alfarot.github.io/Mi-Horario-FPUNA/)- **Dashboard Moderno**: Interfaz intuitiva con métricas en tiempo real
-
-
-
-</div>- **Gestión de Horarios**: Configuración flexible de clases y exámenes
-
-
-
-------- **Calculadora de Notas**: Herramienta integrada para calcular promedios
-
-
-
-## 🎯 ¿Para qué sirve?- **PWA**: Funciona offline y se puede instalar como aplicación
-
-
-
-**Mi Horario FPUNA** es tu asistente académico personal que te ayuda a:## 🎯 ¿Para qué sirve?- **Responsive**: Optimizada para móviles y escritorio
-
-
-
-- ✅ **Visualizar tu horario semanal** organizado por días y horas- **Tema Oscuro**: Soporte completo para modo oscuro
-
-- 📅 **Gestionar exámenes** con contador de días y alertas de proximidad
-
-- 🎓 **Recordar clases ocasionales** (clases de sábado y fechas especiales)**Mi Horario FPUNA** te ayuda a organizar toda tu vida académica en un solo lugar:
-
-- ✏️ **Organizar tareas** con fechas de entrega y estado de completado
-
-- 🧮 **Calcular notas finales** según el sistema FPUNA (PP + EF)## 🌐 Despliegue en GitHub Pages
-
-- 🌙 **Modo oscuro** para estudiar de noche sin cansar la vista
-
-- ✅ **Horario semanal** de clases por día y hora
-
-**¡Y lo mejor!** Funciona **completamente offline** después de la primera carga. Instálala en tu celular y tendrás tu horario siempre a mano, ¡incluso sin internet! 📱
-
-- 📅 **Calendario de exámenes** con alertas de proximidad### Configuración Automática
+</div>
 
 ---
 
-- 🎓 **Clases ocasionales** (clases de sábado) con recordatorios
+## 🎯 ¿Para qué sirve?
+
+**Mi Horario FPUNA** es tu asistente académico personal que te ayuda a organizar toda tu vida académica en un solo lugar:
+
+- ✅ **Visualizar tu horario semanal** organizado por días y horas
+- 📅 **Gestionar exámenes** con contador de días y alertas de proximidad
+- 🎓 **Recordar clases ocasionales** (clases de sábado y fechas especiales)
+- ✏️ **Organizar tareas** con fechas de entrega y estado de completado
+- 🧮 **Calcular notas finales** según el sistema FPUNA (PP + EF)
+
+**¡Y lo mejor!** Funciona **completamente offline** después de la primera carga. Instálala en tu celular y tendrás tu horario siempre a mano, ¡incluso sin internet! 📱
+
+---
 
 ## 🚀 Características
 
-- ✏️ **Gestor de tareas** para trabajos y proyectos1. **Sube el código a GitHub** en un repositorio público
-
-<table>
-
-<tr>- 🧮 **Calculadora de notas** según el sistema FPUNA (PP + EF)2. **Habilita GitHub Pages**:
-
-<td width="50%">
-
-- 🌙 **Modo oscuro** para estudiar de noche sin cansarte la vista   - Ve a Settings → Pages
-
 ### 📊 Dashboard Inteligente
+- **Métricas en tiempo real** del progreso académico
+- **Clases del día destacadas** para fácil acceso
+- **Próximos exámenes ordenados** por fecha
+- **Tareas pendientes visibles** con estado de completado
 
-- Métricas en tiempo real   - Selecciona "Deploy from a branch"
+### 🎨 Interfaz Moderna
+- **Diseño responsive** (móvil/tablet/PC)
+- **Tema oscuro** para estudiar de noche sin cansar la vista
+- **Animaciones suaves** y transiciones elegantes
+- **Interfaz intuitiva** fácil de usar
 
-- Clases del día destacadas
+### 🧮 Herramientas Integradas
+- **Calculadora de notas** según el sistema FPUNA
+- **Gestor de tareas** para trabajos y proyectos
+- **Calendario de exámenes** con alertas de proximidad
+- **Horario semanal** de clases por día y hora
 
-- Próximos exámenes ordenados**¡Y lo mejor!** Funciona **completamente offline** después de la primera carga. Instalala en tu celular y tendrás tu horario siempre a mano, ¡incluso sin internet! 📱   - Elige la rama `main` y carpeta `/(root)`
+### 📱 PWA Avanzada
+- **Instalable** como aplicación nativa
+- **Funciona offline** con cache inteligente
+- **Notificaciones push** (próximamente)
+- **Sincronización automática** de datos
 
-- Tareas pendientes visibles
+---
 
+## 📱 Instalación
+
+### 🌐 Opción 1: Usar Online (Sin instalar)
+
+**👉 [Abrir Mi Horario FPUNA](https://alfarot.github.io/Mi-Horario-FPUNA/)**
+
+- Accede desde cualquier navegador web
+- Funciona en todos los dispositivos
+- No requiere instalación
+
+### 📱 Instalar como App (Recomendado)
+
+#### **� En Android:**
+1. Abre la app en Chrome
+2. Toca el menú (tres puntos) → "Agregar a pantalla de inicio"
+3. Dale un nombre y toca "Agregar"
+
+#### **🍎 En iPhone/iPad (iOS):**
+1. Abre la app en Safari
+2. Toca el botón compartir → "Agregar a pantalla de inicio"
+3. Toca "Agregar" en la esquina superior derecha
+
+#### **💻 En PC (Chrome/Edge):**
+1. Abre la app en el navegador
+2. Haz clic en "Instalar" en la barra de direcciones
+3. Confirma la instalación
+
+---
+
+## 🧪 Testing
+
+### Prueba de Humo Automatizada
+
+Después de cada despliegue, puedes verificar que todo esté funcionando correctamente:
+
+```bash
+npm run test-smoke
+```
+
+Esta prueba verifica automáticamente:
+- ✅ Página principal responde correctamente (status 200)
+- ✅ Manifest PWA es accesible
+- ✅ Service Worker está disponible
+- ✅ Archivos CSS y JS principales cargan correctamente
+- ✅ Iconos PWA están disponibles (192x192 y 512x512)
+
+**Resultado esperado:**
+```
+📊 Resultados:
+✅ Pasaron: 7
+❌ Fallaron: 0
+📈 Tasa de éxito: 100.0%
+
+🎉 ¡Todas las pruebas pasaron! La aplicación está desplegada correctamente.
+```
+
+### Verificar Despliegue Manual
+
+1. **Accede a la URL de producción:**
+   👉 [https://alfarot.github.io/Mi-Horario-FPUNA/](https://alfarot.github.io/Mi-Horario-FPUNA/)
+
+2. **Verifica la PWA:**
+   - Abre las herramientas de desarrollo (F12)
+   - Ve a la pestaña "Application" → "Service Workers"
+   - Confirma que el Service Worker esté registrado y activo
+
+3. **Prueba la instalación:**
+   - En móvil: busca el botón "Agregar a pantalla de inicio" o "Instalar app"
+   - En PC: busca el botón de instalación en la barra de direcciones
+
+---
+
+## 🛠️ Desarrollo
+
+### 📋 Prerrequisitos
+
+- **Node.js** 18+
+- **npm** o **yarn**
+
+### 🚀 Inicio Rápido
+
+```bash
+# Clonar el repositorio
+git clone https://github.com/AlfaroT/Mi-Horario-FPUNA.git
+cd Mi-Horario-FPUNA
+
+# Instalar dependencias
+npm install
+
+# Desarrollar localmente
+npm run dev
+
+# Construir para producción
+npm run build
+
+# Ejecutar pruebas
+npm run test-smoke
+```
+
+### � Scripts Disponibles
+
+```bash
+npm run dev          # Inicia servidor de desarrollo
+npm run build        # Construye la aplicación
+npm run serve        # Sirve la versión de producción localmente
+npm run test-smoke   # Ejecuta pruebas de humo
+npm run generate-icons # Regenera iconos PWA
+```
+
+### 🎨 Personalizar Iconos
+
+Si quieres cambiar el logo/icono de la PWA:
+
+1. **Edita el SVG fuente:**
+   ```bash
+   # Edita public/icons/icon.svg
+   ```
+
+2. **Regenera los PNGs:**
+   ```bash
+   npm run generate-icons
+   ```
+
+3. **Actualiza el cache del navegador:**
+   - Borra el cache del navegador
+   - Fuerza recarga (Ctrl+F5)
+   - Reinstala la PWA
+
+Los iconos se generan automáticamente en tamaños: 96×96, 128×128, 192×192, 384×384, 512×512px.
+
+### 🌐 Despliegue en GitHub Pages
+
+#### Configuración Automática
+1. **Sube el código a GitHub** en un repositorio público
+2. **Habilita GitHub Pages:**
+   - Ve a Settings → Pages
+   - Selecciona "Deploy from a branch"
+   - Elige la rama `main` y carpeta `/(root)`
 3. **El despliegue se hace automáticamente** mediante GitHub Actions
 
-</td>
+#### Configuración Manual
+Si prefieres configurar manualmente:
+```bash
+# Construir la aplicación
+npm run build
 
-<td width="50%">---
+# El contenido de la carpeta raíz está listo para GitHub Pages
+```
 
+---
 
+## 🛠️ Tecnologías
 
-### 🎨 Interfaz Moderna### Configuración Manual
+- **🎨 Tailwind CSS v4** - Framework CSS utility-first compilado localmente
+- **⚡ Vite** - Build tool ultrarrápido
+- **📱 PWA** - Service Worker + Web App Manifest
+- **🔧 PostCSS** - Procesador CSS con Autoprefixer
+- **📊 JavaScript ES6+** - Código moderno con módulos
+- **🎯 HTML5** - Estructura semántica
 
-- Diseño responsive (móvil/tablet/PC)
+### 📚 Librerías Principales
+
+- **SheetJS** - Para procesamiento de archivos Excel
+- **Date-fns** - Utilidades de fechas
+- **Font Awesome** - Iconos vectoriales
+- **Sharp** - Procesamiento de imágenes (iconos PWA)
+
+---
+
+## 📄 Licencia
+
+Este proyecto está bajo la Licencia MIT. Ver el archivo `LICENSE` para más detalles.
+
+---
+
+## 👥 Autor
+
+**Mi Horario FPUNA**
+- Aplicación desarrollada para estudiantes de la Facultad Politécnica UNA
+
+---
+
+¡Gracias por usar Mi Horario FPUNA! 🎓✨
 
 - Tema claro y oscuro## 🚀 Acceso Rápido
 
