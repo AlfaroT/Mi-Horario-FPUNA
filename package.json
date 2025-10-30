@@ -13,7 +13,8 @@
     "predeploy": "npm run build && npm run optimize",
     "optimize": "echo '✅ Optimización completada - Código de desarrollo eliminado, CSS compilado y PWA configurado'",
     "deploy": "npm run build && echo '🚀 Listo para GitHub Pages - sube los archivos a tu repositorio'",
-    "test-smoke": "node test-smoke.js"
+    "test-smoke": "node test-smoke.js",
+    "generate-icons": "node generate-icons.js"
   },
   "keywords": [
     "fpuna",
@@ -30,6 +31,7 @@
     "cssnano": "^6.0.1",
     "postcss": "^8.5.6",
     "postcss-cli": "^10.1.0",
+    "sharp": "^0.34.4",
     "tailwindcss": "^3.4.0"
   },
   "browserslist": [

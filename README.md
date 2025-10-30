@@ -767,16 +767,37 @@ Esta prueba verifica automáticamente:
 - ✅ Manifest PWA es accesible
 - ✅ Service Worker está disponible
 - ✅ Archivos CSS y JS principales cargan correctamente
+- ✅ Iconos PWA están disponibles (192x192 y 512x512)
 
 **Resultado esperado:**
 ```
 📊 Resultados:
-✅ Pasaron: 5
+✅ Pasaron: 7
 ❌ Fallaron: 0
 📈 Tasa de éxito: 100.0%
 
 🎉 ¡Todas las pruebas pasaron! La aplicación está desplegada correctamente.
 ```
+
+### Generar Iconos Personalizados
+
+Si quieres cambiar el logo/icono de la PWA:
+
+1. **Edita el SVG fuente:**
+   - Archivo: `public/icons/icon.svg`
+   - Modifica el diseño manteniendo el viewBox="0 0 512 512"
+
+2. **Regenera los PNGs:**
+   ```bash
+   npm run generate-icons
+   ```
+
+3. **Actualiza el cache del navegador:**
+   - Borra el cache del navegador
+   - Fuerza recarga (Ctrl+F5)
+   - Reinstala la PWA
+
+Los iconos se generan automáticamente en tamaños: 96x96, 128x128, 192x192, 384x384, 512x512px.
 
 ### Verificar Despliegue Manual
 

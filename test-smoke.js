@@ -42,7 +42,9 @@ async function runSmokeTest() {
         { name: 'Manifest PWA', url: BASE_URL + '/manifest.json' },
         { name: 'Service Worker', url: BASE_URL + '/sw.js' },
         { name: 'Archivo principal CSS', url: BASE_URL + '/dist/output.css' },
-        { name: 'Archivo principal JS', url: BASE_URL + '/src/js/main.js' }
+        { name: 'Archivo principal JS', url: BASE_URL + '/src/js/main.js' },
+        { name: 'Icono 192x192', url: BASE_URL + '/public/icons/icon-192x192.png' },
+        { name: 'Icono 512x512', url: BASE_URL + '/public/icons/icon-512x512.png' }
     ];
 
     let passed = 0;
