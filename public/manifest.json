@@ -13,31 +13,31 @@
   "version": "1.2.2",
   "icons": [
     {
-      "src": "icons/icon-192x192.png?v=1.2.2",
+      "src": "public/icons/icon-192x192.png?v=1.2.2",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any maskable"
     },
     {
-      "src": "icons/icon-512x512.png?v=1.2.2",
+      "src": "public/icons/icon-512x512.png?v=1.2.2",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"
     },
     {
-      "src": "icons/icon-96x96.png?v=1.2.2",
+      "src": "public/icons/icon-96x96.png?v=1.2.2",
       "sizes": "96x96",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "icons/icon-128x128.png?v=1.2.2",
+      "src": "public/icons/icon-128x128.png?v=1.2.2",
       "sizes": "128x128",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "icons/icon-384x384.png?v=1.2.2",
+      "src": "public/icons/icon-384x384.png?v=1.2.2",
       "sizes": "384x384",
       "type": "image/png",
       "purpose": "any"
@@ -50,7 +50,7 @@
       "description": "Ver el dashboard principal",
       "url": "/Mi-Horario-FPUNA/",
       "icons": [{
-        "src": "icons/icon-96x96.png?v=1.2.2",
+        "src": "public/icons/icon-96x96.png?v=1.2.2",
         "sizes": "96x96"
       }]
     },
@@ -60,7 +60,7 @@
       "description": "Usar la calculadora de notas",
       "url": "/Mi-Horario-FPUNA/#calculator",
       "icons": [{
-        "src": "icons/icon-96x96.png?v=1.2.2",
+        "src": "public/icons/icon-96x96.png?v=1.2.2",
         "sizes": "96x96"
       }]
     }
