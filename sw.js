@@ -1,35 +1,35 @@
 // Service Worker para Mi Horario FPUNA
-// Versión: 1.3.0 - Calendario integrado
+// Versión: 1.3.1 - Share feature
 
-const CACHE_NAME = 'mi-horario-fpuna-v1.3.0'; // Incrementado para forzar actualización
-const BASE_PATH = '/Mi-Horario-FPUNA/'; // Path base para GitHub Pages
+const CACHE_NAME = 'mi-horario-fpuna-v1.3.1';
 
-const ASSETS_TO_CACHE = [
-    BASE_PATH,
-    BASE_PATH + 'index.html',
-    BASE_PATH + 'dist/output.css',
-    BASE_PATH + 'src/css/styles.css',
-    BASE_PATH + 'src/js/config.js',
-    BASE_PATH + 'src/js/main.js',
-    BASE_PATH + 'src/js/ui.js',
-    BASE_PATH + 'src/js/state.js',
-    BASE_PATH + 'src/js/parser.js',
-    BASE_PATH + 'src/js/tasks.js',
-    BASE_PATH + 'src/js/dom.js',
-    BASE_PATH + 'src/js/filters.js',
-    BASE_PATH + 'src/js/utils.js',
-    BASE_PATH + 'src/js/calendar.js',
-    BASE_PATH + 'src/js/date-fns.min.js',
-    BASE_PATH + 'manifest.json',
-    BASE_PATH + 'public/favicon.ico',
-    // Iconos PWA
-    BASE_PATH + 'public/icons/icon-96x96.png?v=1.3.0',
-    BASE_PATH + 'public/icons/icon-128x128.png?v=1.3.0',
-    BASE_PATH + 'public/icons/icon-192x192.png?v=1.3.0',
-    BASE_PATH + 'public/icons/icon-384x384.png?v=1.3.0',
-    BASE_PATH + 'public/icons/icon-512x512.png?v=1.3.0',
-    BASE_PATH + 'public/icons/icon.svg',
-    // CDNs - se cachean después de la primera carga
+// Detectar si estamos en GitHub Pages o localhost
+const isGitHubPages = self.location.hostname.includes('github.io');
+const BASE_PATH = isGitHubPages ? '/Mi-Horario-FPUNA/' : '/';
+
+// Assets locales (relativos)
+const LOCAL_ASSETS = [
+    '',
+    'index.html',
+    'dist/output.css',
+    'src/css/styles.css',
+    'src/js/config.js',
+    'src/js/main.js',
+    'src/js/ui.js',
+    'src/js/state.js',
+    'src/js/parser.js',
+    'src/js/tasks.js',
+    'src/js/dom.js',
+    'src/js/filters.js',
+    'src/js/utils.js',
+    'src/js/calendar.js',
+    'src/js/share.js',
+    'src/js/date-fns.min.js',
+    'manifest.json'
+];
+
+// CDNs externos
+const CDN_ASSETS = [
     'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css',
     'https://cdn.sheetjs.com/xlsx-0.20.1/package/dist/xlsx.full.min.js'
 ];
@@ -40,12 +40,27 @@ self.addEventListener('install', (event) => {
     event.waitUntil(
         caches.open(CACHE_NAME)
             .then((cache) => {
-                console.log('[SW] Cacheando archivos críticos');
-                // Cachear solo archivos locales primero (más rápido)
-                const localAssets = ASSETS_TO_CACHE.filter(url => !url.startsWith('http'));
-                return cache.addAll(localAssets);
+                console.log('[SW] Cacheando archivos locales...');
+                // Construir URLs completas para assets locales
+                const localUrls = LOCAL_ASSETS.map(asset => BASE_PATH + asset);
+                
+                // Cachear uno por uno para evitar errores si alguno falla
+                return Promise.allSettled(
+                    localUrls.map(url => 
+                        cache.add(url).catch(err => {
+                            console.warn('[SW] No se pudo cachear:', url);
+                            return null;
+                        })
+                    )
+                );
             })
-            .then(() => self.skipWaiting())
+            .then(() => {
+                console.log('[SW] Cache inicial completado');
+                return self.skipWaiting();
+            })
+            .catch(err => {
+                console.error('[SW] Error en instalación:', err);
+            })
     );
 });
 
@@ -73,9 +88,17 @@ self.addEventListener('fetch', (event) => {
     // Ignorar requests que no sean GET
     if (request.method !== 'GET') return;
     
+    // Ignorar extensiones de Chrome y otros esquemas no soportados
+    if (request.url.startsWith('chrome-extension://') || 
+        request.url.startsWith('moz-extension://') ||
+        request.url.startsWith('safari-extension://') ||
+        !request.url.startsWith('http')) {
+        return;
+    }
+    
     // Manejo especial para navegación HTML (para GitHub Pages)
     const isNavigationRequest = request.mode === 'navigate' ||
-                               (request.headers.get('accept').includes('text/html') &&
+                               (request.headers.get('accept')?.includes('text/html') &&
                                 !request.url.includes('api.'));
     
     event.respondWith(

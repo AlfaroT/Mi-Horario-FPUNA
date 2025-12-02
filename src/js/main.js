@@ -20,6 +20,7 @@ import {
 import { populateSemestres, applyFilters } from './filters.js';
 import { showToast, hideError, showLoading, hideLoading, showError } from './utils.js';
 import { initCalendar, showCalendar, hideCalendar } from './calendar.js';
+import { initShare, showShareModal } from './share.js';
 
 // ============================================
 // CALCULADORA DE NOTA FINAL FPUNA
@@ -300,7 +301,7 @@ function closeTaskModal() {
 // INICIALIZACIÓN
 // ============================================
 
-function init() {
+async function init() {
     // Inicializar tema antes que nada (para evitar flash)
     initTheme();
     
@@ -316,15 +317,21 @@ function init() {
     // Inicializar calendario
     initCalendar();
     
+    // Inicializar módulo de compartir y verificar datos en URL
+    // initShare() espera a que las librerías carguen antes de verificar URL
+    const hasSharedData = await initShare();
+    
     // Verificar si hay datos guardados
-    if (localStorage.getItem('userName')) {
-        if (loadFromLocalStorage()) {
-            showDashboard();
+    if (!hasSharedData) {
+        if (localStorage.getItem('userName')) {
+            if (loadFromLocalStorage()) {
+                showDashboard();
+            } else {
+                showSetup();
+            }
         } else {
-            showSetup();
+            showWelcomeScreen();
         }
-    } else {
-        showWelcomeScreen();
     }
     
     console.log('\n═══════════════════════════════════════════════════════');
@@ -545,6 +552,14 @@ function initEventListeners() {
             if (e.target === dom.gradeCalculatorModal) {
                 closeGradeCalculator();
             }
+        });
+    }
+
+    // Event listener para compartir horario
+    const shareBtn = document.getElementById('shareBtn');
+    if (shareBtn) {
+        shareBtn.addEventListener('click', () => {
+            showShareModal();
         });
     }
 
