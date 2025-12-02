@@ -1,7 +1,7 @@
 // Service Worker para Mi Horario FPUNA
-// Versión: 1.2.2 - Iconos PNG de alta calidad + cache busting
+// Versión: 1.3.0 - Calendario integrado
 
-const CACHE_NAME = 'mi-horario-fpuna-v1.2.2'; // Incrementado para forzar actualización
+const CACHE_NAME = 'mi-horario-fpuna-v1.3.0'; // Incrementado para forzar actualización
 const BASE_PATH = '/Mi-Horario-FPUNA/'; // Path base para GitHub Pages
 
 const ASSETS_TO_CACHE = [
@@ -18,15 +18,16 @@ const ASSETS_TO_CACHE = [
     BASE_PATH + 'src/js/dom.js',
     BASE_PATH + 'src/js/filters.js',
     BASE_PATH + 'src/js/utils.js',
+    BASE_PATH + 'src/js/calendar.js',
     BASE_PATH + 'src/js/date-fns.min.js',
     BASE_PATH + 'manifest.json',
     BASE_PATH + 'public/favicon.ico',
     // Iconos PWA
-    BASE_PATH + 'public/icons/icon-96x96.png?v=1.2.2',
-    BASE_PATH + 'public/icons/icon-128x128.png?v=1.2.2',
-    BASE_PATH + 'public/icons/icon-192x192.png?v=1.2.2',
-    BASE_PATH + 'public/icons/icon-384x384.png?v=1.2.2',
-    BASE_PATH + 'public/icons/icon-512x512.png?v=1.2.2',
+    BASE_PATH + 'public/icons/icon-96x96.png?v=1.3.0',
+    BASE_PATH + 'public/icons/icon-128x128.png?v=1.3.0',
+    BASE_PATH + 'public/icons/icon-192x192.png?v=1.3.0',
+    BASE_PATH + 'public/icons/icon-384x384.png?v=1.3.0',
+    BASE_PATH + 'public/icons/icon-512x512.png?v=1.3.0',
     BASE_PATH + 'public/icons/icon.svg',
     // CDNs - se cachean después de la primera carga
     'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css',

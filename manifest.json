@@ -10,7 +10,7 @@
   "scope": "/Mi-Horario-FPUNA/",
   "lang": "es",
   "categories": ["education", "productivity"],
-  "version": "1.2.2",
+  "version": "1.3.0",
   "icons": [
     {
       "src": "public/icons/icon-192x192.png?v=1.2.2",

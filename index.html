@@ -220,7 +220,7 @@
                 </h1>
 
                 <!-- Descripción animada -->
-                <p class="text-gray-600 dark:text-gray-300 text-center mb-8 text-lg animate-pulse">
+                <p class="text-gray-600 dark:text-gray-300 text-center mb-8 text-lg">
                     Vamos a configurar tu horario personalizado
                 </p>
 
@@ -450,6 +450,9 @@
 
                     <!-- Botones de Acción -->
                     <div class="flex items-center space-x-2">
+                        <button id="calendarBtn" class="p-2 hover:bg-white/10 rounded-lg transition-all duration-200" title="Calendario">
+                            <i class="fas fa-calendar-alt text-lg"></i>
+                        </button>
                         <button id="gradeCalculatorBtn" class="p-2 hover:bg-white/10 rounded-lg transition-all duration-200" title="Calculadora de Notas">
                             <i class="fas fa-calculator text-lg"></i>
                         </button>
@@ -675,6 +678,83 @@
                 </div>
             </section>
         </main>
+    </div>
+
+    <!-- Vista del Calendario -->
+    <div id="calendarScreen" class="hidden min-h-screen bg-gray-50 dark:bg-gray-900">
+        <!-- Header del Calendario -->
+        <header class="bg-gradient-to-r from-purple-600 via-purple-700 to-indigo-700 dark:from-purple-800 dark:via-purple-900 dark:to-indigo-900 text-white shadow-xl sticky top-0 z-40">
+            <div class="container mx-auto px-4 py-3 max-w-4xl">
+                <div class="flex justify-between items-center">
+                    <!-- Botón Volver y Título -->
+                    <div class="flex items-center space-x-3">
+                        <button id="backToDashboardBtn" class="p-2 hover:bg-white/10 rounded-lg transition-all duration-200" title="Volver al Dashboard">
+                            <i class="fas fa-arrow-left text-lg"></i>
+                        </button>
+                        <div>
+                            <h1 class="text-lg font-bold">Mi Calendario</h1>
+                            <p id="currentMonth" class="text-sm text-purple-200 font-medium"></p>
+                        </div>
+                    </div>
+
+                    <!-- Controles de Navegación -->
+                    <div class="flex items-center space-x-2">
+                        <button id="prevMonth" class="p-2 hover:bg-white/10 rounded-lg transition-all duration-200" title="Mes Anterior">
+                            <i class="fas fa-chevron-left"></i>
+                        </button>
+                        <button id="calendarToday" class="px-3 py-1.5 text-xs font-medium bg-white/20 hover:bg-white/30 rounded-lg transition-all duration-200">
+                            Hoy
+                        </button>
+                        <button id="nextMonth" class="p-2 hover:bg-white/10 rounded-lg transition-all duration-200" title="Mes Siguiente">
+                            <i class="fas fa-chevron-right"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Leyenda de Colores -->
+        <div class="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 px-4 py-2">
+            <div class="container mx-auto max-w-4xl">
+                <div class="flex flex-wrap gap-3 justify-center text-xs">
+                    <div class="flex items-center gap-1.5">
+                        <span class="w-3 h-3 rounded-full bg-blue-500"></span>
+                        <span class="text-gray-600 dark:text-gray-400">Clases</span>
+                    </div>
+                    <div class="flex items-center gap-1.5">
+                        <span class="w-3 h-3 rounded-full bg-red-500"></span>
+                        <span class="text-gray-600 dark:text-gray-400">Exámenes</span>
+                    </div>
+                    <div class="flex items-center gap-1.5">
+                        <span class="w-3 h-3 rounded-full bg-yellow-500"></span>
+                        <span class="text-gray-600 dark:text-gray-400">Tareas</span>
+                    </div>
+                    <div class="flex items-center gap-1.5">
+                        <span class="w-3 h-3 rounded-full bg-purple-500"></span>
+                        <span class="text-gray-600 dark:text-gray-400">Ocasionales</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Contenedor del Calendario -->
+        <main class="pb-24">
+            <div class="container mx-auto px-2 sm:px-4 py-4 max-w-4xl">
+                <!-- Calendario Grid -->
+                <div id="calendarGrid" class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg overflow-hidden p-3">
+                    <!-- El calendario se genera dinámicamente -->
+                    <div id="calendarDays">
+                        <!-- Header de días y grid de días se generan con JS -->
+                    </div>
+                </div>
+
+                <!-- Detalle de Eventos -->
+                <div id="eventsDetail" class="mt-4 bg-white dark:bg-gray-800 rounded-2xl shadow-lg overflow-hidden p-4">
+                    <!-- El contenido se genera dinámicamente -->
+                </div>
+            </div>
+        </main>
+    </div>
     
     <!-- Modal de Ajustes -->
     <div id="settingsModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black bg-opacity-50 transition-opacity">

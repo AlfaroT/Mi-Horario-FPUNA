@@ -193,13 +193,34 @@ export function formatCurrentDate() {
 }
 
 export function formatTime(timeStr) {
-    if (!timeStr) return '';
-    // Si viene en formato HH:mm:ss, retornar solo HH:mm
-    const parts = timeStr.split(':');
-    if (parts.length >= 2) {
-        return `${parts[0]}:${parts[1]}`;
+    if (!timeStr && timeStr !== 0) return '';
+    
+    // Si es un número (formato decimal de Excel: 0.8125 = 19:30)
+    if (typeof timeStr === 'number') {
+        const totalMinutes = Math.round(timeStr * 24 * 60);
+        const hours = Math.floor(totalMinutes / 60);
+        const minutes = totalMinutes % 60;
+        return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
     }
-    return timeStr;
+    
+    // Si es string, verificar si parece un número decimal
+    const numValue = parseFloat(timeStr);
+    if (!isNaN(numValue) && numValue > 0 && numValue < 1) {
+        const totalMinutes = Math.round(numValue * 24 * 60);
+        const hours = Math.floor(totalMinutes / 60);
+        const minutes = totalMinutes % 60;
+        return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
+    }
+    
+    // Si viene en formato HH:mm:ss, retornar solo HH:mm
+    if (typeof timeStr === 'string') {
+        const parts = timeStr.split(':');
+        if (parts.length >= 2) {
+            return `${parts[0].padStart(2, '0')}:${parts[1].padStart(2, '0')}`;
+        }
+    }
+    
+    return timeStr.toString();
 }
 
 export function showToast(message, type = 'success') {
