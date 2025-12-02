@@ -1,6 +1,6 @@
 {
   "name": "mi-horario-fpuna",
-  "version": "1.2.2",
+  "version": "1.3.0",
   "description": "Aplicación web para gestionar horarios académicos de FPUNA",
   "main": "index.html",
   "scripts": {
@@ -13,8 +13,9 @@
     "predeploy": "npm run build && npm run optimize",
     "optimize": "echo '✅ Optimización completada - Código de desarrollo eliminado, CSS compilado y PWA configurado'",
     "deploy": "npm run build && echo '🚀 Listo para GitHub Pages - sube los archivos a tu repositorio'",
-    "test-smoke": "node test-smoke.js",
-    "generate-icons": "node generate-icons.js"
+    "test:smoke": "node scripts/test-smoke.js",
+    "icons:generate": "node scripts/generate-icons.js",
+    "audit:pwa": "node scripts/audit-pwa.js"
   },
   "keywords": [
     "fpuna",

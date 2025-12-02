@@ -4,16 +4,12 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-# Production builds
-dist/
-build/
-
 # Development files
 localStorage_sim.json
 *.log
 
 # IDE files
-.vscode/
+# .vscode/ - Comentado para mantener configuraciones del workspace
 .idea/
 *.swp
 *.swo
@@ -25,3 +21,7 @@ Thumbs.db
 # Temporary files
 *.tmp
 *.temp
+
+# Data files (archivos de prueba personales)
+data/*.xlsx
+data/*.xls

@@ -19,6 +19,7 @@ import {
 } from './ui.js';
 import { populateSemestres, applyFilters } from './filters.js';
 import { showToast, hideError, showLoading, hideLoading, showError } from './utils.js';
+import { initCalendar, showCalendar, hideCalendar } from './calendar.js';
 
 // ============================================
 // CALCULADORA DE NOTA FINAL FPUNA
@@ -242,7 +243,7 @@ function performGradeCalculation() {
             </div>
 
             ${result.reprobadoPorEF ? `
-                <div class="w-full bg-red-100 dark:bg-red-900 border border-red-400 dark:border-red-600 text-red-700 dark:text-red-200 px-2 sm:px-3 py-2 rounded-lg text-center font-semibold animate-pulse overflow-hidden">
+                <div class="w-full bg-red-100 dark:bg-red-900 border border-red-400 dark:border-red-600 text-red-700 dark:text-red-200 px-2 sm:px-3 py-2 rounded-lg text-center font-semibold overflow-hidden">
                     <div class="flex items-center justify-center gap-2 min-w-0">
                         <i class="fas fa-times-circle flex-shrink-0 text-xs sm:text-sm"></i>
                         <span class="truncate text-xs sm:text-sm">${result.mensaje}</span>
@@ -311,6 +312,9 @@ function init() {
     
     // Limpieza automática de tareas antiguas (>7 días)
     cleanupOldCompletedTasks();
+    
+    // Inicializar calendario
+    initCalendar();
     
     // Verificar si hay datos guardados
     if (localStorage.getItem('userName')) {
@@ -541,6 +545,22 @@ function initEventListeners() {
             if (e.target === dom.gradeCalculatorModal) {
                 closeGradeCalculator();
             }
+        });
+    }
+
+    // Event listeners para el calendario
+    const calendarBtn = document.getElementById('calendarBtn');
+    const backToDashboardBtn = document.getElementById('backToDashboardBtn');
+    
+    if (calendarBtn) {
+        calendarBtn.addEventListener('click', () => {
+            showCalendar();
+        });
+    }
+    
+    if (backToDashboardBtn) {
+        backToDashboardBtn.addEventListener('click', () => {
+            hideCalendar();
         });
     }
 
