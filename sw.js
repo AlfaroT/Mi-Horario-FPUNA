@@ -1,7 +1,7 @@
 // Service Worker para Mi Horario FPUNA
-// Versión: 1.3.1 - Share feature
+// Versión: 1.3.2 - Tutorial de instalación
 
-const CACHE_NAME = 'mi-horario-fpuna-v1.3.1';
+const CACHE_NAME = 'mi-horario-fpuna-v1.3.2';
 
 // Detectar si estamos en GitHub Pages o localhost
 const isGitHubPages = self.location.hostname.includes('github.io');
