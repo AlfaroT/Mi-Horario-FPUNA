@@ -670,6 +670,67 @@ function initEventListeners() {
         });
     }
 
+    // ============================================
+    // MODAL TUTORIAL DE INSTALACIÓN
+    // ============================================
+    
+    // Abrir modal de tutorial
+    if (dom.openInstallTutorialBtn) {
+        dom.openInstallTutorialBtn.addEventListener('click', () => {
+            if (dom.installTutorialModal) {
+                dom.installTutorialModal.classList.remove('hidden');
+                dom.installTutorialModal.classList.add('flex');
+            }
+        });
+    }
+
+    // Cerrar modal de tutorial
+    if (dom.closeInstallTutorialBtn) {
+        dom.closeInstallTutorialBtn.addEventListener('click', () => {
+            if (dom.installTutorialModal) {
+                dom.installTutorialModal.classList.add('hidden');
+                dom.installTutorialModal.classList.remove('flex');
+            }
+        });
+    }
+
+    // Cerrar modal al hacer clic fuera
+    if (dom.installTutorialModal) {
+        dom.installTutorialModal.addEventListener('click', (e) => {
+            if (e.target === dom.installTutorialModal) {
+                dom.installTutorialModal.classList.add('hidden');
+                dom.installTutorialModal.classList.remove('flex');
+            }
+        });
+    }
+
+    // Tabs Android/iOS
+    if (dom.tabAndroid && dom.tabIOS && dom.androidContent && dom.iosContent) {
+        dom.tabAndroid.addEventListener('click', () => {
+            // Activar tab Android
+            dom.tabAndroid.classList.add('bg-white', 'dark:bg-gray-600', 'text-gray-900', 'dark:text-white', 'shadow-sm');
+            dom.tabAndroid.classList.remove('text-gray-600', 'dark:text-gray-400');
+            // Desactivar tab iOS
+            dom.tabIOS.classList.remove('bg-white', 'dark:bg-gray-600', 'text-gray-900', 'dark:text-white', 'shadow-sm');
+            dom.tabIOS.classList.add('text-gray-600', 'dark:text-gray-400');
+            // Mostrar contenido Android
+            dom.androidContent.classList.remove('hidden');
+            dom.iosContent.classList.add('hidden');
+        });
+
+        dom.tabIOS.addEventListener('click', () => {
+            // Activar tab iOS
+            dom.tabIOS.classList.add('bg-white', 'dark:bg-gray-600', 'text-gray-900', 'dark:text-white', 'shadow-sm');
+            dom.tabIOS.classList.remove('text-gray-600', 'dark:text-gray-400');
+            // Desactivar tab Android
+            dom.tabAndroid.classList.remove('bg-white', 'dark:bg-gray-600', 'text-gray-900', 'dark:text-white', 'shadow-sm');
+            dom.tabAndroid.classList.add('text-gray-600', 'dark:text-gray-400');
+            // Mostrar contenido iOS
+            dom.iosContent.classList.remove('hidden');
+            dom.androidContent.classList.add('hidden');
+        });
+    }
+
     // Función helper para toggle de secciones
     function setupSectionToggle(button, container, icon) {
         if (button && container && icon) {

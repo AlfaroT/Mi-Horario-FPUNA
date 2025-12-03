@@ -103,4 +103,13 @@ export const dom = {
 
     // Theme
     get themeToggle() { return getElement('themeToggle'); },
+
+    // Install Tutorial Modal
+    get openInstallTutorialBtn() { return getElement('openInstallTutorialBtn'); },
+    get installTutorialModal() { return getElement('installTutorialModal'); },
+    get closeInstallTutorialBtn() { return getElement('closeInstallTutorialBtn'); },
+    get tabAndroid() { return getElement('tabAndroid'); },
+    get tabIOS() { return getElement('tabIOS'); },
+    get androidContent() { return getElement('androidContent'); },
+    get iosContent() { return getElement('iosContent'); },
 };

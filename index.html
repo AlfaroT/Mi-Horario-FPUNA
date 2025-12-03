@@ -888,6 +888,23 @@
                                 </div>
                             </div>
                         </div>
+
+                        <!-- Install App Section -->
+                        <div class="bg-gradient-to-br from-indigo-50 to-cyan-50 dark:from-indigo-900/20 dark:to-cyan-900/20 rounded-xl p-6 border border-indigo-100 dark:border-indigo-800 settings-card">
+                            <h4 class="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center">
+                                <i class="fas fa-mobile-alt text-indigo-600 mr-2"></i>
+                                Instalar App
+                            </h4>
+
+                            <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">
+                                Instala Mi Horario en tu dispositivo para acceso rápido y uso sin conexión.
+                            </p>
+
+                            <button id="openInstallTutorialBtn" class="w-full bg-gradient-to-r from-indigo-600 to-cyan-600 hover:from-indigo-700 hover:to-cyan-700 text-white font-semibold py-3 px-6 rounded-lg transition-all duration-200 transform hover:scale-105 shadow-lg hover:shadow-xl">
+                                <i class="fas fa-download mr-2"></i>
+                                Tutorial de Instalación
+                            </button>
+                        </div>
                     </div>
                 </div>
 
@@ -901,6 +918,205 @@
         </div>
     </div>
     
+    <!-- Modal Tutorial de Instalación -->
+    <div id="installTutorialModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black bg-opacity-50 transition-opacity p-2 sm:p-4">
+        <div class="modal-content bg-white dark:bg-gray-800 rounded-2xl shadow-2xl max-w-2xl w-full max-h-[95vh] overflow-y-auto m-4">
+            <div class="p-6 sm:p-8">
+                <!-- Header -->
+                <div class="flex justify-between items-center mb-6">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-12 h-12 bg-gradient-to-br from-indigo-500 to-cyan-600 rounded-xl flex items-center justify-center">
+                            <i class="fas fa-mobile-alt text-white text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">Instalar Aplicación</h3>
+                            <p class="text-sm text-gray-600 dark:text-gray-400">Elige tu sistema operativo</p>
+                        </div>
+                    </div>
+                    <button id="closeInstallTutorialBtn" class="w-10 h-10 rounded-xl bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 flex items-center justify-center transition-colors">
+                        <i class="fas fa-times text-gray-500 dark:text-gray-400"></i>
+                    </button>
+                </div>
+
+                <!-- Tabs para Android / iOS -->
+                <div class="flex mb-6 bg-gray-100 dark:bg-gray-700 rounded-xl p-1">
+                    <button id="tabAndroid" class="flex-1 py-3 px-4 rounded-lg font-semibold transition-all duration-200 bg-white dark:bg-gray-600 text-gray-900 dark:text-white shadow-sm flex items-center justify-center gap-2">
+                        <i class="fab fa-android text-green-500 text-lg"></i>
+                        Android
+                    </button>
+                    <button id="tabIOS" class="flex-1 py-3 px-4 rounded-lg font-semibold transition-all duration-200 text-gray-600 dark:text-gray-400 flex items-center justify-center gap-2">
+                        <i class="fab fa-apple text-gray-800 dark:text-gray-200 text-lg"></i>
+                        iOS / iPhone
+                    </button>
+                </div>
+
+                <!-- Contenido Android -->
+                <div id="androidContent" class="space-y-4">
+                    <div class="bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 rounded-xl p-6 border border-green-200 dark:border-green-800">
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="w-10 h-10 bg-green-500 rounded-full flex items-center justify-center">
+                                <i class="fab fa-android text-white text-xl"></i>
+                            </div>
+                            <h4 class="text-lg font-semibold text-gray-900 dark:text-white">Opción 1: Descargar APK</h4>
+                            <span class="px-2 py-1 bg-green-500 text-white text-xs font-bold rounded-full">RECOMENDADO</span>
+                        </div>
+                        
+                        <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">
+                            Descarga e instala la aplicación directamente en tu dispositivo Android.
+                        </p>
+
+                        <div class="space-y-3 mb-4">
+                            <div class="flex items-start gap-3">
+                                <span class="flex-shrink-0 w-6 h-6 bg-green-500 text-white text-xs font-bold rounded-full flex items-center justify-center">1</span>
+                                <p class="text-sm text-gray-700 dark:text-gray-300">Descarga el archivo APK usando el botón de abajo</p>
+                            </div>
+                            <div class="flex items-start gap-3">
+                                <span class="flex-shrink-0 w-6 h-6 bg-green-500 text-white text-xs font-bold rounded-full flex items-center justify-center">2</span>
+                                <p class="text-sm text-gray-700 dark:text-gray-300">Abre el archivo descargado (puede pedirte permiso para instalar desde fuentes desconocidas)</p>
+                            </div>
+                            <div class="flex items-start gap-3">
+                                <span class="flex-shrink-0 w-6 h-6 bg-green-500 text-white text-xs font-bold rounded-full flex items-center justify-center">3</span>
+                                <p class="text-sm text-gray-700 dark:text-gray-300">Toca "Instalar" y espera a que termine</p>
+                            </div>
+                            <div class="flex items-start gap-3">
+                                <span class="flex-shrink-0 w-6 h-6 bg-green-500 text-white text-xs font-bold rounded-full flex items-center justify-center">4</span>
+                                <p class="text-sm text-gray-700 dark:text-gray-300">¡Listo! Encontrarás "Mi Horario FPUNA" en tu lista de apps</p>
+                            </div>
+                        </div>
+
+                        <a href="downloads/mi-horario-fpuna.apk" download class="block w-full bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white font-semibold py-4 px-6 rounded-xl transition-all duration-200 transform hover:scale-105 shadow-lg text-center">
+                            <i class="fas fa-download mr-2"></i>
+                            Descargar APK
+                            <span class="block text-xs opacity-80 mt-1">v1.2.1 • ~2 MB</span>
+                        </a>
+
+                        <p class="text-xs text-gray-500 dark:text-gray-500 mt-3 text-center">
+                            <i class="fas fa-info-circle mr-1"></i>
+                            El APK estará disponible próximamente
+                        </p>
+                    </div>
+
+                    <div class="bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 rounded-xl p-6 border border-blue-200 dark:border-blue-800">
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center">
+                                <i class="fab fa-chrome text-white text-lg"></i>
+                            </div>
+                            <h4 class="text-lg font-semibold text-gray-900 dark:text-white">Opción 2: Instalar desde Chrome</h4>
+                        </div>
+                        
+                        <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">
+                            También puedes instalar como PWA directamente desde el navegador Chrome.
+                        </p>
+
+                        <div class="space-y-3">
+                            <div class="flex items-start gap-3">
+                                <span class="flex-shrink-0 w-6 h-6 bg-blue-500 text-white text-xs font-bold rounded-full flex items-center justify-center">1</span>
+                                <p class="text-sm text-gray-700 dark:text-gray-300">Abre esta página en <strong>Google Chrome</strong></p>
+                            </div>
+                            <div class="flex items-start gap-3">
+                                <span class="flex-shrink-0 w-6 h-6 bg-blue-500 text-white text-xs font-bold rounded-full flex items-center justify-center">2</span>
+                                <p class="text-sm text-gray-700 dark:text-gray-300">Toca el menú <strong>⋮</strong> (tres puntos arriba a la derecha)</p>
+                            </div>
+                            <div class="flex items-start gap-3">
+                                <span class="flex-shrink-0 w-6 h-6 bg-blue-500 text-white text-xs font-bold rounded-full flex items-center justify-center">3</span>
+                                <p class="text-sm text-gray-700 dark:text-gray-300">Selecciona <strong>"Instalar aplicación"</strong> o <strong>"Añadir a pantalla inicio"</strong></p>
+                            </div>
+                            <div class="flex items-start gap-3">
+                                <span class="flex-shrink-0 w-6 h-6 bg-blue-500 text-white text-xs font-bold rounded-full flex items-center justify-center">4</span>
+                                <p class="text-sm text-gray-700 dark:text-gray-300">Confirma tocando <strong>"Instalar"</strong></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Contenido iOS -->
+                <div id="iosContent" class="space-y-4 hidden">
+                    <div class="bg-gradient-to-br from-gray-50 to-slate-50 dark:from-gray-900/40 dark:to-slate-900/40 rounded-xl p-6 border border-gray-200 dark:border-gray-700">
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="w-10 h-10 bg-gray-800 dark:bg-gray-200 rounded-full flex items-center justify-center">
+                                <i class="fab fa-apple text-white dark:text-gray-800 text-xl"></i>
+                            </div>
+                            <h4 class="text-lg font-semibold text-gray-900 dark:text-white">Instalar en iPhone/iPad</h4>
+                        </div>
+                        
+                        <div class="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-700 rounded-lg p-4 mb-4">
+                            <p class="text-sm text-amber-800 dark:text-amber-200">
+                                <i class="fas fa-info-circle mr-2"></i>
+                                <strong>Nota:</strong> iOS no permite instalar APKs. Usa Safari para instalar como aplicación web (PWA).
+                            </p>
+                        </div>
+
+                        <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">
+                            Sigue estos pasos usando <strong>Safari</strong> (el navegador de Apple):
+                        </p>
+
+                        <div class="space-y-4">
+                            <div class="flex items-start gap-3">
+                                <span class="flex-shrink-0 w-8 h-8 bg-blue-500 text-white text-sm font-bold rounded-full flex items-center justify-center">1</span>
+                                <div>
+                                    <p class="text-sm font-medium text-gray-900 dark:text-white">Abre Safari</p>
+                                    <p class="text-xs text-gray-500 dark:text-gray-400">Importante: Solo funciona con Safari, no con Chrome ni otros navegadores</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-start gap-3">
+                                <span class="flex-shrink-0 w-8 h-8 bg-blue-500 text-white text-sm font-bold rounded-full flex items-center justify-center">2</span>
+                                <div>
+                                    <p class="text-sm font-medium text-gray-900 dark:text-white">Navega a esta página</p>
+                                    <p class="text-xs text-gray-500 dark:text-gray-400">Visita: alfarot.github.io/Mi-Horario-FPUNA</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-start gap-3">
+                                <span class="flex-shrink-0 w-8 h-8 bg-blue-500 text-white text-sm font-bold rounded-full flex items-center justify-center">3</span>
+                                <div>
+                                    <p class="text-sm font-medium text-gray-900 dark:text-white">Toca el botón Compartir</p>
+                                    <p class="text-xs text-gray-500 dark:text-gray-400">Es el ícono <i class="fas fa-share-square"></i> en la barra inferior de Safari</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-start gap-3">
+                                <span class="flex-shrink-0 w-8 h-8 bg-blue-500 text-white text-sm font-bold rounded-full flex items-center justify-center">4</span>
+                                <div>
+                                    <p class="text-sm font-medium text-gray-900 dark:text-white">Selecciona "Añadir a pantalla de inicio"</p>
+                                    <p class="text-xs text-gray-500 dark:text-gray-400">Desliza hacia abajo en el menú si no lo ves de inmediato</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-start gap-3">
+                                <span class="flex-shrink-0 w-8 h-8 bg-blue-500 text-white text-sm font-bold rounded-full flex items-center justify-center">5</span>
+                                <div>
+                                    <p class="text-sm font-medium text-gray-900 dark:text-white">Confirma el nombre y toca "Añadir"</p>
+                                    <p class="text-xs text-gray-500 dark:text-gray-400">La app aparecerá en tu pantalla de inicio como cualquier otra aplicación</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mt-6 p-4 bg-green-50 dark:bg-green-900/20 rounded-lg border border-green-200 dark:border-green-700">
+                            <p class="text-sm text-green-800 dark:text-green-200">
+                                <i class="fas fa-check-circle mr-2"></i>
+                                <strong>¡Listo!</strong> La app se abrirá a pantalla completa como una app nativa, sin barras del navegador.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Video/GIF tutorial placeholder -->
+                    <div class="bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20 rounded-xl p-6 border border-purple-200 dark:border-purple-800">
+                        <div class="flex items-center gap-3 mb-3">
+                            <div class="w-10 h-10 bg-purple-500 rounded-full flex items-center justify-center">
+                                <i class="fas fa-lightbulb text-white"></i>
+                            </div>
+                            <h4 class="text-lg font-semibold text-gray-900 dark:text-white">Consejo</h4>
+                        </div>
+                        <p class="text-sm text-gray-600 dark:text-gray-400">
+                            Una vez instalada, la aplicación funcionará sin conexión a internet y recibirás automáticamente las actualizaciones cuando te conectes.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Modal de Confirmación para Reiniciar -->
     <div id="confirmModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black bg-opacity-50 transition-opacity">
         <div class="modal-content bg-white dark:bg-gray-800 rounded-2xl shadow-2xl max-w-md w-full m-4">
@@ -1266,7 +1482,7 @@
                         <i class="fab fa-css3-alt mr-1"></i>Tailwind CSS
                     </span>
                     <span class="px-3 py-1 bg-yellow-100 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-200 text-xs font-medium rounded-full">
-                        <i class="fas fa-file-excel mr-1"></i>SheetJS
+r-1"></i>SheetJS
                     </span>
                     <span class="px-3 py-1 bg-purple-100 dark:bg-purple-900 text-purple-800 dark:text-purple-200 text-xs font-medium rounded-full">
                         <i class="fas fa-calendar-alt mr-1"></i>date-fns
