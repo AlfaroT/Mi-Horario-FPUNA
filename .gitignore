@@ -12,6 +12,18 @@ localStorage_sim.json
 *.keystore
 signing-key-info.txt
 
+# Android build files
+android/.gradle/
+android/.idea/
+android/build/
+android/app/build/
+android/local.properties
+android/captures/
+android/*.iml
+
+# Capacitor/Cordova
+www/
+
 # IDE files
 # .vscode/ - Comentado para mantener configuraciones del workspace
 .idea/
