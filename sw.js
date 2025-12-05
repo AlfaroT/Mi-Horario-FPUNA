@@ -1,7 +1,7 @@
 // Service Worker para Mi Horario FPUNA
-// Versión: 1.3.3 - Fix button text color
+// Versión: 1.3.4 - AssetLinks + favicon fix
 
-const CACHE_NAME = 'mi-horario-fpuna-v1.3.3';
+const CACHE_NAME = 'mi-horario-fpuna-v1.3.4';
 
 // Detectar si estamos en GitHub Pages o localhost
 const isGitHubPages = self.location.hostname.includes('github.io');

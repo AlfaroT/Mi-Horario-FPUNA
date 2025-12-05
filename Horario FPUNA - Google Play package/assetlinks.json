@@ -1,0 +1,8 @@
+[{
+      "relation": ["delegate_permission/common.handle_all_urls"],
+      "target": {
+        "namespace": "android_app",
+        "package_name": "io.github.alfarot.twa",
+        "sha256_cert_fingerprints": ["0E:E2:84:52:67:B5:B4:F1:35:BD:F1:85:64:71:70:CC:5B:18:24:49:F4:AD:07:38:9C:30:8D:E4:FA:02:7B:B6"]
+      }
+    }]
