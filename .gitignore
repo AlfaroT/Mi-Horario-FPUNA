@@ -8,6 +8,10 @@ yarn-error.log*
 localStorage_sim.json
 *.log
 
+# Signing keys (NUNCA subir al repositorio)
+*.keystore
+signing-key-info.txt
+
 # IDE files
 # .vscode/ - Comentado para mantener configuraciones del workspace
 .idea/
