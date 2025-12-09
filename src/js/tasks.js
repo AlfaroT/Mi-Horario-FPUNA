@@ -1,6 +1,7 @@
 import { state, USER_TASKS_KEY } from './state.js';
 import { renderUserTasks } from './ui.js';
 import { showToast } from './utils.js';
+import { renderCalendar } from './calendar.js';
 
 export function loadUserTasks() {
     const tasksJSON = localStorage.getItem(USER_TASKS_KEY);
@@ -94,6 +95,7 @@ export function saveTask() {
     saveUserTasks();
     closeTaskModal();
     renderUserTasks();
+    renderCalendar(); // Actualizar calendario
     showToast(taskId ? 'Tarea actualizada' : 'Tarea creada', 'success');
 }
 
@@ -102,6 +104,7 @@ export function deleteTask(taskId) {
         state.userTasks = state.userTasks.filter(t => t.id !== taskId);
         saveUserTasks();
         renderUserTasks();
+        renderCalendar(); // Actualizar calendario
         showToast('Tarea eliminada', 'success');
     }
 }
@@ -117,6 +120,7 @@ export function toggleTaskComplete(taskId) {
         }
         saveUserTasks();
         renderUserTasks();
+        renderCalendar(); // Actualizar calendario
         showToast(task.completada ? 'Tarea completada ✓' : 'Tarea reactivada', 'success');
     }
 }

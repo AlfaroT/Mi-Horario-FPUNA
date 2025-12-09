@@ -392,7 +392,7 @@ function getDatesForDayInMonth(dayIndex, month, year) {
 /**
  * Renderiza el calendario completo
  */
-function renderCalendar() {
+export function renderCalendar() {
     const calendarGrid = document.getElementById('calendarGrid');
     const calendarDays = document.getElementById('calendarDays');
     
