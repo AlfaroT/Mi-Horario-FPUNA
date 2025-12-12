@@ -79,6 +79,17 @@ header,
     padding-top: var(--safe-top);
 }
 
+/* Header del Dashboard con efecto vidrio (igual que bottomNavBar) */
+#dashboardHeader {
+    background-color: rgba(255, 255, 255, 0.9);
+    -webkit-backdrop-filter: blur(20px);
+    backdrop-filter: blur(20px);
+}
+
+.dark #dashboardHeader {
+    background-color: rgba(31, 41, 55, 0.9);
+}
+
 /* Modales: cubrir toda la pantalla incluyendo safe-area */
 #settingsModal,
 #taskModal,
