@@ -5,6 +5,104 @@
     font-family: 'Inter', sans-serif;
 }
 
+/* ============================================
+   iOS 26 Safari - Barra Flotante Inferior
+   Solución completa para safe-area-insets
+   ============================================ */
+
+/* Variables CSS para safe-area (fallback: 0px) */
+:root {
+    --safe-top: env(safe-area-inset-top, 0px);
+    --safe-bottom: env(safe-area-inset-bottom, 0px);
+    --safe-left: env(safe-area-inset-left, 0px);
+    --safe-right: env(safe-area-inset-right, 0px);
+}
+
+/* Body: altura completa con insets superior e inferior */
+html, body {
+    height: 100%;
+    min-height: 100vh;
+    /* Ajuste para barra flotante de iOS */
+    min-height: calc(100vh - var(--safe-top) - var(--safe-bottom));
+}
+
+body {
+    /* Padding lateral para notch horizontal (iPad landscape) */
+    padding-left: var(--safe-left);
+    padding-right: var(--safe-right);
+}
+
+/* Ajuste para contenido principal con barra de navegación */
+#dashboardScreen,
+#calendarScreen,
+#pomodoroScreen,
+#calculatorScreen {
+    /* 80px es la altura de bottomNavBar + safe-area */
+    padding-bottom: calc(80px + var(--safe-bottom));
+    min-height: calc(100vh - var(--safe-top));
+}
+
+/* Barra de navegación inferior: CRÍTICO para iOS 26 */
+#bottomNavBar {
+    /* Padding inferior para que no se superponga con barra flotante */
+    padding-bottom: var(--safe-bottom) !important;
+    /* Asegurar que se mantenga anclada */
+    position: fixed;
+    bottom: 0;
+    left: var(--safe-left);
+    right: var(--safe-right);
+    z-index: 9999;
+    /* Efecto vidrio para iOS (optional, mejora estética) */
+    -webkit-backdrop-filter: blur(20px);
+    backdrop-filter: blur(20px);
+    /* Reducir opacidad de fondo para efecto vidrio */
+    background-color: rgba(255, 255, 255, 0.9);
+}
+
+/* Dark mode para navbar con efecto vidrio */
+.dark #bottomNavBar {
+    background-color: rgba(31, 41, 55, 0.9);
+}
+
+/* iOS: Evitar que el contenido se superponga cuando se scrollea */
+@supports (padding-bottom: env(safe-area-inset-bottom)) {
+    #bottomNavBar {
+        /* Transición suave cuando la barra cambia de tamaño */
+        transition: padding-bottom 0.3s ease-out;
+    }
+}
+
+/* Headers con notch/Dynamic Island */
+header,
+#pomodoroScreen > header,
+#calendarScreen > header {
+    padding-top: var(--safe-top);
+}
+
+/* Modales: cubrir toda la pantalla incluyendo safe-area */
+#settingsModal,
+#taskModal,
+#confirmModal,
+#installTutorialModal,
+#categoryModal {
+    /* Asegurar que overlay cubra todo */
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+
+/* Contenido de modales: ajustar márgenes para safe-area */
+.modal-content {
+    /* Margen superior para notch */
+    margin-top: max(1rem, var(--safe-top));
+    /* Margen inferior para barra flotante */
+    margin-bottom: max(1rem, var(--safe-bottom));
+    /* Márgenes laterales para notch horizontal */
+    margin-left: max(1rem, var(--safe-left));
+    margin-right: max(1rem, var(--safe-right));
+}
+
 .spinner {
     border: 3px solid #f3f3f3;
     border-top: 3px solid #2563eb;
@@ -23,11 +121,11 @@
     display: none !important;
 }
 
-/* Toast notifications */
+/* Toast notifications - con safe-area para iOS */
 .toast {
     position: fixed;
-    top: 20px;
-    right: 20px;
+    top: calc(20px + var(--safe-top));
+    right: calc(20px + var(--safe-right));
     background: white;
     padding: 16px 24px;
     border-radius: 8px;
@@ -35,7 +133,7 @@
     display: flex;
     align-items: center;
     gap: 12px;
-    z-index: 9999;
+    z-index: 99999;
     animation: slideIn 0.3s ease-out;
 }
 

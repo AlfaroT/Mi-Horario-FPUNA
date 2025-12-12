@@ -1,7 +1,7 @@
 // Service Worker para Mi Horario FPUNA
-// Versión: 1.3.4 - AssetLinks + favicon fix
+// Versión: 1.5.3 - iOS 26 Safari completo con safe-area dinámico
 
-const CACHE_NAME = 'mi-horario-fpuna-v1.3.4';
+const CACHE_NAME = 'mi-horario-fpuna-v1.5.3';
 
 // Detectar si estamos en GitHub Pages o localhost
 const isGitHubPages = self.location.hostname.includes('github.io');
@@ -93,6 +93,12 @@ self.addEventListener('fetch', (event) => {
         request.url.startsWith('moz-extension://') ||
         request.url.startsWith('safari-extension://') ||
         !request.url.startsWith('http')) {
+        return;
+    }
+    
+    // Ignorar archivos APK - siempre descargar desde red
+    if (request.url.includes('.apk')) {
+        event.respondWith(fetch(request));
         return;
     }
     

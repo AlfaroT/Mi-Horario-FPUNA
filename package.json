@@ -15,7 +15,10 @@
     "deploy": "npm run build && echo '🚀 Listo para GitHub Pages - sube los archivos a tu repositorio'",
     "test:smoke": "node scripts/test-smoke.js",
     "icons:generate": "node scripts/generate-icons.js",
-    "audit:pwa": "node scripts/audit-pwa.js"
+    "audit:pwa": "node scripts/audit-pwa.js",
+    "android:sync": "npx cap sync android",
+    "android:open": "npx cap open android",
+    "android:build": "npm run build && npx cap sync android && npx cap open android"
   },
   "keywords": [
     "fpuna",

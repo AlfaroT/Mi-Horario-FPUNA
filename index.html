@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <meta name="theme-color" content="#2563eb">
     <meta name="description" content="Mi Horario FPUNA - Gestiona tu horario de clases y exámenes">
     
@@ -453,19 +453,10 @@
                         </div>
                     </div>
 
-                    <!-- Botones de Acción -->
+                    <!-- Botones Rápidos -->
                     <div class="flex items-center space-x-2">
-                        <button id="shareBtn" class="p-2 hover:bg-white/10 rounded-lg transition-all duration-200" title="Compartir Horario">
+                        <button id="shareBtn" class="p-2 hover:bg-white/10 rounded-lg transition-all duration-200" title="Compartir">
                             <i class="fas fa-share-alt text-lg"></i>
-                        </button>
-                        <button id="calendarBtn" class="p-2 hover:bg-white/10 rounded-lg transition-all duration-200" title="Calendario">
-                            <i class="fas fa-calendar-alt text-lg"></i>
-                        </button>
-                        <button id="gradeCalculatorBtn" class="p-2 hover:bg-white/10 rounded-lg transition-all duration-200" title="Calculadora de Notas">
-                            <i class="fas fa-calculator text-lg"></i>
-                        </button>
-                        <button id="settingsBtn" class="p-2 hover:bg-white/10 rounded-lg transition-all duration-200" title="Ajustes">
-                            <i class="fas fa-cog text-lg"></i>
                         </button>
                     </div>
                 </div>
@@ -473,7 +464,7 @@
         </header>
 
         <!-- Dashboard con Métricas -->
-        <main class="pb-32">
+        <main class="pb-24">
             <!-- Métricas Rápidas -->
             <section class="px-4 py-6 bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-gray-800 dark:to-gray-700">
                 <div class="container mx-auto max-w-4xl">
@@ -482,7 +473,7 @@
                         <div class="bg-white dark:bg-gray-800 rounded-2xl p-4 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 cursor-pointer metric-card" data-target="todayClasses">
                             <div class="flex items-center justify-between">
                                 <div>
-                                    <p class="text-sm text-gray-600 dark:text-gray-400">📚 Clases Hoy</p>
+                                    <p class="text-sm text-gray-600 dark:text-gray-400"><i class="fas fa-book text-blue-600"></i> Clases Hoy</p>
                                     <p class="text-2xl font-bold text-blue-600 dark:text-blue-400" id="todayCount">0</p>
                                 </div>
                                 <div class="w-12 h-12 bg-blue-100 dark:bg-blue-900/30 rounded-full flex items-center justify-center">
@@ -495,7 +486,7 @@
                         <div class="bg-white dark:bg-gray-800 rounded-2xl p-4 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 cursor-pointer metric-card" data-target="exams">
                             <div class="flex items-center justify-between">
                                 <div>
-                                    <p class="text-sm text-gray-600 dark:text-gray-400">📝 Exámenes</p>
+                                    <p class="text-sm text-gray-600 dark:text-gray-400"><i class="fas fa-file-alt text-red-600"></i> Exámenes</p>
                                     <p class="text-2xl font-bold text-red-600 dark:text-red-400" id="examsCount">0</p>
                                 </div>
                                 <div class="w-12 h-12 bg-red-100 dark:bg-red-900/30 rounded-full flex items-center justify-center">
@@ -508,7 +499,7 @@
                         <div class="bg-white dark:bg-gray-800 rounded-2xl p-4 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 cursor-pointer metric-card" data-target="tasks">
                             <div class="flex items-center justify-between">
                                 <div>
-                                    <p class="text-sm text-gray-600 dark:text-gray-400">✅ Tareas</p>
+                                    <p class="text-sm text-gray-600 dark:text-gray-400"><i class="fas fa-check-circle text-green-600"></i> Tareas</p>
                                     <p class="text-2xl font-bold text-green-600 dark:text-green-400" id="tasksCount">0</p>
                                 </div>
                                 <div class="w-12 h-12 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center">
@@ -521,7 +512,7 @@
                         <div class="bg-white dark:bg-gray-800 rounded-2xl p-4 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 cursor-pointer metric-card" data-target="occasional">
                             <div class="flex items-center justify-between">
                                 <div>
-                                    <p class="text-sm text-gray-600 dark:text-gray-400">🎓 Ocasionales</p>
+                                    <p class="text-sm text-gray-600 dark:text-gray-400"><i class="fas fa-graduation-cap text-purple-600"></i> Ocasionales</p>
                                     <p class="text-2xl font-bold text-purple-600 dark:text-purple-400" id="occasionalCount">0</p>
                                 </div>
                                 <div class="w-12 h-12 bg-purple-100 dark:bg-purple-900/30 rounded-full flex items-center justify-center">
@@ -533,6 +524,8 @@
                 </div>
             </section>
 
+
+
             <!-- Accesos Rápidos -->
             <section class="px-4 py-4">
                 <div class="container mx-auto max-w-4xl">
@@ -543,7 +536,7 @@
                            class="bg-gradient-to-br from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white rounded-2xl p-4 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 group">
                             <div class="flex items-center space-x-3">
                                 <div class="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center group-hover:rotate-12 transition-transform">
-                                    <i class="fas fa-graduation-cap"></i>
+                                    <i class="fas fa-graduation-cap text-2xl"></i>
                                 </div>
                                 <div>
                                     <p class="font-semibold text-sm">EALU</p>
@@ -558,7 +551,7 @@
                            class="bg-gradient-to-br from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white rounded-2xl p-4 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 group">
                             <div class="flex items-center space-x-3">
                                 <div class="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center group-hover:rotate-12 transition-transform">
-                                    <i class="fas fa-book-open"></i>
+                                    <i class="fas fa-book-open text-2xl"></i>
                                 </div>
                                 <div>
                                     <p class="font-semibold text-sm">EDUCA</p>
@@ -579,7 +572,7 @@
                         <button id="toggleTodayClassesBtn" class="w-full text-left flex items-center justify-between p-5 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
                             <div class="flex items-center space-x-3">
                                 <div class="w-10 h-10 bg-blue-100 dark:bg-blue-900/30 rounded-xl flex items-center justify-center">
-                                    <i class="fas fa-calendar-day text-blue-600 dark:text-blue-400"></i>
+                                    <i class="fas fa-calendar-day text-blue-600 dark:text-blue-400 text-xl"></i>
                                 </div>
                                 <div>
                                     <h3 class="font-bold text-gray-900 dark:text-gray-100">Clases de Hoy</h3>
@@ -601,7 +594,7 @@
                         <button id="toggleExamsBtn" class="w-full text-left flex items-center justify-between p-5 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
                             <div class="flex items-center space-x-3">
                                 <div class="w-10 h-10 bg-red-100 dark:bg-red-900/30 rounded-xl flex items-center justify-center">
-                                    <i class="fas fa-clipboard-check text-red-600 dark:text-red-400"></i>
+                                    <i class="fas fa-clipboard-check text-red-600 dark:text-red-400 text-xl"></i>
                                 </div>
                                 <div>
                                     <h3 class="font-bold text-gray-900 dark:text-gray-100">Próximos Exámenes</h3>
@@ -623,7 +616,7 @@
                         <button id="toggleOccasionalBtn" class="w-full text-left flex items-center justify-between p-5 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
                             <div class="flex items-center space-x-3">
                                 <div class="w-10 h-10 bg-purple-100 dark:bg-purple-900/30 rounded-xl flex items-center justify-center">
-                                    <i class="fas fa-calendar-plus text-purple-600 dark:text-purple-400"></i>
+                                    <i class="fas fa-calendar-plus text-purple-600 dark:text-purple-400 text-xl"></i>
                                 </div>
                                 <div>
                                     <h3 class="font-bold text-gray-900 dark:text-gray-100">Clases Ocasionales</h3>
@@ -645,7 +638,7 @@
                         <div class="flex items-center justify-between p-5 border-b border-gray-100 dark:border-gray-700">
                             <button id="toggleTasksBtn" class="flex-1 text-left flex items-center space-x-3">
                                 <div class="w-10 h-10 bg-green-100 dark:bg-green-900/30 rounded-xl flex items-center justify-center">
-                                    <i class="fas fa-clipboard-list text-green-600 dark:text-green-400"></i>
+                                    <i class="fas fa-clipboard-list text-green-600 dark:text-green-400 text-xl"></i>
                                 </div>
                                 <div>
                                     <h3 class="font-bold text-gray-900 dark:text-gray-100">Mis Tareas</h3>
@@ -686,6 +679,403 @@
                 </div>
             </section>
         </main>
+    </div>
+
+    <!-- Vista de Estadísticas -->
+    <div id="statisticsScreen" class="hidden min-h-screen bg-gray-50 dark:bg-gray-900">
+        <!-- Header de Estadísticas -->
+        <header class="bg-gradient-to-r from-green-600 via-teal-600 to-blue-700 dark:from-green-800 dark:via-teal-800 dark:to-blue-900 text-white shadow-xl sticky top-0 z-40">
+            <div class="container mx-auto px-4 py-3 max-w-4xl">
+                <div class="flex justify-between items-center">
+                    <!-- Botón Volver y Título -->
+                    <div class="flex items-center space-x-3">
+                        <button id="backToDashboardFromStatsBtn" class="p-2 hover:bg-white/10 rounded-lg transition-all duration-200" title="Volver al Dashboard">
+                            <i class="fas fa-arrow-left text-lg"></i>
+                        </button>
+                        <div>
+                            <h1 class="text-lg font-bold flex items-center gap-2">
+                                <i class="fas fa-chart-bar"></i>
+                                Estadísticas
+                            </h1>
+                            <p class="text-sm text-green-200 font-medium">Análisis de tu progreso académico</p>
+                        </div>
+                    </div>
+
+                    <!-- Botón Exportar -->
+                    <button id="exportStatsBtn" class="p-2 hover:bg-white/10 rounded-lg transition-all duration-200" title="Exportar Estadísticas">
+                        <i class="fas fa-download"></i>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Contenido de Estadísticas -->
+        <main class="pb-24">
+            <!-- Estadísticas Académicas -->
+            <section class="px-4 py-6">
+                <div class="container mx-auto max-w-4xl">
+                    <h2 class="text-xl font-bold text-gray-800 dark:text-gray-200 mb-4 flex items-center gap-2">
+                        <i class="fas fa-graduation-cap text-blue-600 dark:text-blue-400"></i>
+                        Resumen Académico
+                    </h2>
+                    <div id="academicStatsContainer"></div>
+                </div>
+            </section>
+
+            <!-- Estadísticas de Pomodoro -->
+            <section class="px-4 py-4">
+                <div class="container mx-auto max-w-4xl">
+                    <div id="pomodoroStatsContainer"></div>
+                </div>
+            </section>
+
+            <!-- Estadísticas de Exámenes -->
+            <section class="px-4 py-4">
+                <div class="container mx-auto max-w-4xl">
+                    <div id="examStatsContainer"></div>
+                </div>
+            </section>
+
+            <!-- Estadísticas de Tareas -->
+            <section class="px-4 py-4">
+                <div class="container mx-auto max-w-4xl">
+                    <div id="taskStatsContainer"></div>
+                </div>
+            </section>
+
+            <!-- Gráfico de Progreso -->
+            <section class="px-4 py-4">
+                <div class="container mx-auto max-w-4xl">
+                    <div id="progressChartContainer"></div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Estilos para la barra de navegación inferior -->
+        <style>
+            .nav-bottom-btn {
+                color: #9ca3af; /* gray-400 */
+            }
+            .dark .nav-bottom-btn {
+                color: #6b7280; /* dark:gray-500 */
+            }
+            .nav-bottom-btn.active {
+                color: #3b82f6; /* blue-600 */
+            }
+            .dark .nav-bottom-btn.active {
+                color: #60a5fa; /* dark:blue-400 */
+            }
+            .nav-bottom-btn:hover {
+                background-color: #f3f4f6; /* gray-100 */
+            }
+            .dark .nav-bottom-btn:hover {
+                background-color: #374151; /* dark:gray-700 */
+            }
+        </style>
+    </div>
+
+    <!-- Vista de Ajustes/Configuración -->
+    <div id="settingsScreen" class="hidden min-h-screen bg-gray-50 dark:bg-gray-900">
+        <header class="bg-gradient-to-r from-gray-700 via-gray-800 to-gray-900 dark:from-gray-800 dark:via-gray-900 dark:to-black text-white shadow-xl sticky top-0 z-40">
+            <div class="container mx-auto px-4 py-4 max-w-4xl">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center">
+                            <i class="fas fa-cog text-lg"></i>
+                        </div>
+                        <h1 class="text-xl font-bold">Configuración</h1>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <main class="container mx-auto px-4 py-6 pb-24 max-w-4xl space-y-6">
+            <!-- Sección de Usuario -->
+            <section class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6">
+                <h2 class="text-lg font-bold text-gray-900 dark:text-white mb-4">
+                    <i class="fas fa-user-circle mr-2 text-blue-600 dark:text-blue-400"></i>
+                    Usuario
+                </h2>
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Nombre</label>
+                        <input type="text" id="userNameSettingInput" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white" placeholder="Tu nombre">
+                    </div>
+                </div>
+            </section>
+
+            <!-- Sección de Apariencia -->
+            <section class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6">
+                <h2 class="text-lg font-bold text-gray-900 dark:text-white mb-4">
+                    <i class="fas fa-palette mr-2 text-purple-600 dark:text-purple-400"></i>
+                    Apariencia
+                </h2>
+                <div class="space-y-4">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <label class="text-sm font-medium text-gray-700 dark:text-gray-300">Modo Oscuro</label>
+                            <p class="text-xs text-gray-500 dark:text-gray-400">Cambia entre tema claro y oscuro</p>
+                        </div>
+                        <label class="relative inline-flex items-center cursor-pointer">
+                            <input type="checkbox" id="darkModeToggleSetting" class="sr-only peer">
+                            <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+                        </label>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Sección de Horario -->
+            <section class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6">
+                <h2 class="text-lg font-bold text-gray-900 dark:text-white mb-4">
+                    <i class="fas fa-calendar-alt mr-2 text-blue-600 dark:text-blue-400"></i>
+                    Mi Horario
+                </h2>
+                <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">
+                    Modifica las materias y secciones que cursas
+                </p>
+                <button id="modifyFiltersSettingBtn" class="w-full px-4 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-colors flex items-center justify-center">
+                    <i class="fas fa-filter mr-2"></i>
+                    Modificar Filtros
+                </button>
+            </section>
+
+            <!-- Sección de Instalación -->
+            <section class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6">
+                <h2 class="text-lg font-bold text-gray-900 dark:text-white mb-4">
+                    <i class="fas fa-mobile-alt mr-2 text-blue-600 dark:text-blue-400"></i>
+                    Instalar App
+                </h2>
+                <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">
+                    Instala Mi Horario en tu dispositivo para acceso rápido y uso sin conexión.
+                </p>
+                
+                <!-- Botón PWA (navegador) -->
+                <button id="installAppBtn" class="w-full px-4 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-colors flex items-center justify-center mb-3">
+                    <i class="fas fa-download mr-2"></i>
+                    Instalar PWA (Navegador)
+                </button>
+                
+                <!-- Botón Android APK -->
+                <a href="downloads/Horario FPUNA.apk" download class="w-full px-4 py-3 bg-green-600 hover:bg-green-700 text-white rounded-lg font-medium transition-colors flex items-center justify-center">
+                    <i class="fab fa-android mr-2"></i>
+                    Descargar APK Android
+                </a>
+                <p class="text-xs text-gray-500 dark:text-gray-400 mt-2 text-center">
+                    <i class="fas fa-info-circle mr-1"></i>
+                    APK: Instalación nativa en Android
+                </p>
+                
+                <a href="https://github.com/AlfaroT/Mi-Horario-FPUNA#instalación" target="_blank" class="block mt-3 text-center text-sm text-blue-600 dark:text-blue-400 hover:underline">
+                    <i class="fas fa-question-circle mr-1"></i>
+                    Tutorial de Instalación
+                </a>
+            </section>
+
+            <!-- Sección de Información -->
+            <section class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6">
+                <h2 class="text-lg font-bold text-gray-900 dark:text-white mb-4">
+                    <i class="fas fa-info-circle mr-2 text-gray-600 dark:text-gray-400"></i>
+                    Información
+                </h2>
+                <div class="text-sm text-gray-600 dark:text-gray-400 space-y-2">
+                    <p><strong>Versión:</strong> 5.5</p>
+                    <p><strong>Desarrollado para:</strong> FPUNA</p>
+                </div>
+            </section>
+
+            <!-- Zona de Peligro -->
+            <section class="bg-red-50 dark:bg-red-900/20 rounded-2xl shadow-lg p-6 border-2 border-red-200 dark:border-red-800">
+                <h2 class="text-lg font-bold text-red-700 dark:text-red-400 mb-4">
+                    <i class="fas fa-exclamation-triangle mr-2"></i>
+                    Zona de Peligro
+                </h2>
+                <p class="text-sm text-red-600 dark:text-red-300 mb-4">
+                    Esta acción eliminará todos tus datos y no se puede deshacer.
+                </p>
+                <button id="resetSettingBtn" class="w-full px-4 py-3 bg-red-600 hover:bg-red-700 text-white rounded-lg font-medium transition-colors flex items-center justify-center">
+                    <i class="fas fa-trash-alt mr-2"></i>
+                    Borrar Todos los Datos
+                </button>
+            </section>
+        </main>
+    </div>
+
+    <!-- Modal Tutorial de Instalación -->
+    <div id="installTutorialModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4" style="z-index: 99999;">
+        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl max-w-md w-full max-h-[90vh] overflow-y-auto">
+            <div class="sticky top-0 bg-gradient-to-r from-blue-600 to-blue-700 text-white p-4 rounded-t-2xl flex justify-between items-center">
+                <h2 class="text-xl font-bold flex items-center">
+                    <i class="fas fa-download mr-2"></i>
+                    Instalar App
+                </h2>
+                <button id="closeInstallTutorialBtn" class="text-white hover:text-gray-200 text-2xl">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div id="installTutorialContent" class="p-6">
+                <!-- El contenido se genera dinámicamente con JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Barra de Navegación Inferior Global -->
+    <nav id="bottomNavBar" style="position: fixed; bottom: 0; left: 0; right: 0; z-index: 9999; padding-bottom: env(safe-area-inset-bottom, 0px);" class="bg-white dark:bg-gray-800 border-t-2 border-gray-300 dark:border-gray-600 shadow-2xl">
+        <div class="container mx-auto max-w-4xl px-1">
+            <div class="grid grid-cols-5 gap-0">
+                <button id="navDashboardBtn" class="nav-bottom-btn active py-3 px-2 text-center transition-colors flex flex-col items-center">
+                    <i class="fas fa-home text-xl mb-1"></i>
+                    <div class="text-xs font-medium">Inicio</div>
+                </button>
+                <button id="navCalendarBtn" class="nav-bottom-btn py-3 px-2 text-center transition-colors flex flex-col items-center">
+                    <i class="fas fa-calendar-alt text-xl mb-1"></i>
+                    <div class="text-xs font-medium">Calendario</div>
+                </button>
+                <button id="navPomodoroBtn" class="nav-bottom-btn py-3 px-2 text-center transition-colors flex flex-col items-center">
+                    <i class="fas fa-stopwatch text-xl mb-1"></i>
+                    <div class="text-xs font-medium">Pomodoro</div>
+                </button>
+                <button id="navCalculatorBtn" class="nav-bottom-btn py-3 px-2 text-center transition-colors flex flex-col items-center">
+                    <i class="fas fa-calculator text-xl mb-1"></i>
+                    <div class="text-xs font-medium">Calc</div>
+                </button>
+                <button id="settingsBtn" class="nav-bottom-btn py-3 px-2 text-center transition-colors flex flex-col items-center">
+                    <i class="fas fa-cog text-xl mb-1"></i>
+                    <div class="text-xs font-medium">Ajustes</div>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Vista de Pomodoro Minimalista -->
+    <div id="pomodoroScreen" class="hidden min-h-screen bg-white dark:bg-gray-900">
+        <!-- Header Simple -->
+        <header class="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 sticky top-0 z-40">
+            <div class="container mx-auto px-4 py-4 max-w-2xl">
+                <div class="flex items-center justify-between">
+                    <button id="backToDashboardFromPomodoroBtn" class="p-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg">
+                        <i class="fas fa-arrow-left text-xl"></i>
+                    </button>
+                    <h1 class="text-xl font-bold text-gray-900 dark:text-white">Pomodoro</h1>
+                    <div class="w-10"></div> <!-- Spacer para centrar el título -->
+                </div>
+            </div>
+        </header>
+
+        <!-- Contenido Principal -->
+        <main class="pb-32 px-4 py-8">
+            <div class="container mx-auto max-w-2xl space-y-6">
+                
+                <!-- Card del Temporizador -->
+                <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700 p-8">
+                    <!-- Modo Actual -->
+                    <div class="text-center mb-4">
+                        <span id="pomodoroModeDisplay" class="inline-block px-4 py-2 bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-300 rounded-full text-sm font-semibold">
+                            <i class="fas fa-bullseye text-red-600"></i> Enfoque
+                        </span>
+                    </div>
+
+                    <!-- Temporizador -->
+                    <div class="text-center mb-8">
+                        <div id="pomodoroTimerDisplay" class="text-8xl font-bold text-gray-900 dark:text-white font-mono mb-2">
+                            25:00
+                        </div>
+                        <p id="currentTaskDisplay" class="text-gray-500 dark:text-gray-400 text-sm">
+                            Sin tarea seleccionada
+                        </p>
+                    </div>
+
+                    <!-- Barra de Progreso Simple -->
+                    <div class="w-full bg-gray-100 dark:bg-gray-700 rounded-full h-2 mb-8">
+                        <div id="pomodoroProgressBar" class="bg-red-500 h-2 rounded-full transition-all duration-1000" style="width: 0%"></div>
+                    </div>
+
+                    <!-- Botones de Control -->
+                    <div class="flex gap-3 justify-center">
+                        <button id="pomodoroStartBtn" 
+                                class="px-8 py-4 bg-red-600 hover:bg-red-700 text-white rounded-xl font-bold text-lg shadow-sm active:scale-95 transition-all">
+                            <i class="fas fa-play mr-2"></i>Iniciar
+                        </button>
+                        <button id="pomodoroPauseBtn" 
+                                class="px-8 py-4 bg-gray-600 hover:bg-gray-700 text-white rounded-xl font-bold text-lg shadow-sm active:scale-95 transition-all opacity-50" 
+                                disabled>
+                            <i class="fas fa-pause mr-2"></i>Pausar
+                        </button>
+                        <button id="pomodoroSkipBtn" 
+                                class="px-6 py-4 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-bold text-lg shadow-sm active:scale-95 transition-all">
+                            <i class="fas fa-forward mr-2"></i>Saltar
+                        </button>
+                    </div>
+
+                    <!-- Stats Rápidas -->
+                    <div class="mt-8 grid grid-cols-3 gap-4 text-center">
+                        <div>
+                            <div id="pomodoroCyclesDisplay" class="text-3xl font-bold text-gray-900 dark:text-white">0</div>
+                            <div class="text-xs text-gray-500 dark:text-gray-400 mt-1">Hoy</div>
+                        </div>
+                        <div>
+                            <div id="pomodoroTotalTimeDisplay" class="text-3xl font-bold text-gray-900 dark:text-white">0h</div>
+                            <div class="text-xs text-gray-500 dark:text-gray-400 mt-1">Total</div>
+                        </div>
+                        <div>
+                            <div id="pomodoroStreakDisplay" class="text-3xl font-bold text-gray-900 dark:text-white">0</div>
+                            <div class="text-xs text-gray-500 dark:text-gray-400 mt-1">Racha</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Contenido por Tab -->
+                <div id="pomodoroContentArea">
+                    <!-- Se llenará dinámicamente según el tab seleccionado -->
+                </div>
+
+            </div>
+        </main>
+
+        <!-- Barra de Navegación Inferior -->
+        <nav class="fixed bottom-0 left-0 right-0 bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 z-50">
+            <div class="container mx-auto max-w-2xl">
+                <div class="grid grid-cols-4 gap-1">
+                    <button id="tabTasks" class="nav-tab active py-4 px-2 text-center transition-colors">
+                        <i class="fas fa-tasks text-2xl mb-1"></i>
+                        <div class="text-xs font-medium">Tareas</div>
+                    </button>
+                    <button id="tabStats" class="nav-tab py-4 px-2 text-center transition-colors">
+                        <i class="fas fa-chart-line text-2xl mb-1"></i>
+                        <div class="text-xs font-medium">Stats</div>
+                    </button>
+                    <button id="tabSettings" class="nav-tab py-4 px-2 text-center transition-colors">
+                        <i class="fas fa-cog text-2xl mb-1"></i>
+                        <div class="text-xs font-medium">Ajustes</div>
+                    </button>
+                    <button id="tabAchievements" class="nav-tab py-4 px-2 text-center transition-colors">
+                        <i class="fas fa-trophy text-2xl mb-1"></i>
+                        <div class="text-xs font-medium">Logros</div>
+                    </button>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Estilos inline para la barra de navegación -->
+        <style>
+            .nav-tab {
+                color: #9ca3af; /* gray-400 */
+            }
+            .dark .nav-tab {
+                color: #6b7280; /* dark:gray-500 */
+            }
+            .nav-tab.active {
+                color: #dc2626; /* red-600 */
+            }
+            .dark .nav-tab.active {
+                color: #ef4444; /* dark:red-500 */
+            }
+            .nav-tab:hover {
+                background-color: #f3f4f6; /* gray-100 */
+            }
+            .dark .nav-tab:hover {
+                background-color: #374151; /* dark:gray-700 */
+            }
+        </style>
     </div>
 
     <!-- Vista del Calendario -->
@@ -1160,25 +1550,33 @@
     </div>
     
     <!-- Modal Calculadora de Notas -->
-    <div id="gradeCalculatorModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black bg-opacity-50 transition-opacity p-2 sm:p-4">
-        <div class="modal-content bg-white dark:bg-gray-800 rounded-2xl shadow-2xl max-w-4xl w-full max-h-[90vh] sm:max-h-[95vh] overflow-y-auto">
-            <div class="p-4 sm:p-6 lg:p-8">
-                <!-- Header -->
-                <div class="flex justify-between items-center mb-4 sm:mb-6 gap-2">
-                    <div class="flex items-center gap-2 sm:gap-3 flex-1 min-w-0">
-                        <div class="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center flex-shrink-0">
-                            <i class="fas fa-calculator text-white text-base sm:text-lg"></i>
+    <!-- Vista de Calculadora de Notas -->
+    <div id="calculatorScreen" class="hidden min-h-screen bg-gray-50 dark:bg-gray-900">
+        <!-- Header -->
+        <header class="bg-gradient-to-r from-gray-700 via-gray-800 to-gray-900 dark:from-gray-800 dark:via-gray-900 dark:to-black text-white sticky top-0 z-40 shadow-lg">
+            <div class="container mx-auto px-4 py-4 max-w-4xl">
+                <div class="flex items-center justify-between">
+                    <button id="backToDashboardFromCalculatorBtn" class="p-2 hover:bg-white/10 rounded-lg transition-colors">
+                        <i class="fas fa-arrow-left text-xl"></i>
+                    </button>
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center">
+                            <i class="fas fa-calculator text-white"></i>
                         </div>
-                        <div class="min-w-0 flex-1">
-                            <h3 class="text-base sm:text-xl lg:text-2xl font-bold text-gray-900 dark:text-white truncate">Calculadora de Notas</h3>
-                            <p class="text-xs sm:text-sm text-gray-600 dark:text-gray-400">Sistema FPUNA</p>
+                        <div>
+                            <h1 class="text-xl font-bold">Calculadora de Notas</h1>
+                            <p class="text-xs text-gray-300">Sistema FPUNA</p>
                         </div>
                     </div>
-                    <button id="closeGradeCalculatorBtn" class="w-10 h-10 rounded-xl bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 flex items-center justify-center transition-colors flex-shrink-0">
-                        <i class="fas fa-times text-gray-500 dark:text-gray-400"></i>
-                    </button>
+                    <div class="w-10"></div> <!-- Spacer -->
                 </div>
+            </div>
+        </header>
 
+        <!-- Contenido Principal -->
+        <main class="pb-32 px-4 py-6">
+            <div class="container mx-auto max-w-4xl">
+                <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-4 sm:p-6 lg:p-8">
                 <!-- Calculator Form -->
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 mb-4 sm:mb-6">
                     <!-- Left Column - Inputs -->
@@ -1305,7 +1703,8 @@
                     </div>
                 </div>
             </div>
-        </div>
+            </div>
+        </main>
     </div>
     
     <!-- Modal Gestor de Tareas -->
@@ -1533,6 +1932,282 @@ r-1"></i>SheetJS
             </div>
         </div>
     </footer>
+
+    <!-- Modal de Configuración Pomodoro -->
+    <div id="pomodoroSettingsModal" class="hidden fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+            <div class="sticky top-0 bg-gradient-to-r from-red-600 to-orange-600 text-white p-6 rounded-t-2xl">
+                <div class="flex justify-between items-center">
+                    <h2 class="text-2xl font-bold"><i class="fas fa-cog"></i> Configuración Pomodoro</h2>
+                    <button id="closePomodoroSettingsBtn" class="p-2 hover:bg-white/10 rounded-lg transition-all">
+                        <i class="fas fa-times text-xl"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="p-6 space-y-6">
+                <!-- Duraciones -->
+                <div>
+                    <h3 class="text-lg font-semibold mb-4 text-gray-800 dark:text-gray-100">
+                        <i class="fas fa-clock text-red-600 dark:text-red-400 mr-2"></i>
+                        Duraciones
+                    </h3>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                Enfoque (min)
+                            </label>
+                            <input type="number" id="focusDurationInput" min="1" max="120" value="25"
+                                   class="w-full px-4 py-2 border-2 border-gray-200 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-red-500 dark:bg-gray-700 dark:text-white">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                Descanso Corto (min)
+                            </label>
+                            <input type="number" id="shortBreakDurationInput" min="1" max="30" value="5"
+                                   class="w-full px-4 py-2 border-2 border-gray-200 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-red-500 dark:bg-gray-700 dark:text-white">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                Descanso Largo (min)
+                            </label>
+                            <input type="number" id="longBreakDurationInput" min="1" max="60" value="15"
+                                   class="w-full px-4 py-2 border-2 border-gray-200 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-red-500 dark:bg-gray-700 dark:text-white">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Ciclos -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        Pomodoros hasta descanso largo
+                    </label>
+                    <input type="number" id="cyclesUntilLongBreakInput" min="1" max="10" value="4"
+                           class="w-full px-4 py-2 border-2 border-gray-200 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-red-500 dark:bg-gray-700 dark:text-white">
+                </div>
+
+                <!-- Automatización -->
+                <div>
+                    <h3 class="text-lg font-semibold mb-4 text-gray-800 dark:text-gray-100">
+                        <i class="fas fa-robot text-purple-600 dark:text-purple-400 mr-2"></i>
+                        Automatización
+                    </h3>
+                    <div class="space-y-3">
+                        <label class="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700 rounded-lg cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors">
+                            <span class="text-gray-800 dark:text-gray-100 font-medium">Iniciar descansos automáticamente</span>
+                            <input type="checkbox" id="autoStartBreaksInput" class="w-5 h-5 text-red-600 focus:ring-red-500 rounded">
+                        </label>
+                        <label class="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700 rounded-lg cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors">
+                            <span class="text-gray-800 dark:text-gray-100 font-medium">Iniciar Pomodoros automáticamente</span>
+                            <input type="checkbox" id="autoStartPomodorosInput" class="w-5 h-5 text-red-600 focus:ring-red-500 rounded">
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Notificaciones y Sonido -->
+                <div>
+                    <h3 class="text-lg font-semibold mb-4 text-gray-800 dark:text-gray-100">
+                        <i class="fas fa-bell text-blue-600 dark:text-blue-400 mr-2"></i>
+                        Notificaciones y Sonido
+                    </h3>
+                    <div class="space-y-3">
+                        <label class="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700 rounded-lg cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors">
+                            <span class="text-gray-800 dark:text-gray-100 font-medium">Habilitar sonidos</span>
+                            <input type="checkbox" id="soundEnabledInput" checked class="w-5 h-5 text-red-600 focus:ring-red-500 rounded">
+                        </label>
+                        <label class="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700 rounded-lg cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors">
+                            <span class="text-gray-800 dark:text-gray-100 font-medium">Notificaciones del navegador</span>
+                            <input type="checkbox" id="notificationsEnabledInput" checked class="w-5 h-5 text-red-600 focus:ring-red-500 rounded">
+                        </label>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                Volumen
+                            </label>
+                            <input type="range" id="soundVolumeInput" min="0" max="100" value="50"
+                                   class="w-full h-2 bg-gray-200 dark:bg-gray-600 rounded-lg appearance-none cursor-pointer">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Botones -->
+                <div class="flex gap-3">
+                    <button id="savePomodoroSettingsBtn" class="flex-1 px-6 py-3 bg-gradient-to-r from-red-600 to-orange-600 hover:from-red-700 hover:to-orange-700 text-white rounded-xl font-bold transition-all">
+                        Guardar Cambios
+                    </button>
+                    <button id="cancelPomodoroSettingsBtn" class="px-6 py-3 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-800 dark:text-gray-100 rounded-xl font-semibold transition-all">
+                        Cancelar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Crear/Editar Tarea Pomodoro -->
+    <div id="pomodoroTaskModal" class="hidden fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl max-w-lg w-full">
+            <div class="bg-gradient-to-r from-red-600 to-orange-600 text-white p-6 rounded-t-2xl">
+                <div class="flex justify-between items-center">
+                    <h2 id="pomodoroTaskModalTitle" class="text-2xl font-bold"><i class="fas fa-pen"></i> Nueva Tarea Pomodoro</h2>
+                    <button id="closePomodoroTaskBtn" class="p-2 hover:bg-white/10 rounded-lg transition-all">
+                        <i class="fas fa-times text-xl"></i>
+                    </button>
+                </div>
+            </div>
+
+            <form id="pomodoroTaskForm" class="p-6 space-y-4">
+                <input type="hidden" id="pomodoroTaskId">
+
+                <!-- Título -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        Título de la tarea *
+                    </label>
+                    <input type="text" id="pomodoroTaskTitle" required
+                           placeholder="ej. Estudiar Cálculo II"
+                           class="w-full px-4 py-3 border-2 border-gray-200 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-red-500 dark:bg-gray-700 dark:text-white">
+                </div>
+
+                <!-- Categoría -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        Categoría
+                    </label>
+                    <select id="pomodoroTaskCategory"
+                            class="w-full px-4 py-3 border-2 border-gray-200 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-red-500 dark:bg-gray-700 dark:text-white">
+                        <option value="study">Estudio</option>
+                        <option value="work">Trabajo</option>
+                        <option value="personal">Personal</option>
+                        <option value="project">Proyecto</option>
+                        <option value="other">Otro</option>
+                    </select>
+                </div>
+
+                <!-- Estimación de Pomodoros -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        Pomodoros estimados
+                    </label>
+                    <input type="number" id="pomodoroTaskEstimated" min="1" max="50" value="4"
+                           class="w-full px-4 py-3 border-2 border-gray-200 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-red-500 dark:bg-gray-700 dark:text-white">
+                    <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                        ¿Cuántas sesiones de 25 min necesitarás?
+                    </p>
+                </div>
+
+                <!-- Descripción -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        Descripción (opcional)
+                    </label>
+                    <textarea id="pomodoroTaskDescription" rows="3"
+                              placeholder="Detalles adicionales..."
+                              class="w-full px-4 py-3 border-2 border-gray-200 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-red-500 dark:bg-gray-700 dark:text-white resize-none"></textarea>
+                </div>
+
+                <!-- Botones -->
+                <div class="flex gap-3 pt-4">
+                    <button type="submit" id="savePomodoroTaskBtn"
+                            class="flex-1 px-6 py-3 bg-gradient-to-r from-red-600 to-orange-600 hover:from-red-700 hover:to-orange-700 text-white rounded-xl font-bold transition-all">
+                        Guardar Tarea
+                    </button>
+                    <button type="button" id="cancelPomodoroTaskBtn"
+                            class="px-6 py-3 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-800 dark:text-gray-100 rounded-xl font-semibold transition-all">
+                        Cancelar
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal para crear categoría personalizada -->
+    <div id="categoryModal" class="hidden fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl max-w-md w-full">
+            <div class="bg-gradient-to-r from-blue-600 to-purple-600 text-white p-6 rounded-t-2xl">
+                <div class="flex justify-between items-center">
+                    <h2 class="text-2xl font-bold"><i class="fas fa-tag"></i> Nueva Categoría</h2>
+                    <button onclick="window.closeCategoryModal()" class="p-2 hover:bg-white/10 rounded-lg transition-all">
+                        <i class="fas fa-times text-xl"></i>
+                    </button>
+                </div>
+            </div>
+
+            <form onsubmit="window.saveCustomCategory(event)" class="p-6 space-y-4">
+                <!-- Nombre -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        Nombre de la categoría *
+                    </label>
+                    <input type="text" id="categoryName" required
+                           placeholder="ej. Ejercicio"
+                           class="w-full px-4 py-3 border-2 border-gray-200 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white">
+                </div>
+
+                <!-- Icono Font Awesome -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        Icono *
+                    </label>
+                    <select id="categoryIcon" required
+                            class="w-full px-4 py-3 border-2 border-gray-200 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white">
+                        <option value="fa-dumbbell">🏋️ Ejercicio</option>
+                        <option value="fa-utensils">🍽️ Comida</option>
+                        <option value="fa-gamepad">🎮 Juegos</option>
+                        <option value="fa-music">🎵 Música</option>
+                        <option value="fa-code">💻 Programación</option>
+                        <option value="fa-paint-brush">🎨 Arte</option>
+                        <option value="fa-camera">📷 Fotografía</option>
+                        <option value="fa-shopping-cart">🛒 Compras</option>
+                        <option value="fa-plane">✈️ Viajes</option>
+                        <option value="fa-heart">❤️ Salud</option>
+                        <option value="fa-user-friends">👥 Social</option>
+                        <option value="fa-lightbulb">💡 Ideas</option>
+                        <option value="fa-star">⭐ Especial</option>
+                        <option value="fa-coffee">☕ Descanso</option>
+                        <option value="fa-book-reader">📖 Lectura</option>
+                        <option value="fa-film">🎬 Películas</option>
+                        <option value="fa-running">🏃 Deporte</option>
+                        <option value="fa-briefcase">💼 Negocios</option>
+                        <option value="fa-gift">🎁 Regalos</option>
+                        <option value="fa-paw">🐾 Mascotas</option>
+                    </select>
+                    <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                        Selecciona un icono que represente tu categoría
+                    </p>
+                </div>
+
+                <!-- Color -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        Color
+                    </label>
+                    <select id="categoryColor"
+                            class="w-full px-4 py-3 border-2 border-gray-200 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white">
+                        <option value="red">Rojo</option>
+                        <option value="blue">Azul</option>
+                        <option value="green">Verde</option>
+                        <option value="yellow">Amarillo</option>
+                        <option value="purple">Morado</option>
+                        <option value="pink">Rosa</option>
+                        <option value="orange">Naranja</option>
+                        <option value="gray">Gris</option>
+                    </select>
+                </div>
+
+                <!-- Botones -->
+                <div class="flex gap-3 pt-4">
+                    <button type="submit"
+                            class="flex-1 px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white rounded-xl font-bold transition-all">
+                        Crear Categoría
+                    </button>
+                    <button type="button" onclick="window.closeCategoryModal()"
+                            class="px-6 py-3 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-800 dark:text-gray-100 rounded-xl font-semibold transition-all">
+                        Cancelar
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
 </body>
 </html>
 

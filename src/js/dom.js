@@ -8,6 +8,11 @@ export const dom = {
     get setupScreen() { return getElement('setupScreen'); },
     get dashboardScreen() { return getElement('dashboardScreen'); },
     get welcomeScreen() { return getElement('welcomeScreen'); },
+    get pomodoroScreen() { return getElement('pomodoroScreen'); },
+    get statisticsScreen() { return getElement('statisticsScreen'); },
+    get calendarScreen() { return getElement('calendarScreen'); },
+    get calculatorScreen() { return getElement('calculatorScreen'); },
+    get settingsScreen() { return getElement('settingsScreen'); },
 
     // Welcome
     get welcomeForm() { return getElement('welcomeForm'); },
@@ -49,8 +54,6 @@ export const dom = {
 
     // Grade Calculator
     get gradeCalculatorBtn() { return getElement('gradeCalculatorBtn'); },
-    get gradeCalculatorModal() { return getElement('gradeCalculatorModal'); },
-    get closeGradeCalculatorBtn() { return getElement('closeGradeCalculatorBtn'); },
     get calculateGradeBtn() { return getElement('calculateGradeBtn'); },
     get ppInput() { return getElement('ppInput'); },
     get efInput() { return getElement('efInput'); },
@@ -112,4 +115,51 @@ export const dom = {
     get tabIOS() { return getElement('tabIOS'); },
     get androidContent() { return getElement('androidContent'); },
     get iosContent() { return getElement('iosContent'); },
+
+    // Pomodoro
+    get pomodoroTimer() { return getElement('pomodoroTimer'); },
+    get pomodoroMode() { return getElement('pomodoroMode'); },
+    get pomodoroSessions() { return getElement('pomodoroSessions'); },
+    get pomodoroProgress() { return getElement('pomodoroProgress'); },
+    get pomodoroStartBtn() { return getElement('pomodoroStartBtn'); },
+    get pomodoroPauseBtn() { return getElement('pomodoroPauseBtn'); },
+    get pomodoroResetBtn() { return getElement('pomodoroResetBtn'); },
+    get pomodoroSkipBtn() { return getElement('pomodoroSkipBtn'); },
+    get pomodoroHelpBtn() { return getElement('pomodoroHelpBtn'); },
+
+    // Statistics
+    get statsBtn() { return getElement('statsBtn'); },
+    get statisticsScreen() { return getElement('statisticsScreen'); },
+    get backToDashboardFromStatsBtn() { return getElement('backToDashboardFromStatsBtn'); },
+    get exportStatsBtn() { return getElement('exportStatsBtn'); },
+    get academicStatsContainer() { return getElement('academicStatsContainer'); },
+    get pomodoroStatsContainer() { return getElement('pomodoroStatsContainer'); },
+    get examStatsContainer() { return getElement('examStatsContainer'); },
+    get taskStatsContainer() { return getElement('taskStatsContainer'); },
+    get progressChartContainer() { return getElement('progressChartContainer'); },
+
+    // Pomodoro Screen - Minimalista
+    get openPomodoroBtn() { return getElement('navPomodoroBtn'); },
+    get navDashboardBtn() { return getElement('navDashboardBtn'); },
+    get navCalendarBtn() { return getElement('navCalendarBtn'); },
+    get navPomodoroBtn() { return getElement('navPomodoroBtn'); },
+    get navCalculatorBtn() { return getElement('navCalculatorBtn'); },
+    get navStatsBtn() { return getElement('navStatsBtn'); },
+    get pomodoroScreen() { return getElement('pomodoroScreen'); },
+    get backToDashboardFromPomodoroBtn() { return getElement('backToDashboardFromPomodoroBtn'); },
+    get pomodoroTimerDisplay() { return getElement('pomodoroTimerDisplay'); },
+    get pomodoroModeDisplay() { return getElement('pomodoroModeDisplay'); },
+    get pomodoroCyclesDisplay() { return getElement('pomodoroCyclesDisplay'); },
+    get pomodoroTotalTimeDisplay() { return getElement('pomodoroTotalTimeDisplay'); },
+    get pomodoroStreakDisplay() { return getElement('pomodoroStreakDisplay'); },
+    get pomodoroProgressBar() { return getElement('pomodoroProgressBar'); },
+    get currentTaskDisplay() { return getElement('currentTaskDisplay'); },
+    get pomodoroSkipBtn() { return getElement('pomodoroSkipBtn'); },
+    
+    // Pomodoro Tabs (Bottom Navigation)
+    get tabTasks() { return getElement('tabTasks'); },
+    get tabStats() { return getElement('tabStats'); },
+    get tabSettings() { return getElement('tabSettings'); },
+    get tabAchievements() { return getElement('tabAchievements'); },
+    get pomodoroContentArea() { return getElement('pomodoroContentArea'); },
 };
