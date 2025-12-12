@@ -95,7 +95,16 @@ export function saveTask() {
     saveUserTasks();
     closeTaskModal();
     renderUserTasks();
-    renderCalendar(); // Actualizar calendario
+    
+    // Actualizar calendario siempre
+    console.log('[Tasks] Actualizando calendario después de guardar tarea');
+    try {
+        renderCalendar();
+        console.log('[Tasks] Calendario actualizado exitosamente');
+    } catch (error) {
+        console.error('[Tasks] Error al actualizar calendario:', error);
+    }
+    
     showToast(taskId ? 'Tarea actualizada' : 'Tarea creada', 'success');
 }
 
@@ -104,7 +113,16 @@ export function deleteTask(taskId) {
         state.userTasks = state.userTasks.filter(t => t.id !== taskId);
         saveUserTasks();
         renderUserTasks();
-        renderCalendar(); // Actualizar calendario
+        
+        // Actualizar calendario siempre
+        console.log('[Tasks] Actualizando calendario después de eliminar tarea');
+        try {
+            renderCalendar();
+            console.log('[Tasks] Calendario actualizado exitosamente');
+        } catch (error) {
+            console.error('[Tasks] Error al actualizar calendario:', error);
+        }
+        
         showToast('Tarea eliminada', 'success');
     }
 }
@@ -120,7 +138,16 @@ export function toggleTaskComplete(taskId) {
         }
         saveUserTasks();
         renderUserTasks();
-        renderCalendar(); // Actualizar calendario
+        
+        // Actualizar calendario siempre
+        console.log('[Tasks] Actualizando calendario después de completar/reactivar tarea');
+        try {
+            renderCalendar();
+            console.log('[Tasks] Calendario actualizado exitosamente');
+        } catch (error) {
+            console.error('[Tasks] Error al actualizar calendario:', error);
+        }
+        
         showToast(task.completada ? 'Tarea completada ✓' : 'Tarea reactivada', 'success');
     }
 }

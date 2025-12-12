@@ -21,6 +21,11 @@ import { populateSemestres, applyFilters } from './filters.js';
 import { showToast, hideError, showLoading, hideLoading, showError } from './utils.js';
 import { initCalendar, showCalendar, hideCalendar } from './calendar.js';
 import { initShare, showShareModal } from './share.js';
+import { initPomodoro, showPomodoroScreen, hidePomodoroScreen } from './pomodoro-advanced.js';
+import { initStatistics, showStatistics, hideStatistics, exportStatistics } from './statistics.js';
+
+// Variable global para el prompt de instalación de PWA
+window.deferredPrompt = null;
 
 // ============================================
 // CALCULADORA DE NOTA FINAL FPUNA
@@ -91,14 +96,8 @@ function openGradeCalculator() {
         input.classList.remove('border-red-500', 'border-green-500');
     });
 
-    // Inicializar funcionalidades
-    initQuickExamples();
+    // Inicializar validación
     initGradeCalculatorValidation();
-}
-
-function closeGradeCalculator() {
-    dom.gradeCalculatorModal.classList.add('hidden');
-    dom.gradeCalculatorModal.classList.remove('flex');
 }
 
 function initQuickExamples() {
@@ -317,6 +316,12 @@ async function init() {
     // Inicializar calendario
     initCalendar();
     
+    // Inicializar Pomodoro
+    initPomodoro();
+    
+    // Inicializar Estadísticas
+    initStatistics();
+    
     // Inicializar módulo de compartir y verificar datos en URL
     // initShare() espera a que las librerías carguen antes de verificar URL
     const hasSharedData = await initShare();
@@ -401,6 +406,10 @@ function initEventListeners() {
         showLoading();
         
         try {
+            // Asegurar que config existe
+            if (!state.config) {
+                state.config = {};
+            }
             state.config.carrera = sheetName;
             processSheetData(sheetName);
             transformDataToSchedule();
@@ -442,17 +451,489 @@ function initEventListeners() {
 
     if (dom.settingsBtn) {
         dom.settingsBtn.addEventListener('click', () => {
-            if (dom.settingsModal) {
-                dom.settingsModal.classList.remove('hidden');
-                dom.settingsModal.classList.add('flex');
-            }
-            // Asegurar que el toggle refleje el estado actual
-            const themeToggle = document.getElementById('themeToggle');
-            if (themeToggle) {
-                const isDark = document.documentElement.classList.contains('dark');
-                themeToggle.checked = isDark;
+            updateNavButtons('settingsBtn');
+            hideAllScreens();
+            if (dom.settingsScreen) {
+                dom.settingsScreen.classList.remove('hidden');
+                // Cargar valores actuales
+                const userName = localStorage.getItem('userName') || '';
+                const userNameInput = document.getElementById('userNameSettingInput');
+                if (userNameInput) userNameInput.value = userName;
+                
+                const darkModeToggle = document.getElementById('darkModeToggleSetting');
+                if (darkModeToggle) {
+                    darkModeToggle.checked = document.documentElement.classList.contains('dark');
+                }
             }
         });
+    }
+
+    // Listeners de la pantalla de ajustes
+    const userNameSettingInput = document.getElementById('userNameSettingInput');
+    if (userNameSettingInput) {
+        userNameSettingInput.addEventListener('change', (e) => {
+            localStorage.setItem('userName', e.target.value);
+            showToast('Nombre actualizado', 'success');
+        });
+    }
+
+    const darkModeToggleSetting = document.getElementById('darkModeToggleSetting');
+    if (darkModeToggleSetting) {
+        darkModeToggleSetting.addEventListener('change', toggleTheme);
+    }
+
+    const modifyFiltersSettingBtn = document.getElementById('modifyFiltersSettingBtn');
+    if (modifyFiltersSettingBtn) {
+        modifyFiltersSettingBtn.addEventListener('click', () => {
+            hideAllScreens();
+            showSetup(true); // Pasar true para ir directamente a modificar filtros
+        });
+    }
+
+    const resetSettingBtn = document.getElementById('resetSettingBtn');
+    if (resetSettingBtn) {
+        resetSettingBtn.addEventListener('click', handleReset);
+    }
+
+    const installAppBtn = document.getElementById('installAppBtn');
+    const installTutorialModal = document.getElementById('installTutorialModal');
+    const closeInstallTutorialBtn = document.getElementById('closeInstallTutorialBtn');
+    const installTutorialContent = document.getElementById('installTutorialContent');
+
+    if (installAppBtn && installTutorialModal && installTutorialContent) {
+        installAppBtn.addEventListener('click', () => {
+            // Detectar plataforma y navegador
+            const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+            const isIOS = /iPad|iPhone|iPod/.test(userAgent) && !window.MSStream;
+            const isAndroid = /android/i.test(userAgent);
+            const isSafari = /Safari/.test(userAgent) && !/Chrome/.test(userAgent);
+            const isChrome = /Chrome/.test(userAgent) && !/Edge/.test(userAgent);
+            const isEdge = /Edg/.test(userAgent);
+            const isFirefox = /Firefox/.test(userAgent);
+            const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
+
+            // Si ya está instalada
+            if (isStandalone) {
+                installTutorialContent.innerHTML = `
+                    <div class="text-center py-6">
+                        <i class="fas fa-check-circle text-green-500 text-6xl mb-4"></i>
+                        <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">¡App Ya Instalada!</h3>
+                        <p class="text-gray-600 dark:text-gray-400">La aplicación ya está instalada en tu dispositivo.</p>
+                    </div>
+                `;
+                installTutorialModal.classList.remove('hidden');
+                installTutorialModal.classList.add('flex');
+                return;
+            }
+
+            // Si hay prompt nativo disponible (Android Chrome/Edge)
+            if (window.deferredPrompt) {
+                // Mostrar opciones al usuario en lugar de instalar automáticamente
+                showInstallOptions(isIOS, isAndroid, isSafari, isChrome, isEdge, isFirefox);
+            } else {
+                // Mostrar tutorial manual
+                showInstallTutorial(isIOS, isAndroid, isSafari, isChrome, isEdge, isFirefox);
+            }
+        });
+
+        // Cerrar modal
+        if (closeInstallTutorialBtn) {
+            closeInstallTutorialBtn.addEventListener('click', () => {
+                installTutorialModal.classList.add('hidden');
+                installTutorialModal.classList.remove('flex');
+            });
+        }
+
+        // Cerrar al hacer clic fuera
+        installTutorialModal.addEventListener('click', (e) => {
+            if (e.target === installTutorialModal) {
+                installTutorialModal.classList.add('hidden');
+                installTutorialModal.classList.remove('flex');
+            }
+        });
+    }
+
+    function showInstallOptions(isIOS, isAndroid, isSafari, isChrome, isEdge, isFirefox) {
+        const optionsHTML = `
+            <div class="space-y-4">
+                <div class="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 p-6 rounded-lg border border-blue-200 dark:border-blue-800">
+                    <div class="flex items-center justify-center mb-4">
+                        <i class="fas fa-download text-4xl text-blue-600 dark:text-blue-400"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-center text-gray-900 dark:text-white mb-2">Instalar Aplicación</h3>
+                    <p class="text-center text-gray-600 dark:text-gray-400 text-sm mb-4">
+                        Elige cómo quieres instalar Horario FPUNA en tu dispositivo
+                    </p>
+                </div>
+
+                <div class="space-y-3">
+                    <button id="installAutoBtn" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-4 px-6 rounded-lg shadow-md hover:shadow-lg transition-all duration-200 flex items-center justify-between group">
+                        <div class="flex items-center">
+                            <i class="fas fa-bolt text-2xl mr-3"></i>
+                            <div class="text-left">
+                                <div class="font-bold">Instalación Rápida</div>
+                                <div class="text-xs opacity-90">Instalar automáticamente (recomendado)</div>
+                            </div>
+                        </div>
+                        <i class="fas fa-chevron-right group-hover:translate-x-1 transition-transform"></i>
+                    </button>
+
+                    <button id="installManualBtn" class="w-full bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-900 dark:text-white font-semibold py-4 px-6 rounded-lg border-2 border-gray-200 dark:border-gray-600 shadow-sm hover:shadow-md transition-all duration-200 flex items-center justify-between group">
+                        <div class="flex items-center">
+                            <i class="fas fa-book-open text-2xl mr-3 text-gray-600 dark:text-gray-300"></i>
+                            <div class="text-left">
+                                <div class="font-bold">Ver Tutorial Manual</div>
+                                <div class="text-xs text-gray-500 dark:text-gray-400">Instrucciones paso a paso</div>
+                            </div>
+                        </div>
+                        <i class="fas fa-chevron-right group-hover:translate-x-1 transition-transform"></i>
+                    </button>
+                </div>
+
+                <div class="bg-yellow-50 dark:bg-yellow-900/20 p-3 rounded-lg border border-yellow-200 dark:border-yellow-800 mt-4">
+                    <div class="flex items-start">
+                        <i class="fas fa-info-circle text-yellow-600 dark:text-yellow-400 mr-2 mt-0.5"></i>
+                        <p class="text-xs text-yellow-800 dark:text-yellow-300">
+                            La instalación rápida usa la función nativa de tu navegador para instalar la app con un solo clic.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        installTutorialContent.innerHTML = optionsHTML;
+        installTutorialModal.classList.remove('hidden');
+        installTutorialModal.classList.add('flex');
+
+        // Event listeners para los botones
+        const installAutoBtn = document.getElementById('installAutoBtn');
+        const installManualBtn = document.getElementById('installManualBtn');
+
+        if (installAutoBtn) {
+            installAutoBtn.addEventListener('click', () => {
+                if (window.deferredPrompt) {
+                    window.deferredPrompt.prompt();
+                    window.deferredPrompt.userChoice.then((choiceResult) => {
+                        if (choiceResult.outcome === 'accepted') {
+                            showToast('¡App instalada correctamente!', 'success');
+                            installTutorialModal.classList.add('hidden');
+                            installTutorialModal.classList.remove('flex');
+                        } else {
+                            // Si el usuario cancela, mostrar tutorial manual
+                            showInstallTutorial(isIOS, isAndroid, isSafari, isChrome, isEdge, isFirefox);
+                        }
+                        window.deferredPrompt = null;
+                    });
+                }
+            });
+        }
+
+        if (installManualBtn) {
+            installManualBtn.addEventListener('click', () => {
+                showInstallTutorial(isIOS, isAndroid, isSafari, isChrome, isEdge, isFirefox);
+            });
+        }
+    }
+
+    function showInstallTutorial(isIOS, isAndroid, isSafari, isChrome, isEdge, isFirefox) {
+        let tutorialHTML = '';
+
+        if (isIOS && isSafari) {
+            // Tutorial para iOS Safari
+            tutorialHTML = `
+                <div class="space-y-4">
+                    <div class="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg border border-blue-200 dark:border-blue-800">
+                        <div class="flex items-center mb-2">
+                            <i class="fab fa-apple text-2xl mr-2"></i>
+                            <h3 class="font-bold text-gray-900 dark:text-white">iOS (iPhone/iPad)</h3>
+                        </div>
+                        <p class="text-sm text-gray-600 dark:text-gray-400 mb-2">Estás usando Safari en iOS</p>
+                    </div>
+
+                    <div class="space-y-3">
+                        <div class="flex items-start">
+                            <div class="bg-blue-600 text-white rounded-full w-8 h-8 flex items-center justify-center flex-shrink-0 mt-1 mr-3">
+                                <span class="font-bold">1</span>
+                            </div>
+                            <div>
+                                <p class="text-gray-900 dark:text-white font-medium">Toca el botón de compartir</p>
+                                <p class="text-sm text-gray-600 dark:text-gray-400">Busca el ícono <i class="fas fa-share text-blue-600"></i> en la barra inferior de Safari</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start">
+                            <div class="bg-blue-600 text-white rounded-full w-8 h-8 flex items-center justify-center flex-shrink-0 mt-1 mr-3">
+                                <span class="font-bold">2</span>
+                            </div>
+                            <div>
+                                <p class="text-gray-900 dark:text-white font-medium">Selecciona "Agregar a pantalla de inicio"</p>
+                                <p class="text-sm text-gray-600 dark:text-gray-400">Desplázate y busca <i class="fas fa-plus-square text-blue-600"></i> "Agregar a pantalla de inicio"</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start">
+                            <div class="bg-blue-600 text-white rounded-full w-8 h-8 flex items-center justify-center flex-shrink-0 mt-1 mr-3">
+                                <span class="font-bold">3</span>
+                            </div>
+                            <div>
+                                <p class="text-gray-900 dark:text-white font-medium">Confirma la instalación</p>
+                                <p class="text-sm text-gray-600 dark:text-gray-400">Toca "Agregar" en la esquina superior derecha</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start">
+                            <div class="bg-green-600 text-white rounded-full w-8 h-8 flex items-center justify-center flex-shrink-0 mt-1 mr-3">
+                                <i class="fas fa-check"></i>
+                            </div>
+                            <div>
+                                <p class="text-gray-900 dark:text-white font-medium">¡Listo!</p>
+                                <p class="text-sm text-gray-600 dark:text-gray-400">La app aparecerá en tu pantalla de inicio</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-yellow-50 dark:bg-yellow-900/20 p-4 rounded-lg border border-yellow-200 dark:border-yellow-800 mt-4">
+                        <p class="text-sm text-yellow-800 dark:text-yellow-400">
+                            <i class="fas fa-exclamation-triangle mr-2"></i>
+                            <strong>Importante:</strong> Solo Safari en iOS soporta instalación de PWAs. Chrome/Firefox en iOS no lo permiten.
+                        </p>
+                    </div>
+                </div>
+            `;
+        } else if (isIOS && !isSafari) {
+            // iOS con otro navegador
+            tutorialHTML = `
+                <div class="space-y-4">
+                    <div class="bg-red-50 dark:bg-red-900/20 p-4 rounded-lg border border-red-200 dark:border-red-800">
+                        <div class="flex items-center mb-2">
+                            <i class="fas fa-exclamation-circle text-2xl mr-2 text-red-600"></i>
+                            <h3 class="font-bold text-gray-900 dark:text-white">Navegador no compatible</h3>
+                        </div>
+                        <p class="text-sm text-gray-600 dark:text-gray-400">Estás usando un navegador que no soporta instalación en iOS</p>
+                    </div>
+
+                    <div class="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg border border-blue-200 dark:border-blue-800">
+                        <h4 class="font-bold text-gray-900 dark:text-white mb-2">
+                            <i class="fab fa-safari mr-2"></i>
+                            Usa Safari para instalar
+                        </h4>
+                        <ol class="space-y-2 text-sm text-gray-600 dark:text-gray-400">
+                            <li>1. Abre Safari en tu iPhone/iPad</li>
+                            <li>2. Visita esta página en Safari</li>
+                            <li>3. Toca <i class="fas fa-share text-blue-600"></i> y selecciona "Agregar a pantalla de inicio"</li>
+                        </ol>
+                    </div>
+
+                    <p class="text-sm text-gray-600 dark:text-gray-400 text-center">
+                        Puedes copiar esta URL y pegarla en Safari
+                    </p>
+                </div>
+            `;
+        } else if (isAndroid && (isChrome || isEdge)) {
+            // Android Chrome/Edge
+            tutorialHTML = `
+                <div class="space-y-4">
+                    <div class="bg-green-50 dark:bg-green-900/20 p-4 rounded-lg border border-green-200 dark:border-green-800">
+                        <div class="flex items-center mb-2">
+                            <i class="fab fa-android text-2xl mr-2 text-green-600"></i>
+                            <h3 class="font-bold text-gray-900 dark:text-white">Android - ${isChrome ? 'Chrome' : 'Edge'}</h3>
+                        </div>
+                        <p class="text-sm text-gray-600 dark:text-gray-400">Tu navegador soporta instalación automática</p>
+                    </div>
+
+                    <div class="space-y-3">
+                        <div class="flex items-start">
+                            <div class="bg-green-600 text-white rounded-full w-8 h-8 flex items-center justify-center flex-shrink-0 mt-1 mr-3">
+                                <span class="font-bold">1</span>
+                            </div>
+                            <div>
+                                <p class="text-gray-900 dark:text-white font-medium">Toca el menú de ${isChrome ? 'Chrome' : 'Edge'}</p>
+                                <p class="text-sm text-gray-600 dark:text-gray-400">Los 3 puntos <i class="fas fa-ellipsis-v"></i> en la esquina superior derecha</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start">
+                            <div class="bg-green-600 text-white rounded-full w-8 h-8 flex items-center justify-center flex-shrink-0 mt-1 mr-3">
+                                <span class="font-bold">2</span>
+                            </div>
+                            <div>
+                                <p class="text-gray-900 dark:text-white font-medium">Selecciona "Instalar app" o "Agregar a pantalla de inicio"</p>
+                                <p class="text-sm text-gray-600 dark:text-gray-400">Busca la opción <i class="fas fa-plus-square text-green-600"></i> con el nombre de la app</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start">
+                            <div class="bg-green-600 text-white rounded-full w-8 h-8 flex items-center justify-center flex-shrink-0 mt-1 mr-3">
+                                <span class="font-bold">3</span>
+                            </div>
+                            <div>
+                                <p class="text-gray-900 dark:text-white font-medium">Confirma la instalación</p>
+                                <p class="text-sm text-gray-600 dark:text-gray-400">Toca "Instalar" en el diálogo que aparece</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start">
+                            <div class="bg-green-600 text-white rounded-full w-8 h-8 flex items-center justify-center flex-shrink-0 mt-1 mr-3">
+                                <i class="fas fa-check"></i>
+                            </div>
+                            <div>
+                                <p class="text-gray-900 dark:text-white font-medium">¡Listo!</p>
+                                <p class="text-sm text-gray-600 dark:text-gray-400">La app se agregará a tu pantalla de inicio y cajón de apps</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg border border-blue-200 dark:border-blue-800 mt-4">
+                        <p class="text-sm text-blue-800 dark:text-blue-400">
+                            <i class="fas fa-info-circle mr-2"></i>
+                            También puedes buscar un banner de instalación en la parte superior de la página.
+                        </p>
+                    </div>
+                </div>
+            `;
+        } else if (isAndroid && isFirefox) {
+            // Android Firefox
+            tutorialHTML = `
+                <div class="space-y-4">
+                    <div class="bg-orange-50 dark:bg-orange-900/20 p-4 rounded-lg border border-orange-200 dark:border-orange-800">
+                        <div class="flex items-center mb-2">
+                            <i class="fab fa-firefox text-2xl mr-2 text-orange-600"></i>
+                            <h3 class="font-bold text-gray-900 dark:text-white">Android - Firefox</h3>
+                        </div>
+                        <p class="text-sm text-gray-600 dark:text-gray-400">Firefox soporta instalación con algunos pasos adicionales</p>
+                    </div>
+
+                    <div class="space-y-3">
+                        <div class="flex items-start">
+                            <div class="bg-orange-600 text-white rounded-full w-8 h-8 flex items-center justify-center flex-shrink-0 mt-1 mr-3">
+                                <span class="font-bold">1</span>
+                            </div>
+                            <div>
+                                <p class="text-gray-900 dark:text-white font-medium">Toca el menú de Firefox</p>
+                                <p class="text-sm text-gray-600 dark:text-gray-400">Los 3 puntos <i class="fas fa-ellipsis-v"></i> en la esquina superior derecha</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start">
+                            <div class="bg-orange-600 text-white rounded-full w-8 h-8 flex items-center justify-center flex-shrink-0 mt-1 mr-3">
+                                <span class="font-bold">2</span>
+                            </div>
+                            <div>
+                                <p class="text-gray-900 dark:text-white font-medium">Busca el ícono de instalación</p>
+                                <p class="text-sm text-gray-600 dark:text-gray-400">Debe aparecer un ícono <i class="fas fa-plus text-orange-600"></i> junto a "Instalar"</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start">
+                            <div class="bg-orange-600 text-white rounded-full w-8 h-8 flex items-center justify-center flex-shrink-0 mt-1 mr-3">
+                                <span class="font-bold">3</span>
+                            </div>
+                            <div>
+                                <p class="text-gray-900 dark:text-white font-medium">Toca "Instalar"</p>
+                                <p class="text-sm text-gray-600 dark:text-gray-400">Confirma para agregar a la pantalla de inicio</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg border border-blue-200 dark:border-blue-800 mt-4">
+                        <h4 class="font-bold text-gray-900 dark:text-white mb-2">Recomendación</h4>
+                        <p class="text-sm text-gray-600 dark:text-gray-400">
+                            Para mejor experiencia, considera usar Chrome o Edge en Android, que tienen mejor soporte para PWAs.
+                        </p>
+                    </div>
+                </div>
+            `;
+        } else if (isAndroid) {
+            // Android otro navegador
+            tutorialHTML = `
+                <div class="space-y-4">
+                    <div class="bg-yellow-50 dark:bg-yellow-900/20 p-4 rounded-lg border border-yellow-200 dark:border-yellow-800">
+                        <div class="flex items-center mb-2">
+                            <i class="fab fa-android text-2xl mr-2"></i>
+                            <h3 class="font-bold text-gray-900 dark:text-white">Android - Navegador alternativo</h3>
+                        </div>
+                        <p class="text-sm text-gray-600 dark:text-gray-400">Tu navegador puede tener soporte limitado para PWAs</p>
+                    </div>
+
+                    <div class="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg border border-blue-200 dark:border-blue-800">
+                        <h4 class="font-bold text-gray-900 dark:text-white mb-2">
+                            <i class="fas fa-lightbulb mr-2"></i>
+                            Recomendación
+                        </h4>
+                        <p class="text-sm text-gray-600 dark:text-gray-400 mb-3">
+                            Para instalar la app en Android, usa uno de estos navegadores:
+                        </p>
+                        <ul class="space-y-2 text-sm text-gray-600 dark:text-gray-400">
+                            <li><i class="fab fa-chrome text-blue-600 mr-2"></i> Google Chrome (Recomendado)</li>
+                            <li><i class="fab fa-edge text-blue-500 mr-2"></i> Microsoft Edge</li>
+                            <li><i class="fab fa-firefox text-orange-600 mr-2"></i> Firefox (soporte básico)</li>
+                        </ul>
+                    </div>
+
+                    <p class="text-sm text-gray-600 dark:text-gray-400 text-center">
+                        Abre esta página en Chrome o Edge para instalar la app
+                    </p>
+                </div>
+            `;
+        } else {
+            // Escritorio u otro dispositivo
+            tutorialHTML = `
+                <div class="space-y-4">
+                    <div class="bg-purple-50 dark:bg-purple-900/20 p-4 rounded-lg border border-purple-200 dark:border-purple-800">
+                        <div class="flex items-center mb-2">
+                            <i class="fas fa-desktop text-2xl mr-2 text-purple-600"></i>
+                            <h3 class="font-bold text-gray-900 dark:text-white">Instalación en Escritorio</h3>
+                        </div>
+                        <p class="text-sm text-gray-600 dark:text-gray-400">Puedes instalar esta app en tu computadora</p>
+                    </div>
+
+                    <div class="space-y-3">
+                        <div class="flex items-start">
+                            <div class="bg-purple-600 text-white rounded-full w-8 h-8 flex items-center justify-center flex-shrink-0 mt-1 mr-3">
+                                <span class="font-bold">1</span>
+                            </div>
+                            <div>
+                                <p class="text-gray-900 dark:text-white font-medium">Busca el ícono de instalación</p>
+                                <p class="text-sm text-gray-600 dark:text-gray-400">En la barra de direcciones, lado derecho <i class="fas fa-plus-square text-purple-600"></i></p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start">
+                            <div class="bg-purple-600 text-white rounded-full w-8 h-8 flex items-center justify-center flex-shrink-0 mt-1 mr-3">
+                                <span class="font-bold">2</span>
+                            </div>
+                            <div>
+                                <p class="text-gray-900 dark:text-white font-medium">Haz clic en "Instalar"</p>
+                                <p class="text-sm text-gray-600 dark:text-gray-400">O usa el menú <i class="fas fa-ellipsis-v"></i> → "Instalar Mi Horario FPUNA"</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start">
+                            <div class="bg-purple-600 text-white rounded-full w-8 h-8 flex items-center justify-center flex-shrink-0 mt-1 mr-3">
+                                <i class="fas fa-check"></i>
+                            </div>
+                            <div>
+                                <p class="text-gray-900 dark:text-white font-medium">¡Listo!</p>
+                                <p class="text-sm text-gray-600 dark:text-gray-400">La app se abrirá en su propia ventana</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg border border-blue-200 dark:border-blue-800 mt-4">
+                        <h4 class="font-bold text-gray-900 dark:text-white mb-2">Navegadores compatibles</h4>
+                        <ul class="space-y-1 text-sm text-gray-600 dark:text-gray-400">
+                            <li><i class="fab fa-chrome text-blue-600 mr-2"></i> Google Chrome</li>
+                            <li><i class="fab fa-edge text-blue-500 mr-2"></i> Microsoft Edge</li>
+                            <li><i class="fas fa-globe text-purple-600 mr-2"></i> Brave, Opera, Vivaldi</li>
+                        </ul>
+                    </div>
+                </div>
+            `;
+        }
+
+        installTutorialContent.innerHTML = tutorialHTML;
+        installTutorialModal.classList.remove('hidden');
+        installTutorialModal.classList.add('flex');
     }
 
     if (dom.closeSettingsBtn) {
@@ -536,8 +1017,30 @@ function initEventListeners() {
         dom.gradeCalculatorBtn.addEventListener('click', openGradeCalculator);
     }
     
-    if (dom.closeGradeCalculatorBtn) {
-        dom.closeGradeCalculatorBtn.addEventListener('click', closeGradeCalculator);
+    // Botón volver desde Calculadora
+    const backToDashboardFromCalculatorBtn = document.getElementById('backToDashboardFromCalculatorBtn');
+    if (backToDashboardFromCalculatorBtn) {
+        backToDashboardFromCalculatorBtn.addEventListener('click', () => {
+            hideAllScreens();
+            dom.dashboardScreen.classList.remove('hidden');
+            updateNavButtons('navDashboardBtn');
+            // Asegurar que la barra de navegación global esté visible
+            const bottomNavBar = document.getElementById('bottomNavBar');
+            if (bottomNavBar) bottomNavBar.classList.remove('hidden');
+        });
+    }
+
+    // Botón volver desde Calendario
+    const backToDashboardBtn = document.getElementById('backToDashboardBtn');
+    if (backToDashboardBtn) {
+        backToDashboardBtn.addEventListener('click', () => {
+            hideAllScreens();
+            dom.dashboardScreen.classList.remove('hidden');
+            updateNavButtons('navDashboardBtn');
+            // Asegurar que la barra de navegación global esté visible
+            const bottomNavBar = document.getElementById('bottomNavBar');
+            if (bottomNavBar) bottomNavBar.classList.remove('hidden');
+        });
     }
     
     if (dom.calculateGradeBtn) {
@@ -560,22 +1063,6 @@ function initEventListeners() {
     if (shareBtn) {
         shareBtn.addEventListener('click', () => {
             showShareModal();
-        });
-    }
-
-    // Event listeners para el calendario
-    const calendarBtn = document.getElementById('calendarBtn');
-    const backToDashboardBtn = document.getElementById('backToDashboardBtn');
-    
-    if (calendarBtn) {
-        calendarBtn.addEventListener('click', () => {
-            showCalendar();
-        });
-    }
-    
-    if (backToDashboardBtn) {
-        backToDashboardBtn.addEventListener('click', () => {
-            hideCalendar();
         });
     }
 
@@ -754,11 +1241,197 @@ function initEventListeners() {
     setupSectionToggle(dom.toggleExamsBtn, dom.examsContainer, dom.examsToggleIcon);
     setupSectionToggle(dom.toggleOccasionalBtn, dom.occasionalContainer, dom.occasionalToggleIcon);
     setupSectionToggle(dom.toggleTasksBtn, dom.tasksContainer, dom.tasksToggleIcon);
+
+    // Botón de Estadísticas
+    if (dom.statsBtn) {
+        dom.statsBtn.addEventListener('click', () => {
+            showStatistics();
+        });
+    }
+
+    // Botón volver desde Estadísticas
+    if (dom.backToDashboardFromStatsBtn) {
+        dom.backToDashboardFromStatsBtn.addEventListener('click', () => {
+            hideAllScreens();
+            dom.dashboardScreen.classList.remove('hidden');
+            updateNavButtons('navDashboardBtn');
+        });
+    }
+
+    // Botón exportar estadísticas
+    if (dom.exportStatsBtn) {
+        dom.exportStatsBtn.addEventListener('click', () => {
+            exportStatistics();
+            showToast('Estadísticas exportadas correctamente', 'success');
+        });
+    }
+
+    // Botón de ayuda del Pomodoro
+    if (dom.pomodoroHelpBtn) {
+        dom.pomodoroHelpBtn.addEventListener('click', () => {
+            showToast('Pomodoro: 25 min trabajo + 5 min descanso. Cada 4 sesiones: 15 min descanso largo', 'info');
+        });
+    }
+
+    // Botón Dashboard/Inicio desde barra de navegación
+    if (dom.navDashboardBtn) {
+        dom.navDashboardBtn.addEventListener('click', () => {
+            updateNavButtons('navDashboardBtn');
+            hideAllScreens();
+            dom.dashboardScreen.classList.remove('hidden');
+        });
+    }
+
+    // Botón Calendario desde barra de navegación
+    if (dom.navCalendarBtn) {
+        dom.navCalendarBtn.addEventListener('click', () => {
+            updateNavButtons('navCalendarBtn');
+            hideAllScreens();
+            showCalendar();
+        });
+    }
+
+    // Botón abrir Pomodoro desde barra de navegación
+    if (dom.navPomodoroBtn) {
+        dom.navPomodoroBtn.addEventListener('click', () => {
+            updateNavButtons('navPomodoroBtn');
+            hideAllScreens();
+            showPomodoroScreen();
+        });
+    }
+
+    // Botón Calculadora desde barra de navegación
+    if (dom.navCalculatorBtn) {
+        dom.navCalculatorBtn.addEventListener('click', () => {
+            updateNavButtons('navCalculatorBtn');
+            hideAllScreens();
+            if (dom.calculatorScreen) {
+                dom.calculatorScreen.classList.remove('hidden');
+                // Asegurar que la barra de navegación global esté visible
+                const bottomNavBar = document.getElementById('bottomNavBar');
+                if (bottomNavBar) bottomNavBar.classList.remove('hidden');
+                // Inicializar ejemplos rápidos cuando se muestra la calculadora
+                initQuickExamples();
+            }
+        });
+    }
+
+    // Botón volver desde Pomodoro
+    if (dom.backToDashboardFromPomodoroBtn) {
+        dom.backToDashboardFromPomodoroBtn.addEventListener('click', () => {
+            hideAllScreens();
+            dom.dashboardScreen.classList.remove('hidden');
+            updateNavButtons('navDashboardBtn');
+            // Mostrar barra de navegación global
+            const bottomNavBar = document.getElementById('bottomNavBar');
+            if (bottomNavBar) bottomNavBar.classList.remove('hidden');
+        });
+    }
+
+    // Tabs del Pomodoro (Bottom Navigation)
+    if (dom.tabTasks && dom.tabStats && dom.tabSettings && dom.tabAchievements) {
+        const tabs = [dom.tabTasks, dom.tabStats, dom.tabSettings, dom.tabAchievements];
+
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                // Remover clase active de todos
+                tabs.forEach(t => t.classList.remove('active'));
+                
+                // Agregar clase active al seleccionado
+                tab.classList.add('active');
+                
+                // Actualizar contenido (se implementará en pomodoro-advanced.js)
+                const tabName = tab.id.replace('tab', '').toLowerCase();
+                window.dispatchEvent(new CustomEvent('pomodoroTabChange', { detail: { tab: tabName } }));
+            });
+        });
+    }
+}
+
+// Función para ocultar todas las pantallas
+function hideAllScreens() {
+    if (dom.dashboardScreen) dom.dashboardScreen.classList.add('hidden');
+    if (dom.pomodoroScreen) dom.pomodoroScreen.classList.add('hidden');
+    if (dom.statisticsScreen) dom.statisticsScreen.classList.add('hidden');
+    if (dom.calendarScreen) dom.calendarScreen.classList.add('hidden');
+    if (dom.calculatorScreen) dom.calculatorScreen.classList.add('hidden');
+    if (dom.settingsScreen) dom.settingsScreen.classList.add('hidden');
+}
+
+// Función para actualizar estado activo de botones de navegación
+function updateNavButtons(activeId) {
+    const navButtons = ['navDashboardBtn', 'navCalendarBtn', 'navPomodoroBtn', 'navCalculatorBtn', 'settingsBtn'];
+    navButtons.forEach(id => {
+        const btn = document.getElementById(id);
+        if (btn) {
+            if (id === activeId) {
+                btn.classList.add('active');
+            } else {
+                btn.classList.remove('active');
+            }
+        }
+    });
 }
 
 // ============================================
 // INICIALIZACIÓN
 // ============================================
+
+// Capturar evento de instalación PWA
+window.addEventListener('beforeinstallprompt', (e) => {
+    // Prevenir que el browser muestre su propio prompt
+    e.preventDefault();
+    // Guardar el evento para usarlo después
+    window.deferredPrompt = e;
+    console.log('PWA install prompt available');
+});
+
+// ============================================
+// iOS 26 SAFARI - MANEJO DINÁMICO DE BARRA FLOTANTE
+// ============================================
+
+/**
+ * Detecta y ajusta dinámicamente los insets cuando la barra de Safari
+ * se minimiza/expande en iOS 26 (comportamiento flotante)
+ */
+function initIOSSafeAreaHandler() {
+    // Verificar si estamos en iOS/Safari
+    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+    
+    if (!isIOS) return;
+    
+    // Función para actualizar variables CSS cuando cambia el viewport
+    function updateSafeAreaInsets() {
+        // Calcular diferencia entre viewport height y client height
+        const viewportHeight = window.innerHeight;
+        const documentHeight = document.documentElement.clientHeight;
+        const bottomInset = Math.max(0, documentHeight - viewportHeight);
+        
+        // Actualizar variable CSS custom (fallback para navegadores antiguos)
+        document.documentElement.style.setProperty('--dynamic-safe-bottom', `${bottomInset}px`);
+    }
+    
+    // Ejecutar al cargar
+    updateSafeAreaInsets();
+    
+    // Ejecutar cuando cambie el tamaño del viewport (barra se minimiza/expande)
+    window.addEventListener('resize', updateSafeAreaInsets);
+    
+    // Ejecutar cuando cambie la orientación
+    window.addEventListener('orientationchange', () => {
+        // Delay para esperar a que el navegador termine de rotar
+        setTimeout(updateSafeAreaInsets, 200);
+    });
+    
+    // Ejecutar cuando se haga scroll (la barra puede moverse)
+    let scrollTimeout;
+    window.addEventListener('scroll', () => {
+        clearTimeout(scrollTimeout);
+        scrollTimeout = setTimeout(updateSafeAreaInsets, 100);
+    }, { passive: true });
+    
+    console.log('[iOS Safe-Area] Handler inicializado para Safari flotante');
+}
 
 // Ejecutar inmediatamente cuando el módulo se carga
 // (DOMContentLoaded ya se disparó cuando main.js se carga dinámicamente)
@@ -766,9 +1439,11 @@ if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', () => {
         init();
         initEventListeners();
+        initIOSSafeAreaHandler();
     });
 } else {
     // DOM ya está listo
     init();
     initEventListeners();
+    initIOSSafeAreaHandler();
 }

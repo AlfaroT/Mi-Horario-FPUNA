@@ -27,6 +27,10 @@ export function showSetup(goDirectlyToFilters = false) {
     dom.dashboardScreen.classList.add('hidden');
     dom.welcomeScreen.classList.add('hidden');
     
+    // Ocultar barra de navegación
+    const bottomNav = document.getElementById('bottomNavBar');
+    if (bottomNav) bottomNav.classList.add('hidden');
+    
     if (goDirectlyToFilters && state.fullSchedule.length > 0) {
         // Mostrar solo los pasos relevantes para modificar filtros
         dom.step1.classList.add('hidden');
@@ -76,6 +80,11 @@ export function showDashboard() {
     dom.setupScreen.classList.add('hidden');
     dom.dashboardScreen.classList.remove('hidden');
     dom.welcomeScreen.classList.add('hidden');
+    
+    // Mostrar barra de navegación
+    const bottomNav = document.getElementById('bottomNavBar');
+    if (bottomNav) bottomNav.classList.remove('hidden');
+    
     updateGreeting();
     renderDashboard();
 }
@@ -84,6 +93,10 @@ export function showWelcomeScreen() {
     dom.welcomeScreen.classList.remove('hidden');
     dom.setupScreen.classList.add('hidden');
     dom.dashboardScreen.classList.add('hidden');
+    
+    // Ocultar barra de navegación
+    const bottomNav = document.getElementById('bottomNavBar');
+    if (bottomNav) bottomNav.classList.add('hidden');
 }
 
 // Función para actualizar el saludo dinámico

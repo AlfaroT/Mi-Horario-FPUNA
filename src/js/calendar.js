@@ -22,12 +22,14 @@ export function initCalendar() {
  * Muestra la pantalla del calendario
  */
 export function showCalendar() {
-    const dashboardScreen = document.getElementById('dashboardScreen');
     const calendarScreen = document.getElementById('calendarScreen');
+    const bottomNavBar = document.getElementById('bottomNavBar');
     
-    if (dashboardScreen && calendarScreen) {
-        dashboardScreen.classList.add('hidden');
+    if (calendarScreen) {
         calendarScreen.classList.remove('hidden');
+        
+        // Asegurar que la barra de navegación global esté visible
+        if (bottomNavBar) bottomNavBar.classList.remove('hidden');
         
         // Actualizar título del mes
         updateMonthTitle();
@@ -41,12 +43,10 @@ export function showCalendar() {
  * Oculta la pantalla del calendario
  */
 export function hideCalendar() {
-    const dashboardScreen = document.getElementById('dashboardScreen');
     const calendarScreen = document.getElementById('calendarScreen');
     
-    if (dashboardScreen && calendarScreen) {
+    if (calendarScreen) {
         calendarScreen.classList.add('hidden');
-        dashboardScreen.classList.remove('hidden');
     }
 }
 
@@ -174,7 +174,7 @@ function formatExcelTime(hora) {
  * @param {string|Date} dateInput - Fecha en varios formatos
  * @returns {Date|null} - Objeto Date o null si no se puede parsear
  */
-function parseDate(dateInput) {
+export function parseDate(dateInput) {
     if (!dateInput) return null;
     
     // Si ya es Date
@@ -306,9 +306,11 @@ function collectAllEvents() {
     // 3. TAREAS DEL USUARIO - Tienen fecha de entrega
     if (state.userTasks && state.userTasks.length > 0) {
         state.userTasks.forEach(tarea => {
-            if (!tarea.fechaEntrega) return;
+            // Usar 'fecha' en lugar de 'fechaEntrega' (campo correcto del modal)
+            const fechaTarea = tarea.fecha || tarea.fechaEntrega;
+            if (!fechaTarea) return;
             
-            const tareaDate = parseDate(tarea.fechaEntrega);
+            const tareaDate = parseDate(fechaTarea);
             if (!tareaDate) return;
             
             // Solo incluir si está en el mes actual
@@ -317,8 +319,8 @@ function collectAllEvents() {
                     type: 'tarea',
                     title: tarea.titulo || tarea.descripcion || 'Tarea',
                     date: tareaDate,
-                    time: '',
-                    fullTime: '',
+                    time: tarea.hora || '',
+                    fullTime: tarea.hora || '',
                     location: '',
                     materia: tarea.materia || '',
                     descripcion: tarea.descripcion || '',
@@ -576,22 +578,22 @@ function createEventCard(event) {
     };
     
     const typeIcons = {
-        'examen': '📝',
-        'clase': '📚',
-        'tarea': '📋',
-        'ocasional': '⭐'
+        'examen': '<i class="fas fa-file-alt text-red-500"></i>',
+        'clase': '<i class="fas fa-book text-blue-500"></i>',
+        'tarea': '<i class="fas fa-clipboard text-green-500"></i>',
+        'ocasional': '<i class="fas fa-star text-yellow-500"></i>'
     };
     
     let detailsHtml = '';
     
     // Hora - siempre primero y destacado
     if (event.fullTime) {
-        detailsHtml += `<span class="event-detail"><span class="detail-icon">🕐</span> ${event.fullTime}</span>`;
+        detailsHtml += `<span class="event-detail"><span class="detail-icon"><i class="fas fa-clock text-blue-600"></i></span> ${event.fullTime}</span>`;
     }
     
     // Ubicación/Aula
     if (event.location) {
-        detailsHtml += `<span class="event-detail"><span class="detail-icon">📍</span> Aula ${event.location}</span>`;
+        detailsHtml += `<span class="event-detail"><span class="detail-icon"><i class="fas fa-map-marker-alt text-red-600"></i></span> Aula ${event.location}</span>`;
     }
     
     // Semestre - formato más claro
@@ -599,12 +601,12 @@ function createEventCard(event) {
         const semestreText = event.semestre.toString().includes('°') || event.semestre.toString().includes('Sem') 
             ? event.semestre 
             : `${event.semestre}° Semestre`;
-        detailsHtml += `<span class="event-detail"><span class="detail-icon">📖</span> ${semestreText}</span>`;
+        detailsHtml += `<span class="event-detail"><span class="detail-icon"><i class="fas fa-book-open text-purple-600"></i></span> ${semestreText}</span>`;
     }
     
     // Sección
     if (event.seccion) {
-        detailsHtml += `<span class="event-detail"><span class="detail-icon">👥</span> Sección ${event.seccion}</span>`;
+        detailsHtml += `<span class="event-detail"><span class="detail-icon"><i class="fas fa-users text-green-600"></i></span> Sección ${event.seccion}</span>`;
     }
     
     // Turno - formato más claro
@@ -612,12 +614,12 @@ function createEventCard(event) {
         const turnoText = event.turno.length === 1 
             ? (event.turno === 'M' ? 'Mañana' : event.turno === 'T' ? 'Tarde' : event.turno === 'N' ? 'Noche' : event.turno)
             : event.turno;
-        detailsHtml += `<span class="event-detail"><span class="detail-icon">⏰</span> Turno ${turnoText}</span>`;
+        detailsHtml += `<span class="event-detail"><span class="detail-icon"><i class="fas fa-sun text-yellow-600"></i></span> Turno ${turnoText}</span>`;
     }
     
     // Para tareas - materia asociada
     if (event.materia) {
-        detailsHtml += `<span class="event-detail"><span class="detail-icon">📚</span> ${event.materia}</span>`;
+        detailsHtml += `<span class="event-detail"><span class="detail-icon"><i class="fas fa-book text-blue-600"></i></span> ${event.materia}</span>`;
     }
     
     // Descripción de tarea
@@ -629,8 +631,8 @@ function createEventCard(event) {
     let statusHtml = '';
     if (event.type === 'tarea') {
         statusHtml = event.completada 
-            ? '<span class="task-status completed">✓ Completada</span>'
-            : '<span class="task-status pending">⏳ Pendiente</span>';
+            ? '<span class="task-status completed"><i class="fas fa-check-circle text-green-600"></i> Completada</span>'
+            : '<span class="task-status pending"><i class="fas fa-hourglass-half text-orange-600"></i> Pendiente</span>';
     }
     
     // Si no hay detalles, mostrar mensaje
