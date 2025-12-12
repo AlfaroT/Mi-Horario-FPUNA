@@ -24,6 +24,14 @@ html, body {
     min-height: 100vh;
     /* Ajuste para barra flotante de iOS */
     min-height: calc(100vh - var(--safe-top) - var(--safe-bottom));
+    /* Color de fondo para áreas de safe-area (notch y barra flotante) */
+    background-color: white;
+}
+
+/* Dark mode para áreas de safe-area */
+.dark html,
+.dark body {
+    background-color: rgb(17, 24, 39); /* gray-900 */
 }
 
 body {
