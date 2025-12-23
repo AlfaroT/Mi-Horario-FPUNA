@@ -12,6 +12,12 @@ localStorage_sim.json
 *.keystore
 signing-key-info.txt
 
+# Build artifacts (archivos compilados de Android)
+*.apk
+*.aab
+*.ap_
+*.dex
+
 # Android build files
 android/.gradle/
 android/.idea/
