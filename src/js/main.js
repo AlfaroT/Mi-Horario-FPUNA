@@ -1258,6 +1258,15 @@ function initEventListeners() {
         });
     }
 
+    // Botón volver desde Ajustes
+    if (dom.backToDashboardFromSettingsBtn) {
+        dom.backToDashboardFromSettingsBtn.addEventListener('click', () => {
+            hideAllScreens();
+            dom.dashboardScreen.classList.remove('hidden');
+            updateNavButtons('navDashboardBtn');
+        });
+    }
+
     // Botón exportar estadísticas
     if (dom.exportStatsBtn) {
         dom.exportStatsBtn.addEventListener('click', () => {

@@ -185,6 +185,55 @@ function generateCompactData() {
 }
 
 /**
+ * Obtiene información sobre el tamaño de la URL
+ */
+function getUrlSizeInfo(url) {
+    const length = url.length;
+    
+    if (length < 500) {
+        return {
+            status: 'optimal',
+            message: 'Tamaño óptimo',
+            icon: 'fas fa-check-circle',
+            color: 'text-green-500',
+            bgColor: 'bg-green-50 dark:bg-green-900/20',
+            borderColor: 'border-green-200 dark:border-green-800',
+            description: 'El QR se escaneará fácilmente'
+        };
+    } else if (length < 1000) {
+        return {
+            status: 'acceptable',
+            message: 'Tamaño aceptable',
+            icon: 'fas fa-exclamation-circle',
+            color: 'text-yellow-500',
+            bgColor: 'bg-yellow-50 dark:bg-yellow-900/20',
+            borderColor: 'border-yellow-200 dark:border-yellow-800',
+            description: 'El QR debería funcionar correctamente'
+        };
+    } else if (length < 2000) {
+        return {
+            status: 'large',
+            message: 'URL larga',
+            icon: 'fas fa-exclamation-triangle',
+            color: 'text-orange-500',
+            bgColor: 'bg-orange-50 dark:bg-orange-900/20',
+            borderColor: 'border-orange-200 dark:border-orange-800',
+            description: 'El QR puede ser difícil de escanear. Usa el link como alternativa'
+        };
+    } else {
+        return {
+            status: 'toolarge',
+            message: 'URL muy larga',
+            icon: 'fas fa-times-circle',
+            color: 'text-red-500',
+            bgColor: 'bg-red-50 dark:bg-red-900/20',
+            borderColor: 'border-red-200 dark:border-red-800',
+            description: 'El QR puede no funcionar. Recomendamos usar el link directo'
+        };
+    }
+}
+
+/**
  * Genera el link para compartir
  */
 export function generateShareLink() {
@@ -207,6 +256,10 @@ export function generateShareLink() {
     const baseUrl = window.location.origin + window.location.pathname;
     const shareUrl = `${baseUrl}?h=${compressed}`;
     
+    // Log información de tamaño
+    const sizeInfo = getUrlSizeInfo(shareUrl);
+    console.log(`[Share] URL generada - Longitud: ${shareUrl.length} caracteres - Estado: ${sizeInfo.status}`);
+    
     return shareUrl;
 }
 
@@ -217,22 +270,41 @@ export async function generateQRCode(container, url) {
     // Limpiar container
     container.innerHTML = '';
     
-    // Si la URL es muy larga, mostrar advertencia
-    if (url.length > 1000) {
-        console.warn('[Share] URL muy larga para QR óptimo:', url.length);
+    // Obtener info de tamaño
+    const sizeInfo = getUrlSizeInfo(url);
+    
+    // Si la URL es demasiado larga, mostrar advertencia en lugar de QR
+    if (url.length > 2500) {
+        console.warn('[Share] URL demasiado larga para QR:', url.length);
+        container.innerHTML = `
+            <div class="text-center ${sizeInfo.color}">
+                <i class="${sizeInfo.icon} text-4xl mb-3"></i>
+                <p class="text-sm font-medium">URL muy larga para QR</p>
+                <p class="text-xs mt-2 text-gray-500 dark:text-gray-400">Comparte usando el link directo</p>
+            </div>
+        `;
+        return false;
     }
     
     try {
         // Intentar con QRCode.js primero
         if (window.QRCode) {
+            // Ajustar nivel de corrección según tamaño
+            let correctLevel = window.QRCode.CorrectLevel.L; // Low
+            if (url.length < 500) {
+                correctLevel = window.QRCode.CorrectLevel.M; // Medium para URLs cortas
+            }
+            
             new window.QRCode(container, {
                 text: url,
                 width: 200,
                 height: 200,
-                colorDark: '#1a1a2e',
+                colorDark: '#1f2937',
                 colorLight: '#ffffff',
-                correctLevel: window.QRCode.CorrectLevel.L // Nivel L para URLs largas
+                correctLevel: correctLevel
             });
+            
+            console.log('[Share] QR generado exitosamente con QRCode.js');
             return true;
         }
     } catch (e) {
@@ -241,16 +313,21 @@ export async function generateQRCode(container, url) {
     
     // Fallback: API externa
     try {
+        const eccLevel = url.length < 500 ? 'M' : 'L';
         const img = document.createElement('img');
-        img.src = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(url)}&ecc=L`;
+        img.src = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(url)}&ecc=${eccLevel}`;
         img.alt = 'QR Code';
-        img.className = 'mx-auto';
+        img.className = 'mx-auto rounded-lg';
+        img.onload = () => {
+            console.log('[Share] QR generado exitosamente con API externa');
+        };
         img.onerror = () => {
+            console.error('[Share] Error en API externa de QR');
             container.innerHTML = `
                 <div class="text-center text-red-500">
-                    <i class="fas fa-exclamation-circle text-3xl mb-2"></i>
-                    <p class="text-sm">No se pudo generar el QR</p>
-                    <p class="text-xs mt-1">Usa el link de abajo</p>
+                    <i class="fas fa-exclamation-circle text-4xl mb-3"></i>
+                    <p class="text-sm font-medium">No se pudo generar el QR</p>
+                    <p class="text-xs mt-2 text-gray-500 dark:text-gray-400">Verifica tu conexión y usa el link</p>
                 </div>
             `;
         };
@@ -260,8 +337,8 @@ export async function generateQRCode(container, url) {
         console.error('[Share] QR API error:', e);
         container.innerHTML = `
             <div class="text-center text-yellow-500">
-                <i class="fas fa-link text-3xl mb-2"></i>
-                <p class="text-sm">Copia el link de abajo</p>
+                <i class="fas fa-link text-4xl mb-3"></i>
+                <p class="text-sm font-medium">Usa el link de abajo</p>
             </div>
         `;
         return false;
@@ -276,14 +353,20 @@ export function showShareModal() {
     const shareUrl = generateShareLink();
     if (!shareUrl) return;
     
+    // Obtener información de tamaño
+    const sizeInfo = getUrlSizeInfo(shareUrl);
+    const urlLength = shareUrl.length;
+    const clasesCount = (state.clases || []).length;
+    const examenesCount = (state.examenes || []).length;
+    
     // Crear modal
     const modal = document.createElement('div');
     modal.id = 'shareModal';
-    modal.className = 'fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50';
+    modal.className = 'fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 p-4';
     modal.innerHTML = `
-        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl max-w-md w-full mx-4 overflow-hidden animate-scale-in">
+        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl max-w-md w-full overflow-hidden animate-scale-in">
             <!-- Header -->
-            <div class="bg-gradient-to-r from-purple-500 to-indigo-600 p-6 text-white">
+            <div class="bg-gradient-to-r from-blue-500 to-indigo-600 p-6 text-white">
                 <div class="flex items-center justify-between">
                     <div class="flex items-center gap-3">
                         <div class="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center">
@@ -291,11 +374,11 @@ export function showShareModal() {
                         </div>
                         <div>
                             <h3 class="text-xl font-bold">Compartir Horario</h3>
-                            <p class="text-purple-200 text-sm">Envía tu horario a tus compañeros</p>
+                            <p class="text-blue-100 text-sm">${clasesCount} clases • ${examenesCount} exámenes</p>
                         </div>
                     </div>
                     <button onclick="document.getElementById('shareModal').remove()" 
-                            class="text-white/80 hover:text-white text-2xl">
+                            class="text-white/80 hover:text-white text-2xl transition-colors">
                         <i class="fas fa-times"></i>
                     </button>
                 </div>
@@ -303,12 +386,24 @@ export function showShareModal() {
             
             <!-- Content -->
             <div class="p-6 space-y-6">
+                <!-- Indicador de Estado -->
+                <div class="${sizeInfo.bgColor} ${sizeInfo.borderColor} border rounded-xl p-3">
+                    <div class="flex items-center gap-3">
+                        <i class="${sizeInfo.icon} ${sizeInfo.color} text-2xl"></i>
+                        <div class="flex-1">
+                            <p class="${sizeInfo.color} font-semibold text-sm">${sizeInfo.message}</p>
+                            <p class="text-xs text-gray-600 dark:text-gray-400 mt-0.5">${sizeInfo.description}</p>
+                        </div>
+                        <span class="text-xs ${sizeInfo.color} font-mono">${urlLength} chars</span>
+                    </div>
+                </div>
+                
                 <!-- QR Code -->
                 <div class="text-center">
-                    <p class="text-gray-600 dark:text-gray-300 mb-4">
+                    <p class="text-gray-600 dark:text-gray-300 mb-4 font-medium">
                         <i class="fas fa-qrcode mr-2"></i>Escanea este QR
                     </p>
-                    <div id="qrCodeContainer" class="bg-white p-4 rounded-xl inline-block shadow-inner">
+                    <div id="qrCodeContainer" class="bg-white dark:bg-gray-100 p-4 rounded-xl inline-block shadow-lg">
                         <div class="w-[200px] h-[200px] flex items-center justify-center">
                             <i class="fas fa-spinner fa-spin text-3xl text-gray-400"></i>
                         </div>
@@ -326,37 +421,46 @@ export function showShareModal() {
                 <div class="space-y-3">
                     <div class="flex gap-2">
                         <input type="text" id="shareUrlInput" value="${shareUrl}" readonly
-                               class="flex-1 px-4 py-3 bg-gray-100 dark:bg-gray-700 rounded-xl text-sm 
-                                      text-gray-600 dark:text-gray-300 truncate">
+                               class="flex-1 px-4 py-3 bg-gray-100 dark:bg-gray-700 rounded-xl text-xs 
+                                      text-gray-600 dark:text-gray-300 font-mono border-2 border-gray-200 dark:border-gray-600"
+                               onclick="this.select()">
                         <button onclick="copyShareLink()" id="copyBtn"
                                 class="px-4 py-3 bg-indigo-500 hover:bg-indigo-600 text-white rounded-xl 
-                                       transition-colors">
+                                       transition-all hover:scale-105 active:scale-95 shadow-lg"
+                                title="Copiar link">
                             <i class="fas fa-copy"></i>
                         </button>
                     </div>
                     
                     <!-- Share buttons -->
                     <div class="grid grid-cols-2 gap-3">
-                        <button onclick="shareViaWhatsApp('${shareUrl}')"
+                        <button onclick="shareViaWhatsApp('${shareUrl.replace(/'/g, "\\'")}')"
                                 class="flex items-center justify-center gap-2 px-4 py-3 
-                                       bg-green-500 hover:bg-green-600 text-white rounded-xl transition-colors">
+                                       bg-green-500 hover:bg-green-600 text-white rounded-xl 
+                                       transition-all hover:scale-105 active:scale-95 shadow-lg">
                             <i class="fab fa-whatsapp text-lg"></i>
-                            <span>WhatsApp</span>
+                            <span class="font-medium">WhatsApp</span>
                         </button>
-                        <button onclick="shareViaTelegram('${shareUrl}')"
+                        <button onclick="shareViaTelegram('${shareUrl.replace(/'/g, "\\'")}')"
                                 class="flex items-center justify-center gap-2 px-4 py-3 
-                                       bg-blue-500 hover:bg-blue-600 text-white rounded-xl transition-colors">
+                                       bg-blue-500 hover:bg-blue-600 text-white rounded-xl 
+                                       transition-all hover:scale-105 active:scale-95 shadow-lg">
                             <i class="fab fa-telegram text-lg"></i>
-                            <span>Telegram</span>
+                            <span class="font-medium">Telegram</span>
                         </button>
                     </div>
                 </div>
                 
                 <!-- Info -->
-                <p class="text-center text-xs text-gray-400">
-                    <i class="fas fa-info-circle mr-1"></i>
-                    El link contiene tu horario de forma segura
-                </p>
+                <div class="text-center space-y-1">
+                    <p class="text-xs text-gray-500 dark:text-gray-400">
+                        <i class="fas fa-lock mr-1"></i>
+                        El link contiene tu horario de forma segura y comprimida
+                    </p>
+                    <p class="text-xs text-gray-400 dark:text-gray-500">
+                        Los datos viajan en la URL sin pasar por servidores externos
+                    </p>
+                </div>
             </div>
         </div>
     `;
