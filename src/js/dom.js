@@ -138,6 +138,9 @@ export const dom = {
     get taskStatsContainer() { return getElement('taskStatsContainer'); },
     get progressChartContainer() { return getElement('progressChartContainer'); },
 
+    // Settings
+    get backToDashboardFromSettingsBtn() { return getElement('backToDashboardFromSettingsBtn'); },
+
     // Pomodoro Screen - Minimalista
     get openPomodoroBtn() { return getElement('navPomodoroBtn'); },
     get navDashboardBtn() { return getElement('navDashboardBtn'); },
