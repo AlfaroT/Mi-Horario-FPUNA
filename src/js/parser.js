@@ -43,8 +43,192 @@ function detectHeaderRow(rawData, maxRowsToCheck = 20) {
     return { rowIndex: bestRowIndex, headers: bestRow };
 }
 
+export function isScheduleSheet(sheetName) {
+    try {
+        const worksheet = state.workbook?.Sheets?.[sheetName];
+        if (!worksheet || typeof XLSX === 'undefined') return false;
+
+        const rawData = XLSX.utils.sheet_to_json(worksheet, {
+            header: 1,
+            defval: '',
+            raw: false
+        });
+
+        return rawData.slice(0, 20).some(row => {
+            const normalized = row.map(normalizeString);
+            return normalized.includes('ASIGNATURA') &&
+                (normalized.includes('NIVEL') || normalized.includes('SEM/GRUPO')) &&
+                normalized.includes('TURNO');
+        });
+    } catch (error) {
+        console.warn(`No se pudo validar la hoja "${sheetName}":`, error);
+        return false;
+    }
+}
+
+function isExamDateHeader(normalizedHeader) {
+    // La columna de fechas de clases ocasionales también contiene "FECHAS",
+    // pero no forma parte de un bloque de examen.
+    return (normalizedHeader.includes('DIA') || normalizedHeader.includes('FECHA')) &&
+        !normalizedHeader.includes('CLASE') &&
+        !normalizedHeader.includes('SABADO');
+}
+
+function getExamBlockKind(title) {
+    const normalized = normalizeString(title).replace(/\s+/g, ' ');
+    if (!normalized) return null;
+
+    if (normalized.includes('MESA EXAMINADORA')) return 'mesa';
+    if (normalized.includes('EVALUACION') && normalized.includes('PRIMERA')) return 'evaluationFirst';
+    if (normalized.includes('EVALUACION') && normalized.includes('SEGUNDA')) return 'evaluationSecond';
+    if ((normalized.includes('1ER') || normalized.includes('PRIMER')) && normalized.includes('PARCIAL')) return 'firstPartial';
+    if ((normalized.includes('2DO') || normalized.includes('SEGUNDO')) && normalized.includes('PARCIAL')) return 'secondPartial';
+    if ((normalized.includes('1ER') || normalized.includes('PRIMER')) && normalized.includes('FINAL')) return 'firstFinal';
+    if ((normalized.includes('2DO') || normalized.includes('SEGUNDO')) && normalized.includes('FINAL')) return 'secondFinal';
+    if (normalized === 'REVISION' || normalized.startsWith('REVISION ')) return 'revision';
+
+    return null;
+}
+
+function getCanonicalExamType(kind, lastFinalType) {
+    switch (kind) {
+        case 'evaluationFirst': return 'Evaluación Primera Etapa';
+        case 'evaluationSecond': return 'Evaluación Segunda Etapa';
+        case 'firstPartial': return '1er. Parcial';
+        case 'secondPartial': return '2do. Parcial';
+        case 'firstFinal': return '1er. Final';
+        case 'secondFinal': return '2do. Final';
+        case 'revision': return lastFinalType ? `Revisión ${lastFinalType}` : 'Revisión';
+        default: return 'Examen';
+    }
+}
+
+function findExamBlocks(headers, groupHeaders = []) {
+    const candidates = [];
+    const sourceHeaders = Array.isArray(groupHeaders) && groupHeaders.length > 0
+        ? groupHeaders
+        : headers;
+
+    sourceHeaders.forEach((title, index) => {
+        const kind = getExamBlockKind(title);
+        if (kind) candidates.push({ index, kind, title: String(title).trim() });
+    });
+
+    const blocks = [];
+    let lastFinalType = '';
+
+    candidates.forEach((candidate, candidateIndex) => {
+        const nextStart = candidateIndex + 1 < candidates.length
+            ? candidates[candidateIndex + 1].index
+            : headers.length;
+
+        if (candidate.kind === 'mesa') return;
+
+        const tipo = getCanonicalExamType(candidate.kind, lastFinalType);
+        if (candidate.kind === 'firstFinal' || candidate.kind === 'secondFinal') {
+            lastFinalType = tipo;
+        }
+
+        let diaIdx = -1;
+        let horaIdx = -1;
+        let aulaIdx = -1;
+
+        for (let i = candidate.index; i < nextStart; i++) {
+            const normalized = normalizeString(headers[i]);
+            if (diaIdx === -1 && isExamDateHeader(normalized)) {
+                diaIdx = i;
+            } else if (horaIdx === -1 && normalized.includes('HORA')) {
+                horaIdx = i;
+            } else if (aulaIdx === -1 && normalized === 'AULA') {
+                aulaIdx = i;
+            }
+        }
+
+        if (diaIdx >= 0) {
+            blocks.push({ tipo, title: candidate.title, startIdx: candidate.index,
+                endIdx: nextStart, diaIdx, horaIdx, aulaIdx });
+        }
+    });
+
+    // Compatibilidad con archivos que no tienen títulos fusionados encima de
+    // los subencabezados de las columnas.
+    if (blocks.length === 0) {
+        const dateIndexes = headers
+            .map((header, index) => ({ index, normalized: normalizeString(header) }))
+            .filter(({ normalized }) => isExamDateHeader(normalized))
+            .map(({ index }) => index);
+        const legacyTypes = [
+            '1er. Parcial', '2do. Parcial', '1er. Final',
+            'Revisión 1er. Final', '2do. Final', 'Revisión 2do. Final'
+        ];
+
+        dateIndexes.forEach((diaIdx, index) => {
+            const endIdx = index + 1 < dateIndexes.length
+                ? dateIndexes[index + 1]
+                : Math.min(headers.length, diaIdx + 3);
+            const horaOffset = headers.slice(diaIdx + 1, endIdx)
+                .findIndex(header => normalizeString(header).includes('HORA'));
+            const aulaOffset = headers.slice(diaIdx + 1, endIdx)
+                .findIndex(header => normalizeString(header) === 'AULA');
+
+            blocks.push({
+                tipo: legacyTypes[index] || 'Examen',
+                title: legacyTypes[index] || 'Examen',
+                startIdx: diaIdx,
+                endIdx,
+                diaIdx,
+                horaIdx: horaOffset >= 0 ? diaIdx + 1 + horaOffset : -1,
+                aulaIdx: aulaOffset >= 0 ? diaIdx + 1 + aulaOffset : -1
+            });
+        });
+    }
+
+    return blocks;
+}
+
+function isMeaningfulSemesterValue(value) {
+    const normalized = normalizeString(value).replace(/\s+/g, '');
+    if (!normalized || /^[-—]+$/.test(normalized)) return false;
+    return !['NA', 'N/A', 'SD', 'S/D'].includes(normalized);
+}
+
+function rankSemesterColumns(normalizedHeaders, dataRows, asignaturaIndex = 2) {
+    const candidates = normalizedHeaders.filter(({ normalized }) =>
+        COLUMN_ALIASES.semestre.includes(normalized)
+    );
+    if (candidates.length === 0) return [];
+
+    const rowsWithAsignatura = dataRows.filter(row =>
+        isMeaningfulSemesterValue(row[asignaturaIndex])
+    );
+    const rowsToScore = rowsWithAsignatura.length > 0 ? rowsWithAsignatura : dataRows;
+
+    return candidates.map(candidate => {
+        const usefulValues = rowsToScore.filter(row =>
+            isMeaningfulSemesterValue(row[candidate.index])
+        ).length;
+        return {
+            ...candidate,
+            coverage: usefulValues / Math.max(rowsToScore.length, 1),
+            tieBreaker: candidate.normalized === 'SEM/GRUPO' ? 1 : 0
+        };
+    }).sort((a, b) => b.coverage - a.coverage || b.tieBreaker - a.tieBreaker);
+}
+
+function getSemesterValue(row, columnMap) {
+    const candidateIndexes = columnMap.semestreCandidates?.length
+        ? columnMap.semestreCandidates
+        : [columnMap.semestre];
+
+    for (const columnIndex of candidateIndexes) {
+        const value = getCellValue(row, columnIndex);
+        if (isMeaningfulSemesterValue(value)) return value;
+    }
+    return '';
+}
+
 // Construir mapa de columnas usando sistema de alias
-function buildColumnMap(headers) {
+function buildColumnMap(headers, groupHeaders = [], dataRows = []) {
     const columnMap = {};
     const normalizedHeaders = headers.map((h, idx) => ({
         original: h,
@@ -54,6 +238,10 @@ function buildColumnMap(headers) {
     
     // Mapear cada campo usando sus alias
     for (const [fieldName, aliases] of Object.entries(COLUMN_ALIASES)) {
+        // NIVEL y SEM/GRUPO aparecen juntos en el Excel nuevo. La columna
+        // correcta se selecciona por cobertura de valores útiles por fila.
+        if (fieldName === 'semestre') continue;
+
         let found = false;
         for (const alias of aliases) {
             const match = normalizedHeaders.find(h => h.normalized === alias);
@@ -68,6 +256,17 @@ function buildColumnMap(headers) {
             throw new Error(`No se pudo encontrar la columna obligatoria: ${fieldName}. Aliases buscados: ${aliases.join(', ')}`);
         }
     }
+
+    const rankedSemesterColumns = rankSemesterColumns(normalizedHeaders, dataRows, columnMap.asignatura);
+    const semesterColumn = rankedSemesterColumns[0];
+    if (!semesterColumn) {
+        throw new Error(`No se pudo encontrar la columna obligatoria: semestre. Aliases buscados: ${COLUMN_ALIASES.semestre.join(', ')}`);
+    }
+    columnMap.semestre = semesterColumn.index;
+    columnMap.semestreSource = semesterColumn.original;
+    columnMap.semestreCandidates = rankedSemesterColumns.map(candidate => candidate.index);
+    columnMap.semestreSources = rankedSemesterColumns.map(candidate => candidate.original);
+    console.log(`  ✓ semestre: columna "${semesterColumn.original}" (índice ${semesterColumn.index}, cobertura ${Math.round(semesterColumn.coverage * 100)}%)`);
     
     // Mapear columnas de días y sus aulas asociadas - NUEVA LÓGICA ROBUSTA
     columnMap.dias = {};
@@ -139,9 +338,18 @@ function buildColumnMap(headers) {
     }
     
     if (fechaColumnIndex !== -1) {
-        // Asumimos: AULA en (fechaIdx - 2), HORARIO en (fechaIdx - 1), FECHA en (fechaIdx)
-        const aulaIdx = fechaColumnIndex - 2;
-        const horarioIdx = fechaColumnIndex - 1;
+        // Buscar el sábado y su AULA asociada en vez de depender de posiciones
+        // fijas; el Excel nuevo cambia el ancho de algunos bloques.
+        const saturdayColumns = normalizedHeaders
+            .filter((header, idx) => idx < fechaColumnIndex && header.normalized === 'SABADO')
+            .map(header => header.index);
+        const horarioIdx = saturdayColumns.length > 0
+            ? Math.max(...saturdayColumns)
+            : fechaColumnIndex - 1;
+        const aulaColumnsBeforeSaturday = aulaColumns.filter(aulaIdx => aulaIdx < horarioIdx);
+        const aulaIdx = aulaColumnsBeforeSaturday.length > 0
+            ? Math.max(...aulaColumnsBeforeSaturday)
+            : fechaColumnIndex - 2;
         
         if (aulaIdx >= 0 && horarioIdx >= 0) {
             columnMap.occasionalColumns = {
@@ -151,8 +359,8 @@ function buildColumnMap(headers) {
             };
             
             console.log(`  ✅ Bloque de clases ocasionales mapeado:`);
-            console.log(`     AULA: índice ${aulaIdx} (${normalizedHeaders[aulaIdx].original})`);
-            console.log(`     HORARIO: índice ${horarioIdx} (${normalizedHeaders[horarioIdx].original})`);
+            console.log(`     AULA: índice ${aulaIdx} (${normalizedHeaders[aulaIdx]?.original || '—'})`);
+            console.log(`     HORARIO: índice ${horarioIdx} (${normalizedHeaders[horarioIdx]?.original || '—'})`);
             console.log(`     FECHA: índice ${fechaColumnIndex} (${normalizedHeaders[fechaColumnIndex].original})`);
         } else {
             console.warn(`  ⚠️  Columna FECHA encontrada pero no hay suficientes columnas antes`);
@@ -174,51 +382,50 @@ function buildColumnMap(headers) {
         });
     }
     
+    columnMap.examBlocks = findExamBlocks(headers, groupHeaders);
+    console.log(`  ✓ Bloques de examen detectados: ${columnMap.examBlocks.length}`);
+    columnMap.examBlocks.forEach(block => {
+        console.log(`    • ${block.tipo}: Día ${block.diaIdx}, Hora ${block.horaIdx >= 0 ? block.horaIdx : '—'}, AULA ${block.aulaIdx >= 0 ? block.aulaIdx : '—'}`);
+    });
+
     return columnMap;
 }
 
 function parseOccasionalDates(text) {
-    // TAREA #1 v1.0: Algoritmo ROBUSTO para clases ocasionales (Sábados)
-    // Buscar fechas entre comillas usando expresión regular: "02/08, 20/09, 15/11"
-    const match = text.match(/"([^"]+)"/);
-    if (!match) {
-        // Si no hay comillas, intentar buscar fechas directamente en el formato dd/mm
-        const directDates = text.match(/\b\d{1,2}\/\d{1,2}\b/g);
-        if (directDates && directDates.length > 0) {
-            console.log(`✅ Clases ocasionales encontradas (sin comillas): ${directDates.join(', ')}`);
-            return directDates;
-        }
-        console.log('📅 Sin fechas ocasionales en:', text.substring(0, 50));
-        return [];
-    }
-    
-    // Extraer el contenido entre comillas, limpiar y dividir por comas
-    const datesStr = match[1];
-    const dates = datesStr.split(',')
-        .map(d => d.trim())
-        .filter(d => d && d.length > 0 && d.match(/\d+\/\d+/));
-    
-    console.log(`✅ Clases ocasionales encontradas: ${dates.length > 0 ? dates.join(', ') : 'ninguna'}`);
-    return dates;
+    if (!text) return [];
+
+    // El Excel usa comas, punto y coma y, en algunos casos, comillas. Extraer
+    // cada fecha evita juntar varios sábados en un único evento.
+    const matches = String(text).match(/\b\d{1,2}\/\d{1,2}(?:\/\d{2,4})?\b/g) || [];
+    return matches.filter((date, index) => matches.indexOf(date) === index);
 }
 
 export function processSheetData(sheetName) {
     try {
         console.log(`\n📊 Procesando hoja: "${sheetName}"`);
         const worksheet = state.workbook.Sheets[sheetName];
-        const rawData = XLSX.utils.sheet_to_json(worksheet, { header: 1, defval: '' });
+        // `raw: false` conserva la representación visible de Excel, como
+        // 15:00 en lugar del serial numérico 0.625.
+        const rawData = XLSX.utils.sheet_to_json(worksheet, {
+            header: 1,
+            defval: '',
+            raw: false
+        });
         
         console.log(`  Total de filas en Excel: ${rawData.length}`);
         
         // PASO 1: Detectar fila de encabezados dinámicamente
         const { rowIndex: headerRowIndex, headers: headerRow } = detectHeaderRow(rawData);
         
-        // PASO 2: Construir mapa de columnas
+        const dataRows = rawData.slice(headerRowIndex + 1);
+
+        // PASO 2: Construir mapa de columnas. La fila anterior contiene los
+        // títulos fusionados de los bloques de evaluación.
         console.log(`\n🗺️  Construyendo mapa de columnas...`);
-        const columnMap = buildColumnMap(headerRow);
+        const groupHeaderRow = headerRowIndex > 0 ? rawData[headerRowIndex - 1] : [];
+        const columnMap = buildColumnMap(headerRow, groupHeaderRow, dataRows);
         
         // PASO 3: Procesar filas de datos
-        const dataRows = rawData.slice(headerRowIndex + 1);
         console.log(`\n📋 Procesando ${dataRows.length} filas de datos...`);
         
         const processedData = [];
@@ -234,7 +441,8 @@ export function processSheetData(sheetName) {
             
             const dataObj = {
                 asignatura,
-                semestre: getCellValue(row, columnMap.semestre),
+                sourceRowIndex: headerRowIndex + 1 + i,
+                semestre: getSemesterValue(row, columnMap),
                 seccion: getCellValue(row, columnMap.seccion),
                 turno: getCellValue(row, columnMap.turno),
                 enfasis: getCellValue(row, columnMap.enfasis),
@@ -252,63 +460,19 @@ export function processSheetData(sheetName) {
                 }
             }
             
-            // TAREA #2: ALGORITMO SIMPLIFICADO DE EXTRACCIÓN DE EXÁMENES
-            // Mapeo directo de tipos de examen a columnas (PapaParse/SheetJS renombra duplicados)
-            const examDateColumns = {
-                '1er. Parcial': 'Día',      // Primera columna Día
-                '2do. Parcial': 'Día_1',    // Segunda columna Día
-                '1er. Final': 'Día_2',      // Tercera columna Día
-                'Revisión 1er. Final': 'Día_3',  // Cuarta columna Día
-                '2do. Final': 'Día_4',      // Quinta columna Día
-                'Revisión 2do. Final': 'Día_5'   // Sexta columna Día
-            };
-            
-            // Iterar sobre cada tipo de examen
-            Object.entries(examDateColumns).forEach(([tipo, diaCol]) => {
-                // Buscar el índice de la columna Día correspondiente
-                const diaIdx = headerRow.findIndex((h, idx) => {
-                    const normalized = normalizeString(h);
-                    // Determinar qué columna Día es esta (contando ocurrencias)
-                    let diaCount = 0;
-                    for (let i = 0; i <= idx; i++) {
-                        if (normalizeString(headerRow[i]).includes('DIA') || 
-                            normalizeString(headerRow[i]).includes('FECHA')) {
-                            if (i < idx) diaCount++;
-                            if (i === idx && (normalized.includes('DIA') || normalized.includes('FECHA'))) {
-                                // Verificar si es la columna Día que buscamos
-                                if (diaCol === 'Día' && diaCount === 0) return true;
-                                if (diaCol === 'Día_1' && diaCount === 1) return true;
-                                if (diaCol === 'Día_2' && diaCount === 2) return true;
-                                if (diaCol === 'Día_3' && diaCount === 3) return true;
-                                if (diaCol === 'Día_4' && diaCount === 4) return true;
-                                if (diaCol === 'Día_5' && diaCount === 5) return true;
-                            }
-                        }
-                    }
-                    return false;
+            // Cada bloque define sus propias columnas Día, Hora y AULA. Esto
+            // conserva las evaluaciones por etapa y los dos finales del Excel
+            // nuevo, aun cuando los bloques no tengan el mismo ancho.
+            columnMap.examBlocks.forEach(block => {
+                const fechaValue = getCellValue(row, block.diaIdx);
+                if (!fechaValue || ['DIA', 'FECHA'].includes(normalizeString(fechaValue))) return;
+
+                dataObj.examenes.push({
+                    tipo: block.tipo,
+                    fecha: fechaValue,
+                    hora: block.horaIdx >= 0 ? getCellValue(row, block.horaIdx) : '',
+                    aula: block.aulaIdx >= 0 ? getCellValue(row, block.aulaIdx) : ''
                 });
-                
-                if (diaIdx >= 0) {
-                    const fechaValue = getCellValue(row, diaIdx);
-                    if (fechaValue && fechaValue.trim() !== '' && 
-                        fechaValue !== 'Día' && fechaValue !== 'FECHA' && fechaValue !== 'DÍA') {
-                        
-                        // La hora y el aula están inmediatamente a la derecha
-                        const horaIdx = diaIdx + 1;
-                        const aulaIdx = diaIdx + 2;
-                        
-                        try {
-                            dataObj.examenes.push({
-                                tipo: tipo,
-                                fecha: fechaValue.trim(),
-                                hora: horaIdx < row.length ? getCellValue(row, horaIdx).trim() : '',
-                                aula: aulaIdx < row.length ? getCellValue(row, aulaIdx).trim() : ''
-                            });
-                        } catch (e) {
-                            console.warn(`⚠️  Error procesando examen ${tipo}:`, e);
-                        }
-                    }
-                }
             });
             
             // ============================================
@@ -321,13 +485,7 @@ export function processSheetData(sheetName) {
                 const fechasStr = getCellValue(row, columnMap.occasionalColumns.fecha);
                 
                 if (fechasStr && fechasStr.trim() !== '') {
-                    // Limpiar comillas dobles
-                    let cleanedFechas = fechasStr.replace(/"/g, '').trim();
-                    
-                    // Dividir por comas para obtener fechas individuales
-                    const fechas = cleanedFechas.split(',')
-                        .map(f => f.trim())
-                        .filter(f => f && f.match(/\d+\/\d+/)); // Validar formato DD/MM
+                    const fechas = parseOccasionalDates(fechasStr);
                     
                     if (fechas.length > 0) {
                         // Almacenar en dataObj para uso posterior
@@ -347,7 +505,7 @@ export function processSheetData(sheetName) {
         }
         
         state.rawData = processedData;
-        state.rawDataArray = dataRows; // Guardar array original para acceso por índice
+        state.rawDataArray = rawData; // Guardar array original para acceso por índice
         state.columnMap = columnMap; // Guardar para referencia
         
         console.log(`✅ Procesamiento exitoso: ${processedData.length} registros válidos\n`);
@@ -367,10 +525,10 @@ export function transformDataToSchedule() {
     
     state.rawData.forEach(row => {
         const asignatura = row.asignatura;
-        const semestre = row.semestre.toUpperCase();
-        const seccion = row.seccion.toUpperCase();
-        const turno = row.turno.toUpperCase();
-        const enfasis = row.enfasis.toUpperCase();
+        const semestre = String(row.semestre || '').toUpperCase();
+        const seccion = String(row.seccion || '').toUpperCase();
+        const turno = String(row.turno || '').toUpperCase();
+        const enfasis = String(row.enfasis || '').toUpperCase();
         const profesor = `${row.nombre} ${row.apellido}`.trim();
         
         // Crear ID único para esta instancia de clase
@@ -381,6 +539,13 @@ export function transformDataToSchedule() {
             if (horario && horario.trim() !== '') {
                 // Verificar si es sábado con fechas específicas
                 if (dia.toUpperCase() === 'SÁBADO' || dia.toUpperCase() === 'SABADO') {
+                    // En el Excel nuevo las fechas de sábados viven en una
+                    // columna separada; no duplicar el mismo evento como clase
+                    // semanal y como clase ocasional.
+                    if (row.clasesOcasionales?.fechas?.length) {
+                        continue;
+                    }
+
                     const fechas = parseOccasionalDates(horario);
                     
                     if (fechas.length > 0) {
@@ -414,7 +579,7 @@ export function transformDataToSchedule() {
                 // Clase regular (incluyendo sábados sin fechas específicas)
                 let aula = '';
                 if (state.columnMap && state.columnMap.aulas && state.columnMap.aulas[dia] !== null) {
-                    const rowIndex = state.rawData.indexOf(row);
+                    const rowIndex = row.sourceRowIndex ?? state.rawData.indexOf(row);
                     if (rowIndex >= 0 && state.rawDataArray && state.rawDataArray[rowIndex]) {
                         aula = getCellValue(state.rawDataArray[rowIndex], state.columnMap.aulas[dia]) || '';
                     }

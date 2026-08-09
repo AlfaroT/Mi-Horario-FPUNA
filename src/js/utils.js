@@ -30,7 +30,18 @@ export function normalizeString(str) {
 export function getCellValue(row, columnIndex) {
     if (columnIndex === undefined || columnIndex === null || columnIndex < 0) return '';
     const value = row[columnIndex];
-    return value ? String(value).trim() : '';
+    if (value === undefined || value === null || value === '') return '';
+
+    // SheetJS puede devolver horas como fracciones del día cuando el libro se
+    // lee con raw:true (por ejemplo, 0.625 = 15:00).
+    if (typeof value === 'number' && Number.isFinite(value) && value >= 0 && value < 1) {
+        const totalMinutes = Math.round(value * 24 * 60) % (24 * 60);
+        const hours = String(Math.floor(totalMinutes / 60)).padStart(2, '0');
+        const minutes = String(totalMinutes % 60).padStart(2, '0');
+        return `${hours}:${minutes}`;
+    }
+
+    return String(value).trim();
 }
 
 export function formatDate(dateStr) {

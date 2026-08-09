@@ -1156,6 +1156,201 @@ html {
     gap: 0.75rem;
 }
 
+/* Acordeones para separar visualmente cada etapa de examen */
+.exam-group {
+    overflow: hidden;
+    border: 1px solid #e5e7eb;
+    border-radius: 0.75rem;
+    background: #ffffff;
+}
+
+.dark .exam-group {
+    border-color: #374151;
+    background: #1f2937;
+}
+
+.exam-group-summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    min-height: 4.25rem;
+    padding: 0.75rem 1rem;
+    cursor: pointer;
+    list-style: none;
+    border-left: 4px solid transparent;
+    transition: filter 0.2s ease;
+}
+
+.exam-group-summary::-webkit-details-marker {
+    display: none;
+}
+
+.exam-group-summary:hover {
+    filter: brightness(0.97);
+}
+
+.dark .exam-group-summary:hover {
+    filter: brightness(1.12);
+}
+
+.exam-group-summary.exam-group-first-stage {
+    background: #f0f9ff;
+    color: #075985;
+    border-left-color: #0ea5e9;
+}
+
+.exam-group-summary.exam-group-second-stage {
+    background: #fffbeb;
+    color: #92400e;
+    border-left-color: #f59e0b;
+}
+
+.exam-group-summary.exam-group-first-final {
+    background: #f5f3ff;
+    color: #6d28d9;
+    border-left-color: #7c3aed;
+}
+
+.exam-group-summary.exam-group-second-final {
+    background: #fdf4ff;
+    color: #a21caf;
+    border-left-color: #c026d3;
+}
+
+.exam-group-summary.exam-group-other {
+    background: #fef2f2;
+    color: #b91c1c;
+    border-left-color: #dc2626;
+}
+
+.dark .exam-group-summary.exam-group-first-stage {
+    background: rgba(14, 116, 144, 0.22);
+    color: #bae6fd;
+}
+
+.dark .exam-group-summary.exam-group-second-stage {
+    background: rgba(180, 83, 9, 0.22);
+    color: #fde68a;
+}
+
+.dark .exam-group-summary.exam-group-first-final {
+    background: rgba(109, 40, 217, 0.22);
+    color: #ddd6fe;
+}
+
+.dark .exam-group-summary.exam-group-second-final {
+    background: rgba(162, 28, 175, 0.22);
+    color: #f5d0fe;
+}
+
+.dark .exam-group-summary.exam-group-other {
+    background: rgba(185, 28, 28, 0.22);
+    color: #fecaca;
+}
+
+.exam-group-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    flex-shrink: 0;
+    border-radius: 9999px;
+    background: rgba(255, 255, 255, 0.72);
+}
+
+.dark .exam-group-icon {
+    background: rgba(17, 24, 39, 0.45);
+}
+
+.exam-group-count {
+    min-width: 1.75rem;
+    padding: 0.2rem 0.5rem;
+    border-radius: 9999px;
+    background: rgba(255, 255, 255, 0.78);
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-align: center;
+}
+
+.dark .exam-group-count {
+    background: rgba(17, 24, 39, 0.45);
+}
+
+.exam-group-chevron {
+    transition: transform 0.2s ease;
+}
+
+.exam-group[open] .exam-group-chevron {
+    transform: rotate(180deg);
+}
+
+.exam-group-content {
+    padding: 0.75rem;
+    border-top: 1px solid rgba(229, 231, 235, 0.85);
+}
+
+.dark .exam-group-content {
+    border-top-color: rgba(55, 65, 81, 0.85);
+}
+
+.exam-card-first-stage { border-left-color: #0ea5e9; }
+.exam-card-second-stage { border-left-color: #f59e0b; }
+.exam-card-first-final { border-left-color: #7c3aed; }
+.exam-card-second-final { border-left-color: #c026d3; }
+.exam-card-other { border-left-color: #dc2626; }
+
+.exam-badge-first-stage {
+    background: #e0f2fe;
+    color: #075985;
+}
+
+.exam-badge-second-stage {
+    background: #fef3c7;
+    color: #92400e;
+}
+
+.exam-badge-first-final {
+    background: #ede9fe;
+    color: #6d28d9;
+}
+
+.exam-badge-second-final {
+    background: #fae8ff;
+    color: #a21caf;
+}
+
+.exam-badge-other {
+    background: #fee2e2;
+    color: #b91c1c;
+}
+
+.dark .exam-badge-first-stage {
+    background: rgba(14, 116, 144, 0.35);
+    color: #bae6fd;
+}
+
+.dark .exam-badge-second-stage {
+    background: rgba(180, 83, 9, 0.35);
+    color: #fde68a;
+}
+
+.dark .exam-badge-first-final {
+    background: rgba(109, 40, 217, 0.35);
+    color: #ddd6fe;
+}
+
+.dark .exam-badge-second-final {
+    background: rgba(162, 28, 175, 0.35);
+    color: #f5d0fe;
+}
+
+.dark .exam-badge-other {
+    background: rgba(185, 28, 28, 0.35);
+    color: #fecaca;
+}
+
 /* Tarjeta de evento */
 .event-card {
     background: white;

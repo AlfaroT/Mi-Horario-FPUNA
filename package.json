@@ -10,6 +10,7 @@
     "serve": "python -m http.server 8000",
     "watch-css": "postcss src/css/input.css -o dist/output.css --config config/postcss.config.js --watch",
     "clean": "if exist dist rmdir /s /q dist",
+    "test": "node --test tests/*.test.mjs",
     "predeploy": "npm run build && npm run optimize",
     "optimize": "echo '✅ Optimización completada - Código de desarrollo eliminado, CSS compilado y PWA configurado'",
     "deploy": "npm run build && echo '🚀 Listo para GitHub Pages - sube los archivos a tu repositorio'",

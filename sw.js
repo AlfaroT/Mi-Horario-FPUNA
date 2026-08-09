@@ -1,7 +1,7 @@
 // Service Worker para Mi Horario FPUNA
-// Versión: 1.5.3 - iOS 26 Safari completo con safe-area dinámico
+// Versión: 1.5.4 - acordeones de exámenes y caché actualizada
 
-const CACHE_NAME = 'mi-horario-fpuna-v1.5.3';
+const CACHE_NAME = 'mi-horario-fpuna-v1.5.4';
 
 // Detectar si estamos en GitHub Pages o localhost
 const isGitHubPages = self.location.hostname.includes('github.io');

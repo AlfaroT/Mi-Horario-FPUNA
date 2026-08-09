@@ -171,6 +171,71 @@ function updateGreeting() {
 // Agregar propiedad estática para almacenar el timeout
 updateGreeting.timeoutId = null;
 
+const EXAM_GROUPS = [
+    {
+        key: 'firstStage',
+        label: 'Evaluación Primera Etapa',
+        summaryClass: 'exam-group-first-stage',
+        borderColor: 'exam-card-first-stage',
+        badgeColor: 'exam-badge-first-stage',
+        icon: 'fa-flag'
+    },
+    {
+        key: 'secondStage',
+        label: 'Evaluación Segunda Etapa',
+        summaryClass: 'exam-group-second-stage',
+        borderColor: 'exam-card-second-stage',
+        badgeColor: 'exam-badge-second-stage',
+        icon: 'fa-flag-checkered'
+    },
+    {
+        key: 'firstFinal',
+        label: '1er. Final',
+        summaryClass: 'exam-group-first-final',
+        borderColor: 'exam-card-first-final',
+        badgeColor: 'exam-badge-first-final',
+        icon: 'fa-medal'
+    },
+    {
+        key: 'secondFinal',
+        label: '2do. Final',
+        summaryClass: 'exam-group-second-final',
+        borderColor: 'exam-card-second-final',
+        badgeColor: 'exam-badge-second-final',
+        icon: 'fa-trophy'
+    },
+    {
+        key: 'other',
+        label: 'Otros exámenes',
+        summaryClass: 'exam-group-other',
+        borderColor: 'exam-card-other',
+        badgeColor: 'exam-badge-other',
+        icon: 'fa-file-circle-exclamation'
+    }
+];
+
+function getExamGroup(examen) {
+    const tipo = String(examen.tipo || '').toLowerCase();
+
+    if ((tipo.includes('1er') || tipo.includes('primer')) && tipo.includes('final')) {
+        return EXAM_GROUPS.find(group => group.key === 'firstFinal');
+    }
+
+    if ((tipo.includes('2do') || tipo.includes('segundo')) && tipo.includes('final')) {
+        return EXAM_GROUPS.find(group => group.key === 'secondFinal');
+    }
+
+    if (tipo.includes('primera') && tipo.includes('etapa')) {
+        return EXAM_GROUPS.find(group => group.key === 'firstStage');
+    }
+
+    if (tipo.includes('segunda') && tipo.includes('etapa')) {
+        return EXAM_GROUPS.find(group => group.key === 'secondStage');
+    }
+
+    return EXAM_GROUPS.find(group => group.key === 'other');
+}
+
 // ============================================
 // RENDERIZADO DEL DASHBOARD
 // ============================================
@@ -318,8 +383,6 @@ function renderTodayClasses() {
 }
 
 function renderUpcomingExams() {
-    const now = new Date();
-    
     const upcomingExams = state.examenes
         .map(examen => {
             const fecha = formatDate(examen.fecha);
@@ -330,9 +393,8 @@ function renderUpcomingExams() {
             };
         })
         .filter(examen => examen.fechaObj && examen.daysLeft !== null && examen.daysLeft >= -1)
-        .sort((a, b) => a.daysLeft - b.daysLeft)
-        .slice(0, 10);
-    
+        .sort((a, b) => a.daysLeft - b.daysLeft);
+
     if (upcomingExams.length === 0) {
         dom.upcomingExams.innerHTML = `
             <div class="card text-center py-8">
@@ -342,51 +404,73 @@ function renderUpcomingExams() {
         `;
         return;
     }
-    
-    dom.upcomingExams.innerHTML = upcomingExams.map((examen, index) => {
-        const isParcial = examen.tipo.toLowerCase().includes('parcial');
-        const isFinal = examen.tipo.toLowerCase().includes('final');
-        const isRevision = examen.tipo.toLowerCase().includes('revision') || examen.tipo.toLowerCase().includes('revisión');
-        
-        const borderColor = isParcial ? 'border-red-600' :
-                           isFinal ? 'border-purple-600' :
-                           'border-yellow-600';
-        
-        const badgeColor = isParcial ? 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200' :
-                          isFinal ? 'bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200' :
-                          'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200';
-        
-        const daysText = getDaysText(examen.daysLeft);
-        const isToday = examen.daysLeft === 0;
-        const isTomorrow = examen.daysLeft === 1;
-        const horaFormateada = formatTime(examen.hora);
-        
-        const contador = {
-            text: daysText,
-            icon: isToday ? 'fa-solid fa-exclamation-triangle' : 
-                  isTomorrow ? 'fa-solid fa-bell' : 
-                  'fa-solid fa-calendar-check',
-            colorClass: isToday ? 'text-red-600 dark:text-red-400' :
-                       isTomorrow ? 'text-orange-600 dark:text-orange-400' :
-                       'text-blue-600 dark:text-blue-400',
-            animate: isToday
-        };
-        
-        return createEventCard({
-            tipo: 'examen',
-            titulo: examen.asignatura,
-            subtitulo: `${examen.seccion || ''} ${examen.turno || ''}`.trim(),
-            fecha: examen.fecha,
-            hora: horaFormateada,
-            aula: examen.aula || 'Por confirmar',
-            profesor: null,
-            contador: contador,
-            borderColor: borderColor,
-            badgeText: examen.tipo,
-            badgeColor: badgeColor,
-            index: index
-        });
-    }).join('');
+
+    const groupedExams = EXAM_GROUPS
+        .map(group => ({
+            ...group,
+            exams: upcomingExams.filter(examen => getExamGroup(examen).key === group.key)
+        }))
+        .filter(group => group.exams.length > 0);
+
+    dom.upcomingExams.innerHTML = `
+        <div class="space-y-3">
+            ${groupedExams.map((group, groupIndex) => `
+                <details class="exam-group" ${groupIndex === 0 ? 'open' : ''}>
+                    <summary class="exam-group-summary ${group.summaryClass}">
+                        <span class="flex items-center gap-3 min-w-0">
+                            <span class="exam-group-icon" aria-hidden="true">
+                                <i class="fas ${group.icon}"></i>
+                            </span>
+                            <span class="min-w-0">
+                                <span class="block font-semibold truncate">${group.label}</span>
+                                <span class="block text-xs opacity-75">
+                                    ${group.exams.length} examen${group.exams.length !== 1 ? 'es' : ''}
+                                </span>
+                            </span>
+                        </span>
+                        <span class="flex items-center gap-2 flex-shrink-0">
+                            <span class="exam-group-count">${group.exams.length}</span>
+                            <i class="fas fa-chevron-down exam-group-chevron" aria-hidden="true"></i>
+                        </span>
+                    </summary>
+                    <div class="exam-group-content space-y-3">
+                        ${group.exams.map((examen, index) => {
+                            const daysText = getDaysText(examen.daysLeft);
+                            const isToday = examen.daysLeft === 0;
+                            const isTomorrow = examen.daysLeft === 1;
+                            const horaFormateada = formatTime(examen.hora);
+
+                            const contador = {
+                                text: daysText,
+                                icon: isToday ? 'fa-solid fa-exclamation-triangle' :
+                                      isTomorrow ? 'fa-solid fa-bell' :
+                                      'fa-solid fa-calendar-check',
+                                colorClass: isToday ? 'text-red-600 dark:text-red-400' :
+                                           isTomorrow ? 'text-orange-600 dark:text-orange-400' :
+                                           'text-blue-600 dark:text-blue-400',
+                                animate: isToday
+                            };
+
+                            return createEventCard({
+                                tipo: 'examen',
+                                titulo: examen.asignatura,
+                                subtitulo: `${examen.seccion || ''} ${examen.turno || ''}`.trim(),
+                                fecha: examen.fecha,
+                                hora: horaFormateada,
+                                aula: examen.aula || 'Por confirmar',
+                                profesor: null,
+                                contador,
+                                borderColor: group.borderColor,
+                                badgeText: examen.tipo,
+                                badgeColor: group.badgeColor,
+                                index
+                            });
+                        }).join('')}
+                    </div>
+                </details>
+            `).join('')}
+        </div>
+    `;
 }
 
 function renderOccasionalClasses() {

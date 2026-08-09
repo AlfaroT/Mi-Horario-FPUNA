@@ -1,6 +1,6 @@
 import { state } from './state.js';
 import { dom } from './dom.js';
-import { processSheetData, transformDataToSchedule } from './parser.js';
+import { isScheduleSheet, processSheetData, transformDataToSchedule } from './parser.js';
 import { loadUserTasks, cleanupOldCompletedTasks, saveTask, deleteTask, toggleTaskComplete } from './tasks.js';
 import { 
     showSetup, 
@@ -379,9 +379,16 @@ function initEventListeners() {
             const data = await file.arrayBuffer();
             state.workbook = XLSX.read(data, { type: 'array' });
             
+            // El libro oficial también trae catálogos y tablas de homologación.
+            // Solo mostrar hojas que realmente tengan estructura de horario.
+            const scheduleSheets = state.workbook.SheetNames.filter(isScheduleSheet);
+            if (scheduleSheets.length === 0) {
+                throw new Error('No se encontraron hojas de carreras con formato de horario.');
+            }
+
             // Poblar select de carreras
             dom.carreraSelect.innerHTML = '<option value="">-- Selecciona una carrera --</option>';
-            state.workbook.SheetNames.forEach(sheetName => {
+            scheduleSheets.forEach(sheetName => {
                 const option = document.createElement('option');
                 option.value = sheetName;
                 option.textContent = sheetName;

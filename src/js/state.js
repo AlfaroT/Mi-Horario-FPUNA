@@ -1,4 +1,7 @@
-export const STORAGE_KEY = 'miHorarioFPUNA_v5';
+// El parser actualizado conserva los bloques de Primera/Segunda Final y
+// selecciona la columna de semestre correcta del Excel nuevo. v7 invalida
+// cargas v6 que pudieron haber sido guardadas antes de reprocesar el Excel.
+export const STORAGE_KEY = 'miHorarioFPUNA_v7';
 export const USER_TASKS_KEY = 'miHorarioFPUNA_userTasks_v1';
 export const THEME_KEY = 'miHorarioFPUNA_theme_v1';
 

@@ -3,7 +3,11 @@ import { state } from './state.js';
 
 export function getUniqueSemestres() {
     if (!state.fullSchedule) return [];
-    const semestres = new Set(state.fullSchedule.map(item => item.semestre));
+    const semestres = new Set(
+        state.fullSchedule
+            .map(item => item.semestre)
+            .filter(semestre => semestre && !/^[-—]+$/.test(String(semestre).trim()))
+    );
     return Array.from(semestres).sort((a, b) => a.localeCompare(b, undefined, { numeric: true }));
 }
 
@@ -33,6 +37,16 @@ export function getInstancesByAsignaturas(asignaturas) {
 export function populateSemestres() {
     const semestres = getUniqueSemestres();
     const container = dom.semestreCheckboxes;
+    const sourceHint = document.getElementById('semesterSourceHint');
+
+    if (sourceHint) {
+        const sources = state.columnMap?.semestreSources ||
+            (state.columnMap?.semestreSource ? [state.columnMap.semestreSource] : []);
+        sourceHint.textContent = sources.length > 0
+            ? `Semestres detectados desde la(s) columna(s): ${sources.join(' / ')}.`
+            : 'Semestres detectados automáticamente desde el archivo.';
+    }
+
     container.innerHTML = '';
     
     if (semestres.length === 0) {
